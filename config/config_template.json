@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "fantasytrading",
+    "password": null,
+    "database": "fantasytrading",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}

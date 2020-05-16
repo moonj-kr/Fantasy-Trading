@@ -1,11 +1,20 @@
-const { pool } = require('../db/config')
+const User = require('../models').User;
 
-const getUsers = (request, response) => {
-  pool.query("SELECT * FROM users", (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-}
-module.exports = {getUsers};
+
+module.exports = {
+  create(req, res) {
+    return User
+      .create({
+        content: req.body.content,
+        userId: req.params.userId,
+      })
+      .then(user => res.status(201).send(user))
+      .catch(error => res.status(400).send(error));
+  },
+  list(req, res) {
+    return User
+      .findAll()
+      .then((users) => res.status(200).send(users))
+      .catch((error) => res.status(400).send(error));
+  },
+};
