@@ -17,4 +17,13 @@ module.exports = {
       .then((users) => res.status(200).send(users))
       .catch((error) => res.status(400).send(error));
   },
+  // login(req, res){
+  //   return User
+  //     .findOne({where: {username: req.body.username, password: req.body.password}})
+  //     .then((user) =>
+  //       user.update({sessionId: req.session.id})
+  //       res.status(200).send(user);
+  //     )
+  //     .catch((error) => res.status(400).send(error))
+  // }
 };

@@ -1,4 +1,4 @@
-const usersController = require('../controllers').usersController;
+const usersRoute = require('./usersRoute');
 var swaggerUi = require('swagger-ui-express')
 var swaggerJSDoc = require('swagger-jsdoc');
 const swaggerDefinition = {
@@ -25,6 +25,5 @@ module.exports = (app) => {
     res.send(swaggerSpec);
   });
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  app.get('/api/users', usersController.list);
-
+  usersRoute(app)
 };
