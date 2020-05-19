@@ -14,7 +14,7 @@ module.exports = {
       },
       price: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       isUpdated: {
         allowNull: false,
