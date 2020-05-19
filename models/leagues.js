@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     investmentFunds: DataTypes.DOUBLE
   }, {});
   League.associate = function(models) {
-    // associations can be defined here
+    League.hasMany(models.Portfolio, {
+      foreignKey: 'leagueID',
+      as: 'portfolios',
+    });
   };
   return League;
 };
