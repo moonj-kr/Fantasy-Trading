@@ -1,4 +1,4 @@
-const transactionController = require('../controllers/').transactionController;
+const transactionController = require('../controllers').transactionController;
 
 module.exports = (app) => {
   app.get('/api/stocks', transactionController.getAllStocks);
