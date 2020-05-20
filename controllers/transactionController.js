@@ -13,6 +13,7 @@ module.exports = {
     .then(stock => {
       if (stock.isUpdated === false) {
         // POST StockDataAPI (ProcessStockData) to update stock price based on previous close
+        
       } else {
         res.status(200).send(stock)
       }
