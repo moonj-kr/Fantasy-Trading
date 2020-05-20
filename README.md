@@ -11,3 +11,13 @@ Setup Instructions
   8. npx sequelize-cli db:migrate
   8. npm start
   9. server on localhost:5000/api
+  
+  # Troubleshooting Steps
+  ERROR: Cannot find "/Users/jisook.moon/Desktop/Fantasy-Trading/config/config/config.json". Have you run "sequelize init"?
+  - Reclone repo
+  - Run npm install
+  - Cry
+  - Redo steps 6-11
+  
+  ERROR: role "fantasytrading" does not exist
+  - This means that your database connection configuration is incorrect. Please check that your your config/config.json matches the information in pgAdmin under PostgreSQL ##'s Properties.
