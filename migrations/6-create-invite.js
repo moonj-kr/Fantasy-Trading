@@ -1,36 +1,33 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Stocks', {
+    return queryInterface.createTable('Invites', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      symbol: {
-        allowNull: false,
+      invitationKey: {
         type: Sequelize.STRING
       },
-      price: {
-        allowNull: false,
-        type: Sequelize.DOUBLE
+      email: {
+        type: Sequelize.STRING
       },
-      isUpdated: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
+      status: {
+        type: Sequelize.ENUM(['No Account', 'Pending', 'Accepted'])
       },
       createdAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Stocks');
+    return queryInterface.dropTable('Invites');
   }
 };

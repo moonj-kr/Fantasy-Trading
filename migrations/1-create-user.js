@@ -23,8 +23,8 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      host: {
-        type: Sequelize.BOOLEAN
+      points: {
+        type: Sequelize.INTEGER,
       },
       sessionID: {
         type: Sequelize.STRING

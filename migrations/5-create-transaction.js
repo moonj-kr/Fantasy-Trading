@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Transactions', {
@@ -7,6 +7,18 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      volume: {
+        type: Sequelize.INTEGER
+      },
+      price: {
+        type: Sequelize.DOUBLE
+      },
+      type: {
+        type: Sequelize.ENUM(['buy', 'sell'])
+      },
+      datetime: {
+        type: Sequelize.DATE
       },
       stockID: {
         type: Sequelize.INTEGER,
@@ -23,21 +35,15 @@ module.exports = {
         references: {
           model: 'Portfolios',
           key: 'id',
-          as: 'portfolioID'
+          as: 'portfolioID',
         }
       },
-      shares: {
-        type: Sequelize.INTEGER
-      },
-      price: {
-        type: Sequelize.DOUBLE
-      },
       createdAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.DATE
       }
     });
@@ -45,4 +51,4 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Transactions');
   }
-}
+};
