@@ -20,4 +20,4 @@ Setup Instructions
   - Redo steps 6-11
   
   ERROR: role "fantasytrading" does not exist
-  This means that your database connection configuration is incorrect. Please check that your your config/config.json matches   the information in pgAdmin under PostgreSQL ##'s Properties.
+  - This means that your database connection configuration is incorrect. Please check that your your config/config.json matches the information in pgAdmin under PostgreSQL ##'s Properties.
