@@ -1,4 +1,16 @@
 'use strict';
+const Portfolio = require('../models').Portfolio
+
+const date = new Date(Date.now())
+
+const data = [
+  { value: 1000.00, host: false, ranking: 1, createdAt: date,  updatedAt: date },
+  { value: 2000.00, host: false, ranking: 3, createdAt: date,  updatedAt: date },
+  { value: 3000.00, host: true, ranking: 5, createdAt: date,  updatedAt: date },
+  { value: 4000.00, host: true, ranking: 7, createdAt: date,  updatedAt: date },
+  { value: 5000.00, host: true, ranking: 9, createdAt: date,  updatedAt: date },
+];
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Portfolios', {
@@ -43,7 +55,8 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
+    .then(Portfolio.bulkCreate(data));
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Portfolios');
