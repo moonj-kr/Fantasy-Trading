@@ -84,17 +84,51 @@ module.exports = {
     const leagueName = req.params.leagueName;
     return League.findOne({where: {name: leagueName}}).then(league => {
       res.status(200).send(league);
-    }).catch(error => {console.error(error)})
+    }).catch(error => {
+      console.error(error);
+      res.status(400).send(error);
+    })
   },
   update(req,res){
-    return League.update({
-      name: req.body.name,
-      startDate: req.body.startDate,
-      endDate: req.body.endDate,
-      investmentFunds: req.body.investmentFunds
-    }, {where: {id: req.body.id}}).then((affectedCount, affectedRows) => {
-      res.status(200).send(affectedRows);
-    }).catch(error => console.error(error));
+    const sessionID = "12345abcde";
+    User.findOne({where: {sessionID: sessionID}}).then(user => {
+      Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
+        if(portfolio.host == true){
+          League.update({
+            name: req.body.name,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            investmentFunds: req.body.investmentFunds
+          }, {where: {id: req.body.id}}).then((updatedCount) => {
+            res.status(200).send(updatedCount);
+          }).catch(error => {console.error(error)});
+        }
+        else{
+          res.status(403).send({message: "Only host user can make updates to league"})
+        }
+      }).catch(error => {console.error(error)});
+    }).catch(error => {
+      console.error(error);
+      res.status(400).send(error);
+    });
+  },
+  delete(req, res){
+    const sessionID = "12345abcde";
+    User.findOne({where: {sessionID: sessionID}}).then(user => {
+      Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
+        if(portfolio.host == true){
+          League.destroy({where: {id: req.body.id}}).then(isDeleted => {
+            res.status(200).send({isDeleted: isDeleted});
+          }).catch(error => {console.error(error)});
+        }
+        else{
+          res.status(403).send({message: "Only host user can delete a league"})
+        }
+      }).catch(error => {console.error(error)});
+    }).catch(error => {
+      console.error(error);
+      res.status(400).send(error);
+    });
   },
   participants(req, res){
     const leagueName = req.params.leagueName;
@@ -102,7 +136,10 @@ module.exports = {
       Portfolio.count({where: {leagueID: league.id}}).then(count => {
         res.status(200).send({count: count});
       }).catch(error => {console.error(error)});
-    }).catch(error => {console.error(error)});
+    }).catch(error => {
+      console.error(error);
+      res.status(400).send(error);
+    });
   },
   list(req, res){
     return League.findAll().then((leagues) => {res.status(200).send(leagues)}).catch(error => {res.status(400).send(error)})
@@ -129,7 +166,10 @@ module.exports = {
       }).catch(error => console.error(error));
       scheduleJobs(req.body.startDate, req.body.endDate);
       res.status(200).send(league);
-    }).catch(error => console.error(error));
+    }).catch(error => {
+      console.error(error);
+      res.status(400).send(error);
+    });
   },
   sendInvite(req, res){
     const sessionID = "12345abcde";
@@ -157,10 +197,16 @@ module.exports = {
                 }).catch(error => {console.error(error)});
               }).catch(error => {console.error(error)});
             });
+            res.status(200).send(invitationKey);
           }
-          res.status(200).send(invitationKey);
+          else{
+            res.send(403).send("only host user can send invites to league")
+          }
         }).catch(error => {console.error(error)});
       }).catch(error => {console.error(error)});
-    }).catch(error => {console.error(error)});
+    }).catch(error => {
+      console.error(error);
+      res.status(400).send(error);
+    });
   },
 };

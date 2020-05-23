@@ -6,4 +6,5 @@ module.exports = (app) => {
   app.post('/api/leagues/create', leaguesController.create);
   app.post('/api/leagues/sendInvite', leaguesController.sendInvite);
   app.post('/api/leagues/update', leaguesController.update);
+  app.delete('/api/leagues/delete', leaguesController.delete);
 }
