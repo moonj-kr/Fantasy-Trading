@@ -26,7 +26,7 @@ function generateInviteKey(){
 function scheduleJobs(startDateString, endDateString){
   var startDate = new Date(startDateString);
   var endDate = new Date(endDateString);
-  var leagueRankingJob = schedule.scheduleJob({ start: startDate, end: endDate, rule: '*****7' }, function(){
+  var leagueRankingJob = schedule.scheduleJob({ start: startDate, end: endDate, rule: '* * * * * 7' }, function(){
     console.log('This is where we would call the league ranking api every week!');
   });
   console.log(leagueRankingJob);
@@ -113,7 +113,7 @@ module.exports = {
     });
   },
   delete(req, res){
-    const sessionID = "12345abcde";
+    const sessionID = "1a2b3c4d5e";
     User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
         if(portfolio.host == true){
@@ -146,7 +146,7 @@ module.exports = {
   },
   create(req, res) {
     const invitationKey = generateInviteKey();
-    const sessionID = "12345abcde";
+    const sessionID = "1a2b3c4d5e";
     return League.create({
       name: req.body.name,
       startDate: req.body.startDate,
