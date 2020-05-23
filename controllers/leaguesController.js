@@ -41,8 +41,8 @@ function sendEmail(email, firstName, leagueName){
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: '9611e4ce3d32bc', // generated ethereal user
-        pass: 'd70743dcdd9f9a', // generated ethereal password
+        user: '9611e4ce3d32bc', // generated mailtrap user
+        pass: 'd70743dcdd9f9a', // generated mailtrap password
       },
 
       // service: "Gmail",
@@ -80,12 +80,27 @@ function sendEmail(email, firstName, leagueName){
 }
 
 module.exports = {
-  getNumberOfPartcipants(req, res){
+  listDetails(req, res){
     const leagueName = req.params.leagueName;
-    console.log(leagueName);
-    League.findOne({where: {leagueName: leagueName}}).then(league => {
+    return League.findOne({where: {name: leagueName}}).then(league => {
+      res.status(200).send(league);
+    }).catch(error => {console.error(error)})
+  },
+  update(req,res){
+    return League.update({
+      name: req.body.name,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      investmentFunds: req.body.investmentFunds
+    }, {where: {id: req.body.id}}).then((affectedCount, affectedRows) => {
+      res.status(200).send(affectedRows);
+    }).catch(error => console.error(error));
+  },
+  participants(req, res){
+    const leagueName = req.params.leagueName;
+    League.findOne({where: {name: leagueName}}).then(league => {
       Portfolio.count({where: {leagueID: league.id}}).then(count => {
-        res.status(200).send(count);
+        res.status(200).send({count: count});
       }).catch(error => {console.error(error)});
     }).catch(error => {console.error(error)});
   },
