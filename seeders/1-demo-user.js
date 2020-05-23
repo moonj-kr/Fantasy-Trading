@@ -55,6 +55,17 @@ module.exports = {
         points: 700,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        username: 'SauloTheGoogleSpy',
+        password: 'spymaster2020',
+        firstName: 'Saulo',
+        lastName: 'Ferreira',
+        email: 'google@google.com',
+        sessionID: 'fghij12345',
+        points: 0,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
   ]);
   },
