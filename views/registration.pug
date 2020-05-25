@@ -1,0 +1,41 @@
+
+//-
+  extends layout
+
+  block content
+    h1= title
+    p Register for a new FantasyTrading account!
+    
+    //register form
+    form(method="POST", action="/api/users/register")
+      input(name="username", type="email")
+      input(name="lead_email", type="email", placeholder="Enter your email address")
+      button(type="submit") Submit  
+  
+
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 Sign Up
+
+        // register form
+        form(method='POST' action='/api/users/register')
+          div.form-group
+            label(for='firstName') firstName:
+            input#firstName.form-control(type='text', placeholder='Enter your first name' name='firstName')
+          div.form-group
+            label(for='lastName') lastName:
+            input#lastName.form-control(type='text', placeholder='Enter your last name' name='lastName')
+          div.form-group
+            label(for='email') email:
+            input#email.form-control(type='email', placeholder='name@email.com' name='email')
+          div.form-group
+            label(for='username') username:
+            input#username.form-control(type='text', placeholder='username' name='username')
+          div.form-group
+            label(for='Password') password:
+            input#password.form-control(type='password' name='password')
+          button.btn.btn-primary(type='submit') Sign up
