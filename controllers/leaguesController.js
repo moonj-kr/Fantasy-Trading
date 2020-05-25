@@ -23,9 +23,9 @@ function generateInviteKey(){
   const length = 10;
   return Math.random().toString(20).substr(2, length);
 }
-function scheduleJobs(startDateString, endDateString){
-  var startDate = new Date(startDateString);
-  var endDate = new Date(endDateString);
+function scheduleJobs(startDateString, endDateString, leagueID){
+  const startDate = new Date(startDateString);
+  const endDate = new Date(endDateString);
   var leagueRankingJob = schedule.scheduleJob({ start: startDate, end: endDate, rule: '* * * * * 7' }, function(){
     console.log('This is where we would call the league ranking api every week!');
   });
@@ -33,6 +33,25 @@ function scheduleJobs(startDateString, endDateString){
   var globalRankingJob = schedule.scheduleJob(endDate, function(){
     console.log('This is where we would call the global ranking api at the end of the league!');
   });
+  global.jobs[leagueID+"-league"] = leagueRankingJob;
+  global.jobs[leagueID+"-global"] = globalRankingJob;
+}
+function updateJobs(startDateString, endDateString, leagueID){
+  const startDate = new Date(startDateString);
+  const endDate = new Date(endDateString);
+  let originalLeagueRankingJob = global.jobs[leagueID+"-league"];
+  let originalGlobalRankingJob = global.jobs[leagueID+"-global"];
+  originalLeagueRankingJob.cancel();
+  originalGlobalRankingJob.cancel();
+  var newLeagueRankingJob = schedule.scheduleJob({start: startDate, end: endDate, rule: '* * * * * 7'}, function(){
+    console.log('This is where we would call the league ranking api every week!');
+  });
+  var newGlobalRankingJob = schedule.scheduleJob(endDate, function(){
+    console.log('This is where we would call the global ranking api at the end of the league!');
+  });
+  global.jobs[leagueID+"-league"] = newLeagueRankingJob;
+  global.jobs[leagueID+"-global"] = newGlobalRankingJob;
+
 }
 function sendEmail(email, firstName, leagueName){
   nodemailer.createTestAccount((err, account) => {
@@ -90,16 +109,18 @@ module.exports = {
     })
   },
   update(req,res){
-    const sessionID = "12345abcde";
+    const sessionID = "1a2b3c4d5e"; //replace with sessionID from request
     User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
         if(portfolio.host == true){
+          console.log(global.jobs);
           League.update({
             name: req.body.name,
             startDate: req.body.startDate,
             endDate: req.body.endDate,
             investmentFunds: req.body.investmentFunds
           }, {where: {id: req.body.id}}).then((updatedCount) => {
+            updateJobs(req.body.startDate, req.body.endDate, req.body.id);
             res.status(200).send(updatedCount);
           }).catch(error => {console.error(error)});
         }
@@ -113,7 +134,7 @@ module.exports = {
     });
   },
   delete(req, res){
-    const sessionID = "1a2b3c4d5e";
+    const sessionID = "1a2b3c4d5e"; //replace with sessionID from request
     User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
         if(portfolio.host == true){
@@ -146,7 +167,7 @@ module.exports = {
   },
   create(req, res) {
     const invitationKey = generateInviteKey();
-    const sessionID = "1a2b3c4d5e";
+    const sessionID = "1a2b3c4d5e"; //replace with sessionID from request
     return League.create({
       name: req.body.name,
       startDate: req.body.startDate,
@@ -164,7 +185,7 @@ module.exports = {
           portfolio.setUser(user);
         }).catch(error => console.error(error));
       }).catch(error => console.error(error));
-      scheduleJobs(req.body.startDate, req.body.endDate);
+      scheduleJobs(req.body.startDate, req.body.endDate, league.id);
       res.status(200).send(league);
     }).catch(error => {
       console.error(error);
@@ -172,7 +193,7 @@ module.exports = {
     });
   },
   sendInvite(req, res){
-    const sessionID = "12345abcde";
+    const sessionID = "12345abcde"; //replace with sessionID from request
     const invitationKey = req.body.invitationKey;
     const emails = req.body.emails;
     console.log(emails);
