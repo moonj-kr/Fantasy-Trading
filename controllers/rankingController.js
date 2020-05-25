@@ -101,7 +101,7 @@ module.exports = {
            updateLeague(portfolios),
            res.status(200).send("League Rankings Updated")
          )
-         .catch((error) => res.status(400).send(error))
+         .catch((error) => res.status(400).send(error)).then(testing) //how do you make a function call within the module.export api calls?
   },
   async updateGlobalRankings(req, res) {
     const portfolios = await Portfolio.findAll({where: {
