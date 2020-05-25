@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 Log In
+
+        // register form
+        form(method='POST' action='/api/users/login')
+          div.form-group
+            label(for='username') username:
+            input#username.form-control(type='text', placeholder='username' name='username')
+          div.form-group
+            label(for='Password') password:
+            input#password.form-control(type='password' name='password')
+          button.btn.btn-primary(type='submit') Log in
