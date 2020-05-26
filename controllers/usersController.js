@@ -1,7 +1,7 @@
 const models = require('../models');
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
-const bcrypt = require("crypt");
+const bcrypt = require("bcrypt");
 
 module.exports = {
   list(req, res) {
@@ -16,6 +16,7 @@ module.exports = {
   post_register(req, res) {
     let salt = config.salt;
     bcrypt.hash(salt + req.body.password, 10, function(err, hash){
+      console.log(req.sessionID)
       models.User.create({
         username: req.body.username,
         password: hash,
@@ -23,7 +24,7 @@ module.exports = {
         lastName: req.body.lastName,
         email: req.body.email,
         points: req.body.points,
-        sessionID: req.params.userId,
+        sessionID: req.sessionID,
       }).then(user => res.status(201).send(user))
         .catch(error => res.status(400).send(error));
     });
