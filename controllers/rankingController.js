@@ -90,7 +90,7 @@ module.exports = {
       .catch((error) => res.status(400).send(error));
   },
   updateLeagueRankings(req, res) {
-    const test = Portfolio
+    return Portfolio
          .findAll({where: {
             leagueID: req.params.leagueID},
             order: [
@@ -102,8 +102,6 @@ module.exports = {
            res.status(200).send("League Rankings Updated")
          )
          .catch((error) => res.status(400).send(error))
-
-    //console.log(test)
   },
   async updateGlobalRankings(req, res) {
     const portfolios = await Portfolio.findAll({where: {
