@@ -96,7 +96,6 @@ module.exports = {
     });
   },
   logout(req, res){
-    //const sessionID = "87xkHGA96a-2J_ZTBxOJzNeivSAIY1y2";
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
       user.sessionID = null;
       user.save();
@@ -108,7 +107,20 @@ module.exports = {
   },
   leagues(req, res){
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
-
-    })
+      models.Portfolio.findAll({where: {userID: user.id}}).then(portfolios => {
+        let leagues = [];
+        portfolios.forEach(portfolio => {
+          League.findOne({where: {id: portfolio.leagueID}).then(league =>{leagues.push(league)})
+        )});
+      }).catch(error => {
+        console.log(error);
+        res.status(400).send(error);
+      });
+      console.log(error);
+      res.status(200).send(leagues)
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    });
   }
 };
