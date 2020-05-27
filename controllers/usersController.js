@@ -2,6 +2,7 @@ const models = require('../models');
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
 const bcrypt = require("bcrypt");
+const {QueryTypes} = require('sequelize');
 
 module.exports = {
   list(req, res) {
@@ -45,6 +46,13 @@ module.exports = {
             console.log(req.sessionID);
             user.sessionID = req.sessionID;
             user.save();
+            //Set invitation status to 'accepted' if invitationKey was passed in
+            if(req.body.invitationKey){
+              models.Invite.findOne({where: {email: user.email, invitationKey: req.body.invitationKey}}).then(invite => {
+                invite.status = 'Accepted';
+                invite.save();
+              });
+            }
             res.status(200).send(user);
           }
           else{
@@ -53,7 +61,10 @@ module.exports = {
           }
         });
       }
-    }).catch(error => console.error(error));
+    }).catch(error => {
+      console.error(error);
+      res.status(400).send(error);
+    });
   },
   logout(req, res){
     //const sessionID = "87xkHGA96a-2J_ZTBxOJzNeivSAIY1y2";
@@ -61,10 +72,15 @@ module.exports = {
       user.sessionID = null;
       user.save();
       res.status(200).send('Logged out');
-    }).catch(error => {console.log(error)});
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    });
   },
   leagues(req, res){
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
 
+    })
   }
   // login(req, res){
   //   return User
