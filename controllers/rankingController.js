@@ -68,9 +68,9 @@ var updateGlobal = function updateGlobal(portfolios, league) {
   const startDate = league['startDate'];
   const endDate = league['endDate'];
   const startingFunds = league['investmentFunds'];
-
   const numberOfUsers = portfolios.length;
 
+  // loop through portfolio values and do calculations in each loop, then add that calculated value to their global points (users table).
 }
 
 
