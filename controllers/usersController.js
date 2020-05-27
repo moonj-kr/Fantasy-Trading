@@ -25,12 +25,29 @@ module.exports = {
         email: req.body.email,
         points: req.body.points,
         sessionID: req.sessionID,
-      }).then(user => res.status(201).send(user))
-        .catch(error => res.status(400).send(error));
+      }).then(user => {
+        //invitationKey passed in if registration triggered from invitation email
+        if(req.body.invitationKey){
+          //Update invitation status
+          models.Invite.findOne({where: {email: user.email, invitationKey: req.body.invitationKey}}).then(invite => {
+            invite.status = 'Accepted';
+            invite.save();
+          }).catch(error => console.error(error));
+          //Create new portfolio
+          models.League.findOne({where: {invitationKey: req.body.invitationKey}}).then(league => {
+            models.Portfolio.create({
+              value: league.investmentFunds,
+              host: false,
+              ranking: null
+            }).then(portfolio => {
+              portfolio.setLeague(league);
+              portfolio.setUser(user);
+            }).catch(error => console.error(error));
+          }).catch(error => console.error(error));
+        }
+        res.status(201).send(user)
+      }).catch(error => res.status(400).send(error));
     });
-  },
-  post_register_invite(req, res){
-
   },
   get_login(req, res){
     res.render('login');
@@ -46,12 +63,24 @@ module.exports = {
             console.log(req.sessionID);
             user.sessionID = req.sessionID;
             user.save();
-            //Set invitation status to 'accepted' if invitationKey was passed in
+            //invitationKey passed in if login triggered from invitation email
             if(req.body.invitationKey){
+              //Update invitation status
               models.Invite.findOne({where: {email: user.email, invitationKey: req.body.invitationKey}}).then(invite => {
                 invite.status = 'Accepted';
                 invite.save();
-              });
+              }).catch(error => console.error(error));
+              //Create new portfolio
+              models.League.findOne({where: {invitationKey: req.body.invitationKey}}).then(league => {
+                models.Portfolio.create({
+                  value: league.investmentFunds,
+                  host: false,
+                  ranking: null
+                }).then(portfolio => {
+                  portfolio.setLeague(league);
+                  portfolio.setUser(user);
+                }).catch(error => console.error(error));
+              }).catch(error => console.error(error));
             }
             res.status(200).send(user);
           }
