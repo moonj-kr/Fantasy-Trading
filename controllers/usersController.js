@@ -28,26 +28,27 @@ module.exports = {
         .catch(error => res.status(400).send(error));
     });
   },
+  post_register_invite(req, res){
+
+  },
   get_login(req, res){
     res.render('login');
   },
   post_login(req, res){
     let salt = config.salt;
     models.User.findOne({where: {email: req.body.email}}).then(function(user) {
-      console.log(user.toJSON());
       //if email is not registered redirect to login page
       if (!user){res.redirect('/api/users/login');}
       else{
-        console.log("Compare hash");
         bcrypt.compare(salt + req.body.password, user.password, function(err, result){
           if (result == true){
             console.log(req.sessionID);
             user.sessionID = req.sessionID;
             user.save();
-            res.send('Correct password');
+            res.status(200).send(user);
           }
           else{
-            res.send('Incorrect password');
+            res.status(403).send('Incorrect password');
             //res.redirect('/api/users/login');
           }
         });
@@ -55,7 +56,12 @@ module.exports = {
     }).catch(error => console.error(error));
   },
   logout(req, res){
-
+    //const sessionID = "87xkHGA96a-2J_ZTBxOJzNeivSAIY1y2";
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
+      user.sessionID = null;
+      user.save();
+      res.status(200).send('Logged out');
+    }).catch(error => {console.log(error)});
   },
   leagues(req, res){
 
