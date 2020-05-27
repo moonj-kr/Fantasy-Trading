@@ -64,6 +64,16 @@ var updateGlobal = function updateGlobal(portfolios, league) {
   })
 }
 
+var updateGlobal = function updateGlobal(portfolios, league) {
+  const startDate = league['startDate'];
+  const endDate = league['endDate'];
+  const startingFunds = league['investmentFunds'];
+
+  const numberOfUsers = portfolios.length;
+
+}
+
+
 module.exports = {
   leagueRankings(req, res) {
     const leagueId = req.params.leagueID;
