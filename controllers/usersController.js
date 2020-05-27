@@ -23,7 +23,7 @@ module.exports = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        points: req.body.points,
+        points: 0,
         sessionID: req.sessionID,
       }).then(user => {
         //invitationKey passed in if registration triggered from invitation email
@@ -111,13 +111,4 @@ module.exports = {
 
     })
   }
-  // login(req, res){
-  //   return User
-  //     .findOne({where: {username: req.body.username, password: req.body.password}})
-  //     .then((user) =>
-  //       user.update({sessionId: req.session.id})
-  //       res.status(200).send(user);
-  //     )
-  //     .catch((error) => res.status(400).send(error))
-  // }
 };
