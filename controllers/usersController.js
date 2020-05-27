@@ -16,7 +16,6 @@ module.exports = {
   post_register(req, res) {
     let salt = config.salt;
     bcrypt.hash(salt + req.body.password, 10, function(err, hash){
-      console.log(req.sessionID)
       models.User.create({
         username: req.body.username,
         password: hash,
@@ -33,7 +32,27 @@ module.exports = {
     res.render('login');
   },
   post_login(req, res){
-    //const sessionID =
+    let salt = config.salt;
+    models.User.findOne({where: {email: req.body.email}}).then(function(user) {
+      console.log(user.toJSON());
+      //if email is not registered redirect to login page
+      if (!user){res.redirect('/api/users/login');}
+      else{
+        console.log("Compare hash");
+        bcrypt.compare(salt + req.body.password, user.password, function(err, result){
+          if (result == true){
+            console.log(req.sessionID);
+            user.sessionID = req.sessionID;
+            user.save();
+            res.send('Correct password');
+          }
+          else{
+            res.send('Incorrect password');
+            //res.redirect('/api/users/login');
+          }
+        });
+      }
+    }).catch(error => console.error(error));
   },
   logout(req, res){
 
