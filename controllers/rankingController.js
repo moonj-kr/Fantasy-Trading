@@ -65,16 +65,29 @@ var updateGlobal = function updateGlobal(portfolios, league) {
 }
 
 /**
+ * Finds the number of weeks between two dates
+ * @param {Start date} date1
+ * @param {End date} date2
+ */
+function diffWeeks(date1, date2) {
+  var diff = (date2.getTime() - date1.getTime())/1000;
+
+  diff /= (60 * 60 * 24 * 7);
+
+  return Math.abs(Math.round(diff));
+}
+
+/**
  * Loops through each user in the league and recalculates their global points once their league is over.
  * @param {portfolio of each user in a specific league} portfolios 
  * @param {league that is ending} league 
  */
 var updateGlobal = function updateGlobal(portfolios, league) {
-  const startDate = league['startDate'];
-  const endDate = league['endDate'];
+  const startDate = new Date(league['startDate']);
+  const endDate = new Date(league['endDate']);
   const startingFunds = league['investmentFunds'];
   const numberOfUsers = portfolios.length;
-  const numberOfWeeks = (startDate - endDate)/52;
+  const numberOfWeeks = diffWeeks(startDate, endDate);
 
   // loop through portfolio values and do calculations in each loop, then add that calculated value to their global points (users table).
   // need: portfolio values, league investment funds, # users in league, # weeks in league (league start and end dates)
