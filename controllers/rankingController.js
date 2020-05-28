@@ -64,15 +64,35 @@ var updateGlobal = function updateGlobal(portfolios, league) {
   })
 }
 
+/**
+ * Loops through each user in the league and recalculates their global points once their league is over.
+ * @param {portfolio of each user in a specific league} portfolios 
+ * @param {league that is ending} league 
+ */
 var updateGlobal = function updateGlobal(portfolios, league) {
   const startDate = league['startDate'];
   const endDate = league['endDate'];
   const startingFunds = league['investmentFunds'];
   const numberOfUsers = portfolios.length;
+  const numberOfWeeks = (startDate - endDate)/52;
 
   // loop through portfolio values and do calculations in each loop, then add that calculated value to their global points (users table).
-}
+  // need: portfolio values, league investment funds, # users in league, # weeks in league (league start and end dates)
+  portfolios.forEach((portfolio) => {
 
+    let pointsAdded = (((portfolio['value'] - startingFunds)/startingFunds) * numberOfUsers) - numberOfWeeks;
+    let userID = portfolio['userID']
+    const user = await User.findOne({where: {id: userID}});
+
+    // The amount of points the user has before the update
+    let currentUserPoints = user['points'];
+
+    // The amount of points the user has after the update
+    let totalPoints = currentUserPoints + pointsAdded;
+
+    user['points'] = totalPoints;
+  })
+}
 
 module.exports = {
   leagueRankings(req, res) {
