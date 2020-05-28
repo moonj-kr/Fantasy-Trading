@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       startDate: {
         type: Sequelize.STRING
@@ -18,7 +19,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       invitationKey: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       investmentFunds: {
         type: Sequelize.STRING
