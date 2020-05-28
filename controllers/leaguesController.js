@@ -105,7 +105,7 @@ module.exports = {
       res.status(200).send(league);
     }).catch(error => {
       console.error(error);
-      res.status(400).send(error);
+      res.status(400).send({message: error.errors[0].message});
     })
   },
   update(req,res){
@@ -130,7 +130,7 @@ module.exports = {
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send(error);
+      res.status(400).send({message: error.errors[0].message});
     });
   },
   delete(req, res){
@@ -148,7 +148,7 @@ module.exports = {
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send(error);
+      res.status(400).send({message: error.errors[0].message});
     });
   },
   participants(req, res){
@@ -159,7 +159,7 @@ module.exports = {
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send(error);
+      res.status(400).send({message: error.errors[0].message});
     });
   },
   list(req, res){
@@ -189,7 +189,7 @@ module.exports = {
       res.status(200).send(league);
     }).catch(error => {
       console.error(error);
-      res.status(400).send(error);
+      res.status(400).send({message: error.errors[0].message});
     });
   },
   sendInvite(req, res){
@@ -227,7 +227,7 @@ module.exports = {
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send(error);
+      res.status(400).send({message: error.errors[0].message});
     });
   },
 };
