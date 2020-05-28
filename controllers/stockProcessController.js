@@ -23,6 +23,19 @@ async function resetUpdates() {
 	});
 }
 
+async function doesStockExist(stockSym) {
+	const stock = await Stock.findAll({
+		where: {
+			symbol: stockSym
+		}
+	});
+	if(stock != null) {
+		return true;
+	} else{
+		return false;
+	}
+}
+
 module.exports = { 
 	// test function for resetting updates
 	async resetUpdates(req,res) {
@@ -70,14 +83,21 @@ module.exports = {
 					let recentUpdate = dates[updatedDate];
 					let openPrice = recentUpdate["1. open"];
 
-					//let mostRecentStockPrices = dates[0];
-					// put into stock table: symbol, price, isupdated
-					Stock.update({ price: openPrice, isUpdated:true }, {
-						where: {
-							symbol: stockSym
-						}
-					});
-					res.send(openPrice);
+					// check if stock exists
+					const exists = doesStockExist(stockSym);
+
+					if(exists) {
+						// put into stock table: symbol, price, isupdated
+						Stock.update({ price: openPrice, isUpdated:true }, {
+							where: {
+								symbol: stockSym
+							}
+						});
+						res.send("updated");
+					} else {
+						Stock.create({symbol: stockSym, price: openPrice, isUpdated: true});
+						res.send("inserted");
+					}
 				});
 			}
 		});
