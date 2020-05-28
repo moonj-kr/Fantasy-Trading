@@ -9,10 +9,6 @@ const session = require('express-session');
 
 const app = express();
 
-// view engine
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
 //express session
 app.use(cookieParser());
 app.use(session({

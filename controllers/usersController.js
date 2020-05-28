@@ -6,9 +6,6 @@ const {QueryTypes} = require('sequelize');
 const Sequelize = require('sequelize');
 var leagues = [];
 
-//function pushElement(element) {
-//  return leagues.push(element);
-//}
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable]);
@@ -24,9 +21,6 @@ module.exports = {
       .findAll()
       .then((users) => res.status(200).send(users))
       .catch((error) => res.status(400).send(error));
-  },
-  get_register(req, res){
-    res.render('registration');
   },
   post_register(req, res) {
     let salt = config.salt;
@@ -62,9 +56,6 @@ module.exports = {
         res.status(201).send(user)
       }).catch(error => res.status(400).send(error));
     });
-  },
-  get_login(req, res){
-    res.render('login');
   },
   async post_login(req, res){
     let salt = config.salt;
