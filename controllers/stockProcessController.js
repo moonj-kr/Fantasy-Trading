@@ -50,9 +50,8 @@ module.exports = {
 	// get stock from alpha & update our data table (fix date from alpha advantage)
 	async updatePrice(req, res) {
 		let key = "U864TMWAO0GRH22S";
-		let stockSym = "IBM";
+		let stockSym = req.params.symbol;
 		let alphaFunction = "TIME_SERIES_DAILY_ADJUSTED";
-		var date = new Date();
 
 		fetch("https://www.alphavantage.co/query?function=" + alphaFunction + "&symbol=" + stockSym + "&apikey=" + key, {
 			method: 'GET',
@@ -65,16 +64,15 @@ module.exports = {
 				response.json().then(json => {
 					// parsing data information
 					let metaData = json["Meta Data"];
-					let updatedDate = metaData["3. Last Refreshed"];
+					var parsed = (metaData["3. Last Refreshed"]).split(" ");
+					let updatedDate = parsed[0];
 					let dates = json["Time Series (Daily)"];
+					let recentUpdate = dates[updatedDate];
+					let openPrice = recentUpdate["1. open"];
 
-					// most updated date: dates[updatedDate]
-					let mostRecentStockPrices = dates[updatedDate];
-					res.send(json);
-					let openPrice = mostRecentStockPrices["1. open"]
-
+					//let mostRecentStockPrices = dates[0];
 					// put into stock table: symbol, price, isupdated
-					Stock.update({ price: stockSym, isUpdated:true }, {
+					Stock.update({ price: openPrice, isUpdated:true }, {
 						where: {
 							symbol: stockSym
 						}
