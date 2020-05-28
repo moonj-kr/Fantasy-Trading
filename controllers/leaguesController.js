@@ -105,11 +105,11 @@ module.exports = {
       res.status(200).send(league);
     }).catch(error => {
       console.error(error);
-      res.status(400).send({message: error.errors[0].message});
+      res.status(400).send({message: "league does not exist"});
     })
   },
   update(req,res){
-    const sessionID = "1a2b3c4d5e"; //replace with sessionID from request
+    const sessionID = req.sessionID;
     User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
         if(portfolio.host == true){
@@ -130,11 +130,18 @@ module.exports = {
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send({message: error.errors[0].message});
+      let message;
+      if(!error.errors){
+        message = "User must be logged in"
+      }
+      else{
+        message = error.errors[0].message
+      }
+      res.status(400).send({message: message});
     });
   },
   delete(req, res){
-    const sessionID = "1a2b3c4d5e"; //replace with sessionID from request
+    const sessionID = req.sessionID;
     User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
         if(portfolio.host == true){
@@ -148,7 +155,7 @@ module.exports = {
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send({message: error.errors[0].message});
+      res.status(400).send({message: "User must be logged in"});
     });
   },
   participants(req, res){
@@ -159,7 +166,7 @@ module.exports = {
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send({message: error.errors[0].message});
+      res.status(400).send({message: "league does not exist"});
     });
   },
   list(req, res){
@@ -167,7 +174,7 @@ module.exports = {
   },
   create(req, res) {
     const invitationKey = generateInviteKey();
-    const sessionID = "1a2b3c4d5e"; //replace with sessionID from request
+    const sessionID = req.sessionID;
     return League.create({
       name: req.body.name,
       startDate: req.body.startDate,
@@ -193,7 +200,7 @@ module.exports = {
     });
   },
   sendInvite(req, res){
-    const sessionID = "12345abcde"; //replace with sessionID from request
+    const sessionID = req.sessionID;
     const invitationKey = req.body.invitationKey;
     const emails = req.body.emails;
     console.log(emails);
@@ -221,13 +228,20 @@ module.exports = {
             res.status(200).send(invitationKey);
           }
           else{
-            res.send(403).send("only host user can send invites to league")
+            res.send(403).send({message: "only host user can send invites to league"})
           }
         }).catch(error => {console.error(error)});
       }).catch(error => {console.error(error)});
     }).catch(error => {
       console.error(error);
-      res.status(400).send({message: error.errors[0].message});
+      let message;
+      if(!error.errors){
+        message = "User must be logged in"
+      }
+      else{
+        message = error.errors[0].message
+      }
+      res.status(400).send({message: message});
     });
   },
 };

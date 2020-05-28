@@ -4,6 +4,8 @@ module.exports = (app) => {
     * @swagger
     * /api/users:
     *   get:
+    *     tags:
+    *       - Users
     *     name: users
     *     summary: gets list of registered users
     *     responses:
@@ -15,6 +17,8 @@ module.exports = (app) => {
     * @swagger
     * /api/users/register:
     *   post:
+    *     tags:
+    *       - Users
     *     name: register
     *     summary: Create User
     *     parameters:
@@ -47,6 +51,8 @@ module.exports = (app) => {
     * @swagger
     * /api/users/login:
     *   post:
+    *     tags:
+    *       - Users
     *     name: login
     *     summary: Login User
     *     parameters:
@@ -71,6 +77,8 @@ module.exports = (app) => {
     * @swagger
     * /api/users/logout:
     *   post:
+    *     tags:
+    *       - Users
     *     name: logout
     *     summary: Logout User by clearing its sessionID
     *     responses:
@@ -82,6 +90,8 @@ module.exports = (app) => {
     * @swagger
     * /api/users/leagues:
     *   post:
+    *     tags:
+    *       - Users
     *     name: leagues
     *     summary: Retrieves all leagues user is currently participating in
     *     responses:

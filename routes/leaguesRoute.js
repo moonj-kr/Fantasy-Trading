@@ -5,6 +5,8 @@ module.exports = (app) => {
     * @swagger
     * /api/leagues/participants/{leagueName}:
     *   get:
+    *     tags:
+    *       - Leagues
     *     name: Participants
     *     summary: gets the number of participants in a league
     *     parameters:
@@ -23,6 +25,8 @@ module.exports = (app) => {
     * @swagger
     * /api/leagues/list/{leagueName}:
     *   get:
+    *     tags:
+    *       - Leagues
     *     name: List Details
     *     summary: shows all details of a specific league
     *     parameters:
@@ -41,6 +45,8 @@ module.exports = (app) => {
     * @swagger
     * /api/leagues/list:
     *   get:
+    *     tags:
+    *       - Leagues
     *     name: List Leagues
     *     summary: shows all the leagues in the system
     *     responses:
@@ -52,6 +58,8 @@ module.exports = (app) => {
     * @swagger
     * /api/leagues/create:
     *   post:
+    *     tags:
+    *       - Leagues
     *     summary: Create League
     *     consumes:
     *       - application/json
@@ -81,6 +89,8 @@ module.exports = (app) => {
     * @swagger
     * /api/leagues/sendInvite:
     *   post:
+    *     tags:
+    *       - Leagues
     *     summary: Send Invites To League
     *     consumes:
     *       - application/json
@@ -102,6 +112,8 @@ module.exports = (app) => {
     * @swagger
     * /api/leagues/update:
     *   post:
+    *     tags:
+    *       - Leagues
     *     summary: Updates league
     *     consumes:
     *       - application/json
@@ -137,6 +149,8 @@ module.exports = (app) => {
     * @swagger
     * /api/leagues/delete:
     *   delete:
+    *     tags:
+    *       - Leagues
     *     name: Delete League
     *     summary: deletes league from system
     *     consumes:
