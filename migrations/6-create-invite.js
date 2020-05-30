@@ -9,12 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       invitationKey: {
-        type: Sequelize.STRING,
-        unique: true
+        type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING,
-        unique: true
+        type: Sequelize.STRING
       },
       status: {
         type: Sequelize.ENUM(['No Account', 'Pending', 'Accepted'])

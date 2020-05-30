@@ -24,9 +24,7 @@ global.jobs = {};
 
 require('./routes')(app);
 
-// app.get('*', (req, res) => res.status(200).send({
-//   message: 'Welcome to the beginning of nothingness.',
-// }));
+
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server listening`)
 })
