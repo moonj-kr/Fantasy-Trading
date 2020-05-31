@@ -1,9 +1,9 @@
-const transactionController = require('../controllers').transactionController;
+const transactionsController = require('../controllers').transactionsController;
 
 module.exports = (app) => {
   /**
    * @swagger
-   * /api/makeTransaction
+   * /api/transactions/makeTransaction:
    *   get:
    *     name: MakeTransaction
    *     summary: makes a transaction
@@ -11,12 +11,12 @@ module.exports = (app) => {
    *       200:
    *         description: Successfully creates a transaction record in the Transactions table and updates portfolio.
    */
-  app.post('api/makeTransaction', transactionController.makeTransaction); 
+  app.post('api/transactions/makeTransaction', transactionsController.makeTransaction); 
   
   // GET transactions by userID in league using leagueID
   /**
    * @swagger
-   * /api/makeTransaction
+   * /api/transactions/getTransactions:
    *   get:
    *     name: GetTransactions
    *     summary: gets all transactions 
@@ -24,7 +24,7 @@ module.exports = (app) => {
    *       200:
    *         description: Successfully gets all transactions for a user in a league
    */
-  app.get('api/getTransactions', transactionController.getTransactions);
+  app.get('api/transactions/getTransactions/:leagueID', transactionsController.getTransactions);
   
   // app.delete('api/deleteTransactions', transactionController.deleteTransactions);
 };

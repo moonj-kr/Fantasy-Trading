@@ -1,7 +1,7 @@
 const axios = require('axios');
 const querystring = require('querystring');
 
-export const getRequest = async uri => {
+const getRequest = async uri => {
   try {
     return axios.get(uri, {
       headers: {
@@ -13,7 +13,7 @@ export const getRequest = async uri => {
   }
 };
 
-export const postRequest = async (uri, body) => {
+const postRequest = async (uri, body) => {
   let url = uri;
 
   if (body) {
@@ -28,4 +28,10 @@ export const postRequest = async (uri, body) => {
   }
 };
 
-export const postRequestBody = async (uri, data) => axios.post(uri, data);
+const postRequestBody = async (uri, data) => axios.post(uri, data);
+
+module.exports = {
+  getRequest,
+  postRequest,
+  postRequestBody
+}

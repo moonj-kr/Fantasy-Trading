@@ -4,7 +4,7 @@
  * @param {string} date - Date as mm/dd/yyyy.
  *
  */
-export const formatDate = date => {
+const formatDate = date => {
   let d = new Date(date),
   month = '' + (d.getMonth() + 1),
   day = '' + d.getDate(),
@@ -17,3 +17,7 @@ export const formatDate = date => {
 
   return [year, month, day].join('-');
 };
+
+module.exports ={
+  formatDate
+}

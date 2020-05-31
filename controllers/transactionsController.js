@@ -1,14 +1,16 @@
-import { formatDate } from '../utils/dates';
-import { getRequest } from '../utils/request';
-
 const Portfolio = require('../models').Portfolio;
 const League = require('../models').League;
 const Transaction = require('../models').Transaction;
+const User = require('../models').User;
+
+const get = require('../utils/request').getRequest;
+const formatDate = require('../utils/dates').formatDate;
 
 module.exports = {
   getTransactions(req,res) {
+    console.log("Reached")
     const sessionID = 'abcde12345';
-    const leagueID = req.body.leagueID;
+    const leagueID = req.params.leagueID;
     return User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({
         where: {
@@ -43,7 +45,7 @@ module.exports = {
     const API_KEY = 'U864TMWAO0GRH22S';
     let transactionValue = 0;
     const symbol = req.body.stockSymbol;
-    const price = getRequest(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`)["05. price"];
+    const price = get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`)["05. price"];
     console.log("Symbol: ", symbol);
     console.log("Price: ", price);
     
