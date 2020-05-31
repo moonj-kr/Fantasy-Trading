@@ -1,26 +1,7 @@
 const leaguesController = require('../controllers').leaguesController;
 
 module.exports = (app) => {
-  /**
-    * @swagger
-    * /api/leagues/participants/{leagueName}:
-    *   get:
-    *     tags:
-    *       - Leagues
-    *     name: Participants
-    *     summary: gets the number of participants in a league
-    *     parameters:
-    *       - in: path
-    *         name: leagueName
-    *         schema:
-    *           type: string
-    *         required:
-    *           - leagueName
-    *     responses:
-    *       200:
-    *         description: Sucessfully returns number of particpants in league
-  */
-  app.get('/api/leagues/participants/:leagueName', leaguesController.participants);
+  
   /**
     * @swagger
     * /api/leagues/list/{leagueName}:
