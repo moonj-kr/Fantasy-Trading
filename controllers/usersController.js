@@ -22,7 +22,7 @@ module.exports = {
       .then((users) => res.status(200).send(users))
       .catch((error) => res.status(400).send(error));
   },
-  post_register(req, res) {
+  register(req, res) {
     let salt = config.salt;
     bcrypt.hash(salt + req.body.password, 10, function(err, hash){
       models.User.create({
@@ -57,7 +57,7 @@ module.exports = {
       }).catch(error => res.status(400).send(error));
     });
   },
-  async post_login(req, res){
+  async login(req, res){
     let salt = config.salt;
     let user;
     if(req.body.username){
@@ -121,5 +121,16 @@ module.exports = {
         console.log(error);
         res.status(400).send(error);
       });
+  },
+  details(req, res){
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
+      res.status(200).send(user);
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
+  },
+  edit(req, res){
+
   }
 };

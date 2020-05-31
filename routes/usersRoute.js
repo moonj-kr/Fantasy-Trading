@@ -2,19 +2,6 @@ const usersController = require('../controllers').usersController;
 module.exports = (app) => {
   /**
     * @swagger
-    * /api/users:
-    *   get:
-    *     tags:
-    *       - Users
-    *     name: users
-    *     summary: gets list of registered users
-    *     responses:
-    *       200:
-    *         description: Sucessfully returns list of users
-  */
-  app.get('/api/users', usersController.list);
-  /**
-    * @swagger
     * /api/users/register:
     *   post:
     *     tags:
@@ -46,7 +33,7 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully creates new user
   */
-  app.post('/api/users/register', usersController.post_register);
+  app.post('/api/users/register', usersController.register);
   /**
     * @swagger
     * /api/users/login:
@@ -72,7 +59,7 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully logged in user
   */
-  app.post('/api/users/login', usersController.post_login);
+  app.post('/api/users/login', usersController.login);
   /**
     * @swagger
     * /api/users/logout:
@@ -99,4 +86,43 @@ module.exports = (app) => {
     *         description: Sucessfully lists user's leagues
   */
   app.get('/api/users/leagues', usersController.leagues);
+  /**
+    * @swagger
+    * /api/users/details:
+    *   post:
+    *     tags:
+    *       - Users
+    *     name: Details
+    *     summary: Returns User object matching request sessionID
+    *     responses:
+    *       200:
+    *         description: Sucessfully returns User object
+  */
+  app.get('/api/users/details', usersController.details);
+  /**
+    * @swagger
+    * /api/users/update:
+    *   post:
+    *     tags:
+    *       - Users
+    *     name: login
+    *     summary: Update User's username,
+    *     parameters:
+    *       - in: body
+    *         name: username
+    *         type: string
+    *         description: Username entered for login
+    *       - in: body
+    *         name: email
+    *         type: string
+    *         description: Email entered for login
+    *       - in: body
+    *         name: password
+    *         type: string
+    *         description: User's password
+    *     responses:
+    *       200:
+    *         description: Sucessfully updated user fields
+  */
+  app.post('/api/users/edit', usersController.update);
 }
