@@ -6,7 +6,8 @@ module.exports = {
         price: 314.96,
         type: 'buy',
         datetime: new Date(),
-        stockID: 1,
+        stockSymbol: 'AAPL',
+        percentChange: 0.00,
         portfolioID: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -16,7 +17,8 @@ module.exports = {
         price: 2426.26,
         type: 'buy',
         datetime: new Date(),
-        stockID: 4,
+        stockSymbol: 'AMZN',
+        percentChange: 0.00,
         portfolioID: 2,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -26,7 +28,8 @@ module.exports = {
         price: 813.63,
         type: 'buy',
         datetime: new Date(),
-        stockID: 2,
+        stockSymbol: 'TSLA',
+        percentChange: 0.00,
         portfolioID: 3,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -36,7 +39,8 @@ module.exports = {
         price: 184.91,
         type: 'buy',
         datetime: new Date(),
-        stockID: 5,
+        stockSymbol: 'MSFT',
+        percentChange: 0.00,
         portfolioID: 3,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -46,7 +50,8 @@ module.exports = {
         price: 2426.26,
         type: 'buy',
         datetime: new Date(),
-        stockID: 4,
+        stockSymbol: 'AMZN',
+        percentChange: 0.00,
         portfolioID: 4,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -56,7 +61,8 @@ module.exports = {
         price: 213.19,
         type: 'buy',
         datetime: new Date(),
-        stockID: 3,
+        stockSymbol: 'FB',
+        percentChange: 0.00,
         portfolioID: 4,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -66,7 +72,8 @@ module.exports = {
         price: 314.96,
         type: 'buy',
         datetime: new Date(),
-        stockID: 1,
+        stockSymbol: 'AAPL',
+        percentChange: 0.00,
         portfolioID: 5,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -76,7 +83,8 @@ module.exports = {
         price: 184.91,
         type: 'buy',
         datetime: new Date(),
-        stockID: 5,
+        stockSymbol: 'MSFT',
+        percentChange: 0.00,
         portfolioID: 5,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -86,7 +94,8 @@ module.exports = {
         price: 813.63,
         type: 'buy',
         datetime: new Date(),
-        stockID: 2,
+        stockSymbol: 'TSLA',
+        percentChange: 0.00,
         portfolioID: 6,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -96,7 +105,8 @@ module.exports = {
         price: 213.19,
         type: 'buy',
         datetime: new Date(),
-        stockID: 3,
+        stockSymbol: 'FB',
+        percentChange: 0.00,
         portfolioID: 6,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -106,7 +116,8 @@ module.exports = {
         price: 184.91,
         type: 'buy',
         datetime: new Date(),
-        stockID: 5,
+        stockSymbol: 'MSFT',
+        percentChange: 0.00,
         portfolioID: 6,
         createdAt: new Date(),
         updatedAt: new Date()
