@@ -18,16 +18,20 @@ module.exports = {
           userID: user.id
         }
       }).then(portfolio => {
-        Transaction.findAll({
-          where: {
-            portfolioID: portfolio.portfolioID
-          }
-        }).then(transactions => {
-          res.status(200).send(transactions)
-        }).catch(error => {
-          res.status(400).send(error)
-          console.log(error)
-        })
+        if (portfolio === null) {
+          res.status(400).send({message: "Transactions do not exist for this league."});
+        } else {
+          Transaction.findAll({
+            where: {
+              portfolioID: portfolio.id
+            }
+          }).then(transactions => {
+            res.status(200).send(transactions)
+          }).catch(error => {
+            res.status(400).send(error)
+            console.log(error)
+          })
+        }
       }).catch(error => {
         res.status(400).send(error)
         console.log(error)

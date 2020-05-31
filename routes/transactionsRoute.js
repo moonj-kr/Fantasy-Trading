@@ -11,7 +11,7 @@ module.exports = (app) => {
    *       200:
    *         description: Successfully creates a transaction record in the Transactions table and updates portfolio.
    */
-  app.post('api/transactions/makeTransaction', transactionsController.makeTransaction); 
+  app.post('/api/transactions/makeTransaction', transactionsController.makeTransaction); 
   
   // GET transactions by userID in league using leagueID
   /**
@@ -24,7 +24,7 @@ module.exports = (app) => {
    *       200:
    *         description: Successfully gets all transactions for a user in a league
    */
-  app.get('api/transactions/getTransactions/:leagueID', transactionsController.getTransactions);
+  app.get('/api/transactions/getTransactions/:leagueID', transactionsController.getTransactions);
   
   // app.delete('api/deleteTransactions', transactionController.deleteTransactions);
 };
