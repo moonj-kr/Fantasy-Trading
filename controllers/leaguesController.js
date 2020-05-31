@@ -120,7 +120,7 @@ module.exports = {
             investmentFunds: req.body.investmentFunds
           }, {where: {id: req.body.id}}).then((updatedCount) => {
             updateJobs(req.body.startDate, req.body.endDate, req.body.id);
-            res.status(200).send(updatedCount);
+            res.status(200).send({updatedCount: updatedCount});
           }).catch(error => {console.error(error)});
         }
         else{
@@ -172,7 +172,9 @@ module.exports = {
     }).then(league => {
       User.findOne({where: {sessionID: sessionID}}).then(user => {
         Portfolio.create({
-          value: req.body.investmentFunds,
+          value: 0,
+          buyingPower: req.body.investmentFunds,
+          percentChange: 0,
           host: true,
           ranking: null
         }).then(portfolio => {
