@@ -20,9 +20,6 @@ module.exports = {
       stockSymbol: {
         type: Sequelize.STRING
       },
-      percentChange: {
-        type: Sequelize.DOUBLE
-      },
       datetime: {
         type: Sequelize.DATE
       },

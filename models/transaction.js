@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     volume: DataTypes.INTEGER,
     price: DataTypes.DOUBLE,
     stockSymbol: DataTypes.STRING,
-    percentChange: DataTypes.DOUBLE,
     type: DataTypes.ENUM(['buy', 'sell']),
     datetime: DataTypes.DATE
   }, {});
