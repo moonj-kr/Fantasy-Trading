@@ -17,17 +17,11 @@ module.exports = {
       type: {
         type: Sequelize.ENUM(['buy', 'sell'])
       },
+      stockSymbol: {
+        type: Sequelize.STRING
+      },
       datetime: {
         type: Sequelize.DATE
-      },
-      stockID: {
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Stocks',
-          key: 'id',
-          as: 'stockID',
-        }
       },
       portfolioID: {
         type: Sequelize.INTEGER,
