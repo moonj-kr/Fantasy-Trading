@@ -140,22 +140,28 @@ module.exports = {
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
       user.profilePicture = req.file.path;
       user.save()
-      console.log(user);
-      res.status(200).send(user);
+      res.status(200).send({message: "ProfilePicture successfully uploaded"});
     }).catch(error => {
       console.log(error);
       res.status(400).send(error);
     })
   },
-  getProfilePicture(req, res){
-    models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
-      console.log(user.profilePicture);
-      console.log(__dirname);
-      console.log(path.resolve(__dirname, '../'));
-      res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')});
-    }).catch(error => {
-      console.log(error);
-      res.status(400).send(error);
-    })
+  async getProfilePicture(req, res){
+    let user;
+    // Retrieve profile picture of other participants
+    if(req.body.username){
+      user = await models.User.findOne({where: {username: req.body.username}});
+    }
+    else if (req.body.email) {
+      user = await models.User.findOne({where: {email: req.body.email}});
+    }
+    // Retrieve profile picture for current session
+    else if (req.sessionID){
+      user = await models.User.findOne({where: {sessionID: req.sessionID}});
+    }
+    else{
+      res.status(400).send({message: "User must be logged in"});
+    }
+    res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')});
   }
 };

@@ -96,7 +96,7 @@ module.exports = (app) => {
   /**
     * @swagger
     * /api/users/logout:
-    *   post:
+    *   get:
     *     tags:
     *       - Users
     *     name: logout
@@ -109,7 +109,7 @@ module.exports = (app) => {
   /**
     * @swagger
     * /api/users/leagues:
-    *   post:
+    *   get:
     *     tags:
     *       - Users
     *     name: leagues
@@ -122,7 +122,7 @@ module.exports = (app) => {
   /**
     * @swagger
     * /api/users/details:
-    *   post:
+    *   get:
     *     tags:
     *       - Users
     *     name: profile-details
@@ -134,7 +134,7 @@ module.exports = (app) => {
   app.get('/api/users/profile-details', usersController.getUser);
   /**
     * @swagger
-    * /api/users/update:
+    * /api/users/profile-details:
     *   post:
     *     tags:
     *       - Users
@@ -158,6 +158,41 @@ module.exports = (app) => {
     *         description: Sucessfully updated user fields
   */
   app.post('/api/users/profile-details', usersController.updateUser);
+  /**
+    * @swagger
+    * /api/users/profile-picture:
+    *   post:
+    *     tags:
+    *       - Users
+    *     name: profile-picture
+    *     summary: Uploads user profile picture to /uploads and saves path in User table
+    *     responses:
+    *       200:
+    *         description: Sucessfully uploads user's profile picture
+  */
   app.post('/api/users/profile-picture', upload.single('profilePicture'), usersController.uploadProfilePicture);
+  /**
+    * @swagger
+    * /api/users/profile-picture:
+    *   get:
+    *     tags:
+    *       - Users
+    *     name: profile-picture
+    *     summary: Return profile picture belonging to specified username, email, or request sessionID
+    *     parameters:
+    *       - in: body
+    *         name: username
+    *         type: string
+    *         required: false
+    *         description: Fetch profile picture for specified username
+    *       - in: body
+    *         name: email
+    *         type: string
+    *         required: false
+    *         description: Fetch profile picture for specified email
+    *     responses:
+    *       200:
+    *         description: Sucessfully returns profile picture
+  */
   app.get('/api/users/profile-picture', usersController.getProfilePicture);
 }
