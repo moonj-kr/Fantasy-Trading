@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const models = require('./models');
 
 const app = express();
 
@@ -28,5 +29,14 @@ require('./routes')(app);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server listening`)
+
+  //clear sessionIDs on server start
+  models.User.findAll().then(users => {
+    users.forEach((user, i) => {
+      user.sessionID = null;
+      user.save();
+    });
+  });
+
 })
 module.exports = app;
