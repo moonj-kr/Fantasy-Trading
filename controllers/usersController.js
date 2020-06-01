@@ -4,6 +4,8 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 const bcrypt = require("bcrypt");
 const {QueryTypes} = require('sequelize');
 const Sequelize = require('sequelize');
+const path = require('path');
+
 var leagues = [];
 
 let sequelize;
@@ -22,7 +24,7 @@ module.exports = {
       .then((users) => res.status(200).send(users))
       .catch((error) => res.status(400).send(error));
   },
-  post_register(req, res) {
+  register(req, res) {
     let salt = config.salt;
     bcrypt.hash(salt + req.body.password, 10, function(err, hash){
       models.User.create({
@@ -44,7 +46,9 @@ module.exports = {
           //Create new portfolio
           models.League.findOne({where: {invitationKey: req.body.invitationKey}}).then(league => {
             models.Portfolio.create({
-              value: league.investmentFunds,
+              value: 0,
+              buyingPower: league.investmentFund,
+              percentChange: 0,
               host: false,
               ranking: null
             }).then(portfolio => {
@@ -57,7 +61,7 @@ module.exports = {
       }).catch(error => res.status(400).send(error));
     });
   },
-  async post_login(req, res){
+  async login(req, res){
     let salt = config.salt;
     let user;
     if(req.body.username){
@@ -121,5 +125,78 @@ module.exports = {
         console.log(error);
         res.status(400).send(error);
       });
+  },
+  getUser(req, res){
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
+      res.status(200).send(user);
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
+  },
+  updateUser(req, res){
+    console.log(req.sessionID);
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
+      user.username = req.body.username;
+      user.email= req.body.email;
+      user.firstName= req.body.firstName;
+      user.lastName= req.body.lastName;
+      user.save();
+      res.status(200).send(user);
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
+  },
+  uploadProfilePicture(req, res){
+    console.log(req.file);
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
+      user.profilePicture = req.file.path;
+      user.save()
+      res.status(200).send({message: "ProfilePicture successfully uploaded"});
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
+  },
+  async getProfilePicture(req, res){
+    let user;
+    // Retrieve profile picture of other participants
+    if(req.body.username){
+      user = await models.User.findOne({where: {username: req.body.username}});
+    }
+    else if (req.body.email) {
+      user = await models.User.findOne({where: {email: req.body.email}});
+    }
+    // Retrieve profile picture for current session
+    else if (req.sessionID){
+      user = await models.User.findOne({where: {sessionID: req.sessionID}});
+    }
+    else{
+      res.status(400).send({message: "User must be logged in"});
+    }
+    res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')});
+  },
+  async updatePassword(req, res){
+    let salt = config.salt;
+    let user;
+    if(req.sessionID){
+      user = await models.User.findOne({where: {sessionID: req.sessionID}});
+    } else {
+      res.status(400).send({message: "User must be logged in"});
+    }
+
+    bcrypt.compare(salt + req.body.oldPassword, user.password, function(err, result){
+      if (result == true){
+        bcrypt.hash(salt + req.body.password, 10, function(err, hash){
+          user.password = hash;
+          user.save();
+          res.status(200).send({message: "Password successfully updated"});
+        });
+      }
+      else{
+        res.status(403).send('Incorrect password');
+      }
+    });
   }
 };

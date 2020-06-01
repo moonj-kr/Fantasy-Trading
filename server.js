@@ -18,12 +18,13 @@ app.use(session({
 }));
 
 app.use(logger('dev'));
+// make uploads publicly accessible to render profile pictures
+app.use(express.static('uploads'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 global.jobs = {};
 
 require('./routes')(app);
-
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server listening`)

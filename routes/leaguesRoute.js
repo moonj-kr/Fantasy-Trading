@@ -1,7 +1,7 @@
 const leaguesController = require('../controllers').leaguesController;
 
 module.exports = (app) => {
-  
+
   /**
     * @swagger
     * /api/leagues/list/{leagueName}:

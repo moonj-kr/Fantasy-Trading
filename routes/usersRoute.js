@@ -1,18 +1,38 @@
 const usersController = require('../controllers').usersController;
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, 'uploads/');
+  },
+  filename: function(req, file, cb){
+    cb(null, Date.now() + "_" + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+      cb(null, true);
+  } else {
+    // reject all other file types
+    cb(null, false);
+  }
+};
+
+
+//limits files to 5 mb
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
+
+
+//const upload = multer({dest: 'uploads/'})
+
 module.exports = (app) => {
-  /**
-    * @swagger
-    * /api/users:
-    *   get:
-    *     tags:
-    *       - Users
-    *     name: users
-    *     summary: gets list of registered users
-    *     responses:
-    *       200:
-    *         description: Sucessfully returns list of users
-  */
-  app.get('/api/users', usersController.list);
   /**
     * @swagger
     * /api/users/register:
@@ -46,7 +66,7 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully creates new user
   */
-  app.post('/api/users/register', usersController.post_register);
+  app.post('/api/users/register', usersController.register);
   /**
     * @swagger
     * /api/users/login:
@@ -72,11 +92,11 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully logged in user
   */
-  app.post('/api/users/login', usersController.post_login);
+  app.post('/api/users/login', usersController.login);
   /**
     * @swagger
     * /api/users/logout:
-    *   post:
+    *   get:
     *     tags:
     *       - Users
     *     name: logout
@@ -89,7 +109,7 @@ module.exports = (app) => {
   /**
     * @swagger
     * /api/users/leagues:
-    *   post:
+    *   get:
     *     tags:
     *       - Users
     *     name: leagues
@@ -99,4 +119,112 @@ module.exports = (app) => {
     *         description: Sucessfully lists user's leagues
   */
   app.get('/api/users/leagues', usersController.leagues);
+  /**
+    * @swagger
+    * /api/users/details:
+    *   get:
+    *     tags:
+    *       - Users
+    *     name: profile-details
+    *     summary: Returns User object matching request sessionID
+    *     responses:
+    *       200:
+    *         description: Sucessfully returns User object
+  */
+  app.get('/api/users/profile-details', usersController.getUser);
+  /**
+    * @swagger
+    * /api/users/profile-details:
+    *   post:
+    *     tags:
+    *       - Users
+    *     name: profile-details
+    *     summary: Update User's username,
+    *     parameters:
+    *       - in: body
+    *         name: username
+    *         type: string
+    *         required: true
+    *         description: New username
+    *       - in: body
+    *         name: email
+    *         type: string
+    *         required: true
+    *         description: New email
+    *       - in: body
+    *         name: firstName
+    *         type: string
+    *         required: true
+    *         description: New firstName
+    *       - in: body
+    *         name: lastName
+    *         type: string
+    *         required: true
+    *         description: New lastName
+    *     responses:
+    *       200:
+    *         description: Sucessfully returns updated user
+  */
+  app.post('/api/users/profile-details', usersController.updateUser);
+  /**
+    * @swagger
+    * /api/users/profile-picture:
+    *   post:
+    *     tags:
+    *       - Users
+    *     name: profile-picture
+    *     summary: Uploads user profile picture to /uploads and saves path in User table
+    *     responses:
+    *       200:
+    *         description: Sucessfully uploads user's profile picture
+  */
+  app.post('/api/users/profile-picture', upload.single('profilePicture'), usersController.uploadProfilePicture);
+  /**
+    * @swagger
+    * /api/users/profile-picture:
+    *   get:
+    *     tags:
+    *       - Users
+    *     name: profile-picture
+    *     summary: Return profile picture belonging to specified username, email, or request sessionID
+    *     parameters:
+    *       - in: body
+    *         name: username
+    *         type: string
+    *         required: false
+    *         description: Fetch profile picture for specified username
+    *       - in: body
+    *         name: email
+    *         type: string
+    *         required: false
+    *         description: Fetch profile picture for specified email
+    *     responses:
+    *       200:
+    *         description: Sucessfully returns profile picture
+  */
+  app.get('/api/users/profile-picture', usersController.getProfilePicture);
+  /**
+    * @swagger
+    * /api/users/password:
+    *   get:
+    *     tags:
+    *       - Users
+    *     name: password
+    *     summary: Change password
+    *     parameters:
+    *       - in: body
+    *         name: oldPassword
+    *         type: string
+    *         required: true
+    *         description: Old password needed for permission to execute this action
+    *       - in: body
+    *         name: newPassword
+    *         type: string
+    *         required: false
+    *         description: New user password
+    *     responses:
+    *       200:
+    *         description: Sucessfully updates user's password
+  */
+  app.post('/api/users/password', usersController.updatePassword);
 }
