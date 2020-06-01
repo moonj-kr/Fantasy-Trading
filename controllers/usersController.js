@@ -19,12 +19,6 @@ if (config.use_env_variable) {
 }
 
 module.exports = {
-  list(req, res) {
-    return models.User
-      .findAll()
-      .then((users) => res.status(200).send(users))
-      .catch((error) => res.status(400).send(error));
-  },
   register(req, res) {
     let salt = config.salt;
     bcrypt.hash(salt + req.body.password, 10, function(err, hash){
