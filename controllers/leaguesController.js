@@ -42,7 +42,7 @@ function updateJobs(startDateString, endDateString, leagueID){
   let originalGlobalRankingJob = global.jobs[leagueID+"-global"];
   originalLeagueRankingJob.cancel();
   originalGlobalRankingJob.cancel();
-  var newLeagueRankingJob = schedule.scheduleJob({start: startDate, end: endDate, rule: '* * * * * 7'}, function(){
+  var newLeagueRankingJob = schedule.scheduleJob({start: startDate, end: endDate, rule: '0 0 8 */7 * ?'}, function(){
     console.log('This is where we would call the league ranking api every week!');
   });
   var newGlobalRankingJob = schedule.scheduleJob(endDate, function(){

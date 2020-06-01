@@ -174,6 +174,13 @@ module.exports = (app) => {
     *       - Users
     *     name: profile-picture
     *     summary: Uploads user profile picture to /uploads and saves path in User table
+    *     consumes: multipart/form-data
+    *     parameters:
+    *       - in: body
+    *         name: profilePicture
+    *         type: file
+    *         required: true
+    *         description: profile picture image file 
     *     responses:
     *       200:
     *         description: Sucessfully uploads user's profile picture

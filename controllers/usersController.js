@@ -42,7 +42,7 @@ module.exports = {
           models.League.findOne({where: {invitationKey: req.body.invitationKey}}).then(league => {
             models.Portfolio.create({
               value: 0,
-              buyingPower: league.investmentFund,
+              buyingPower: league.investmentFunds,
               percentChange: 0,
               host: false,
               ranking: null
