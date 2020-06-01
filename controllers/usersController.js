@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const {QueryTypes} = require('sequelize');
 const Sequelize = require('sequelize');
 const path = require('path');
+const fs = require('fs');
 
 var leagues = [];
 
@@ -151,6 +152,10 @@ module.exports = {
   uploadProfilePicture(req, res){
     console.log(req.file);
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
+      //remove old profile picture
+      if(user.profilePicture){
+        fs.unlinkSync(path.resolve(__dirname, '../', user.profilePicture));
+      }
       user.profilePicture = req.file.path;
       user.save()
       res.status(200).send({message: "ProfilePicture successfully uploaded"});
