@@ -1,4 +1,38 @@
 const usersController = require('../controllers').usersController;
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, 'uploads/');
+  },
+  filename: function(req, file, cb){
+    console.log(req)
+    cb(null, Date.now() + "_" + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+      cb(null, true);
+  } else {
+    // reject all other file types
+    cb(null, false);
+  }
+};
+
+
+//limits files to 5 mb
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
+
+
+//const upload = multer({dest: 'uploads/'})
+
 module.exports = (app) => {
   /**
     * @swagger
@@ -92,20 +126,20 @@ module.exports = (app) => {
     *   post:
     *     tags:
     *       - Users
-    *     name: Details
+    *     name: profile-details
     *     summary: Returns User object matching request sessionID
     *     responses:
     *       200:
     *         description: Sucessfully returns User object
   */
-  app.get('/api/users/details', usersController.details);
+  app.get('/api/users/profile-details', usersController.getUser);
   /**
     * @swagger
     * /api/users/update:
     *   post:
     *     tags:
     *       - Users
-    *     name: login
+    *     name: profile-details
     *     summary: Update User's username,
     *     parameters:
     *       - in: body
@@ -124,5 +158,6 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully updated user fields
   */
-  app.post('/api/users/edit', usersController.update);
+  app.post('/api/users/profile-details', usersController.updateUser);
+  app.post('/api/users/profile-picture', upload.single('profilePicture'), usersController.uploadPicture);
 }

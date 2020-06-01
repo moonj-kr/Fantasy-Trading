@@ -18,6 +18,8 @@ app.use(session({
 }));
 
 app.use(logger('dev'));
+// make uploads publicly accessible to render profile pictures
+app.user('/uploads', express.static('uploads'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 global.jobs = {};

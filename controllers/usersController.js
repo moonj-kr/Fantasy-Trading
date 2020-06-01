@@ -4,6 +4,7 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 const bcrypt = require("bcrypt");
 const {QueryTypes} = require('sequelize');
 const Sequelize = require('sequelize');
+
 var leagues = [];
 
 let sequelize;
@@ -122,7 +123,7 @@ module.exports = {
         res.status(400).send(error);
       });
   },
-  details(req, res){
+  getUser(req, res){
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
       res.status(200).send(user);
     }).catch(error => {
@@ -130,7 +131,18 @@ module.exports = {
       res.status(400).send(error);
     })
   },
-  edit(req, res){
+  updateUser(req, res){
 
+  },
+  uploadPicture(req, res){
+    console.log(req.file);
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
+      user.profilePicture = req.file.path;
+      user.save();
+      res.status(200).send(user);
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
   }
 };
