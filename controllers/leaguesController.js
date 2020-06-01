@@ -26,10 +26,9 @@ function generateInviteKey(){
 function scheduleJobs(startDateString, endDateString, leagueID){
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
-  var leagueRankingJob = schedule.scheduleJob({ start: startDate, end: endDate, rule: '* * * * * 7' }, function(){
+  var leagueRankingJob = schedule.scheduleJob({ start: startDate, end: endDate, rule: '0 0 8 */7 * ?' }, function(){
     console.log('This is where we would call the league ranking api every week!');
   });
-  console.log(leagueRankingJob);
   var globalRankingJob = schedule.scheduleJob(endDate, function(){
     console.log('This is where we would call the global ranking api at the end of the league!');
   });
