@@ -113,7 +113,6 @@ module.exports = {
     User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({where: {userID: user.id, leagueID: req.body.id}}).then(portfolio => {
         if(portfolio.host == true){
-          console.log(global.jobs);
           League.update({
             name: req.body.name,
             startDate: req.body.startDate,
@@ -121,7 +120,7 @@ module.exports = {
             investmentFunds: req.body.investmentFunds
           }, {where: {id: req.body.id}}).then((updatedCount) => {
             updateJobs(req.body.startDate, req.body.endDate, req.body.id);
-            res.status(200).send(updatedCount);
+            res.status(200).send({updatedCount: updatedCount});
           }).catch(error => {console.error(error)});
         }
         else{
@@ -158,17 +157,6 @@ module.exports = {
       res.status(400).send({message: "User must be logged in"});
     });
   },
-  participants(req, res){
-    const leagueName = req.params.leagueName;
-    League.findOne({where: {name: leagueName}}).then(league => {
-      Portfolio.count({where: {leagueID: league.id}}).then(count => {
-        res.status(200).send({count: count});
-      }).catch(error => {console.error(error)});
-    }).catch(error => {
-      console.error(error);
-      res.status(400).send({message: "league does not exist"});
-    });
-  },
   list(req, res){
     return League.findAll().then((leagues) => {res.status(200).send(leagues)}).catch(error => {res.status(400).send(error)})
   },
@@ -184,7 +172,9 @@ module.exports = {
     }).then(league => {
       User.findOne({where: {sessionID: sessionID}}).then(user => {
         Portfolio.create({
-          value: req.body.investmentFunds,
+          value: 0,
+          buyingPower: req.body.investmentFunds,
+          percentChange: 0,
           host: true,
           ranking: null
         }).then(portfolio => {
@@ -196,7 +186,14 @@ module.exports = {
       res.status(200).send(league);
     }).catch(error => {
       console.error(error);
-      res.status(400).send({message: error.errors[0].message});
+      let message;
+      if(!error.errors){
+        message = "User must be logged in"
+      }
+      else{
+        message = error.errors[0].message
+      }
+      res.status(400).send({message: message});
     });
   },
   sendInvite(req, res){
@@ -210,28 +207,26 @@ module.exports = {
           if(portfolio.host == true){
             emails.forEach((address, i) => {
               sendEmail(address, user.firstName, league.name);
-              Invite.findOrCreate({where: {email: address, invitationKey: invitationKey}}).then((invite,created) => {
-                User.findOne({where: {email: address}}).then(user => {
-                  if(user){
-                    Invite.update({status: 'Pending'}, {where: {email: address, invitationKey: invitationKey}}).then((affectedCount, affectRows) => {
-                      console.log('invite status set to pending')
-                    }).catch(error => {console.error(error)});
-                  }
-                  else{
-                    Invite.update({status: 'No Account'}, {where: {email: address, invitationKey: invitationKey}}).then((affectedCount, affectRows) => {
-                      console.log('invite status set to no account');
-                    }).catch(error => {console.error(error)});
-                  }
-                }).catch(error => {console.error(error)});
+              User.findOne({where:{email: address}}).then(user => {
+                let status;
+                if(user){
+                  status = 'Pending';
+                }
+                else{
+                  status = 'No Account';
+                }
+                Invite.findOrCreate({where: {email: address, invitationKey: invitationKey, status: status}}).then((invite, created) => {
+                  console.log('invite Successfully created')
+                }).catch(error => console.error(error));
               }).catch(error => {console.error(error)});
             });
-            res.status(200).send(invitationKey);
+            res.status(200).send({invitationKey: invitationKey});
           }
           else{
-            res.send(403).send({message: "only host user can send invites to league"})
+            res.status(403).send({message: "only host user can send invites to league"})
           }
         }).catch(error => {console.error(error)});
-      }).catch(error => {console.error(error)});
+      }).catch(error => {res.send(400).send({message: "cannot find league"})});
     }).catch(error => {
       console.error(error);
       let message;
