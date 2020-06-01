@@ -2,6 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const Portfolio = sequelize.define('Portfolio', {
     value: DataTypes.DOUBLE,
+    buyingPower: DataTypes.DOUBLE,
+    percentChange: DataTypes.DOUBLE,
     host: DataTypes.BOOLEAN,
     ranking: DataTypes.INTEGER
   }, {});
