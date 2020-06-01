@@ -144,18 +144,26 @@ module.exports = (app) => {
     *       - in: body
     *         name: username
     *         type: string
-    *         description: Username entered for login
+    *         required: true
+    *         description: New username
     *       - in: body
     *         name: email
     *         type: string
-    *         description: Email entered for login
+    *         required: true
+    *         description: New email
     *       - in: body
-    *         name: password
+    *         name: firstName
     *         type: string
-    *         description: User's password
+    *         required: true
+    *         description: New firstName
+    *       - in: body
+    *         name: lastName
+    *         type: string
+    *         required: true
+    *         description: New lastName
     *     responses:
     *       200:
-    *         description: Sucessfully updated user fields
+    *         description: Sucessfully returns updated user
   */
   app.post('/api/users/profile-details', usersController.updateUser);
   /**

@@ -133,7 +133,18 @@ module.exports = {
     })
   },
   updateUser(req, res){
-
+    console.log(req.sessionID);
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
+      user.username = req.body.username;
+      user.email= req.body.email;
+      user.firstName= req.body.firstName;
+      user.lastName= req.body.lastName;
+      user.save();
+      res.status(200).send(user);
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
   },
   uploadProfilePicture(req, res){
     console.log(req.file);
