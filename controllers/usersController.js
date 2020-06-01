@@ -174,5 +174,27 @@ module.exports = {
       res.status(400).send({message: "User must be logged in"});
     }
     res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')});
+  },
+  async updatePassword(req, res){
+    let salt = config.salt;
+    let user;
+    if(req.sessionID){
+      user = await models.User.findOne({where: {sessionID: req.sessionID}});
+    } else {
+      res.status(400).send({message: "User must be logged in"});
+    }
+
+    bcrypt.compare(salt + req.body.oldPassword, user.password, function(err, result){
+      if (result == true){
+        bcrypt.hash(salt + req.body.password, 10, function(err, hash){
+          user.password = hash;
+          user.save();
+          res.status(200).send({message: "Password successfully updated"});
+        });
+      }
+      else{
+        res.status(403).send('Incorrect password');
+      }
+    });
   }
 };

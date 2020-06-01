@@ -203,4 +203,28 @@ module.exports = (app) => {
     *         description: Sucessfully returns profile picture
   */
   app.get('/api/users/profile-picture', usersController.getProfilePicture);
+  /**
+    * @swagger
+    * /api/users/password:
+    *   get:
+    *     tags:
+    *       - Users
+    *     name: password
+    *     summary: Change password
+    *     parameters:
+    *       - in: body
+    *         name: oldPassword
+    *         type: string
+    *         required: true
+    *         description: Old password needed for permission to execute this action
+    *       - in: body
+    *         name: newPassword
+    *         type: string
+    *         required: false
+    *         description: New user password
+    *     responses:
+    *       200:
+    *         description: Sucessfully updates user's password
+  */
+  app.post('/api/users/password', usersController.updatePassword);
 }
