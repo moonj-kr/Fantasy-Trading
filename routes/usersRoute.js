@@ -6,7 +6,6 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/');
   },
   filename: function(req, file, cb){
-    console.log(req)
     cb(null, Date.now() + "_" + file.originalname);
   }
 });
@@ -159,5 +158,6 @@ module.exports = (app) => {
     *         description: Sucessfully updated user fields
   */
   app.post('/api/users/profile-details', usersController.updateUser);
-  app.post('/api/users/profile-picture', upload.single('profilePicture'), usersController.uploadPicture);
+  app.post('/api/users/profile-picture', upload.single('profilePicture'), usersController.uploadProfilePicture);
+  app.get('/api/users/profile-picture', usersController.getProfilePicture);
 }

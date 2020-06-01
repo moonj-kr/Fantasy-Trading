@@ -4,6 +4,7 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 const bcrypt = require("bcrypt");
 const {QueryTypes} = require('sequelize');
 const Sequelize = require('sequelize');
+const path = require('path');
 
 var leagues = [];
 
@@ -134,12 +135,24 @@ module.exports = {
   updateUser(req, res){
 
   },
-  uploadPicture(req, res){
+  uploadProfilePicture(req, res){
     console.log(req.file);
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
       user.profilePicture = req.file.path;
-      user.save();
+      user.save()
+      console.log(user);
       res.status(200).send(user);
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
+  },
+  getProfilePicture(req, res){
+    models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
+      console.log(user.profilePicture);
+      console.log(__dirname);
+      console.log(path.resolve(__dirname, '../'));
+      res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')});
     }).catch(error => {
       console.log(error);
       res.status(400).send(error);
