@@ -26,13 +26,13 @@ async function resetUpdates() {
 async function doesStockExist(stockSym) {
 	const stock = await Stock.findAll({
 		where: {
-			symbol: stockSym
+			symbol: 'IBM'
 		}
 	});
-	if(stock != null) {
-		return true;
+	if(stock) {
+		return "true";
 	} else{
-		return false;
+		return "false";
 	}
 }
 
@@ -49,6 +49,22 @@ module.exports = {
 		}
 		res.status(200).send("updated");
 	},
+	//test existing
+
+async doesStockExist(req,res) {
+	const stock = await Stock.findAll({
+		where: {
+			symbol: req.params.symbol
+		}
+	});
+	if(stock) {
+		res.send(true);
+	} else {
+		res.send(false);
+	}
+	res.send(stock);
+},
+
 
 	// check if stock is updated
 	async isStockUpdated(req, res) {
@@ -84,9 +100,9 @@ module.exports = {
 					let openPrice = recentUpdate["1. open"];
 
 					// check if stock exists
-					const exists = doesStockExist(stockSym);
+					const exists = module.exports.doesStockExist(stockSym);
 
-					if(exists) {
+					if(exists == "true") {
 						// put into stock table: symbol, price, isupdated
 						Stock.update({ price: openPrice, isUpdated:true }, {
 							where: {
@@ -105,13 +121,23 @@ module.exports = {
 
 	// get stock price from our table
 	async getStockPrice(req, res) {
-		let stockSym = "IBM";
+		let stockSym = req.params.symbol;
 		const stock =  await Stock.findOne({where: {symbol: stockSym }});
 
 		if(stock === null) {
-			res.status(200).send("fail");
+			res.status(200).send("Does Not Exist");
 		} else {
-			res.status(200).send(stock);
+			res.status(200).send(JSON.stringify(stock["price"]));
 		}
+	},
+
+	deleteStock(req, res) {
+		let stockSym = req.params.symbol;
+		Stock.destroy({
+			where:{
+				symbol: stockSym
+			}
+		});
+		res.status(200).send("complete");
 	}
 }

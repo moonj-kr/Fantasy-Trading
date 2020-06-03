@@ -1,6 +1,5 @@
 const User = require('../models').User;
 
-
 module.exports = {
   create(req, res) {
     return User
