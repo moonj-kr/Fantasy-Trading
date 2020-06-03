@@ -19,7 +19,7 @@ module.exports = {
         }
       }).then(portfolio => {
         if (portfolio === null) {
-          res.status(400).send({message: "Transactions do not exist for this league."});
+          res.status(400).send({message: "Transactions do not exist."});
         } else {
           Transaction.findAll({
             where: {
@@ -43,7 +43,7 @@ module.exports = {
   },
   
   makeTransaction(req,res) {
-    const leagueID = req.body.leagueId;
+    const leagueID = req.body.leagueID;
     const sessionID = 'abcde12345';
     // const sessionID = req.sessionId;
     const API_KEY = 'U864TMWAO0GRH22S';
@@ -63,7 +63,7 @@ module.exports = {
         price: price,
         stockSymbol: symbol,
         portfolioID: req.body.portfolioID
-      }).then((newTransaction,error) => {
+      }).then(newTransaction => {
         
         // Get portfolio by leagueID, then use the new transaction to update the portfolio value.
         Portfolio.findOne({
@@ -85,7 +85,7 @@ module.exports = {
               const currDate = formatDate(new Date());
               transactions.forEach(transaction => {
                 if (transaction.stockSymbol === newTransaction.stockSymbol && formatDate(transaction.date) === currDate) {
-                  res.status(400).send(error);
+                  res.status(400).send({message: "You are not allowed to day trade."});
                 }
               })
             });
