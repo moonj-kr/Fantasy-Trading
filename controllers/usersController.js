@@ -70,7 +70,6 @@ module.exports = {
     else{
       bcrypt.compare(salt + req.body.password, user.password, function(err, result){
         if (result == true){
-          console.log(req.sessionID);
           user.sessionID = req.sessionID;
           user.save();
           //invitationKey passed in if login triggered from invitation email
@@ -130,7 +129,6 @@ module.exports = {
     })
   },
   updateUser(req, res){
-    console.log(req.sessionID);
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
       user.username = req.body.username;
       user.email= req.body.email;
@@ -144,7 +142,6 @@ module.exports = {
     })
   },
   uploadProfilePicture(req, res){
-    console.log(req.file);
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
       //remove old profile picture
       if(user.profilePicture){
