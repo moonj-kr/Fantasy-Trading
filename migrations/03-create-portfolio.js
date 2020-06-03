@@ -13,6 +13,12 @@ module.exports = {
       value: {
         type: Sequelize.DOUBLE
       },
+      buyingPower: {
+        type: Sequelize.DOUBLE
+      },
+      percentChange:{
+        type: Sequelize.DOUBLE
+      },
       host: {
         type: Sequelize.BOOLEAN
       },
