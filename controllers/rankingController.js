@@ -89,13 +89,11 @@ var updateGlobal = function updateGlobal(portfolios, league) {
   const numberOfUsers = portfolios.length;
   const numberOfWeeks = diffWeeks(startDate, endDate);
 
-  // loop through portfolio values and do calculations in each loop, then add that calculated value to their global points (users table).
-  // need: portfolio values, league investment funds, # users in league, # weeks in league (league start and end dates)
   portfolios.forEach((portfolio) => {
 
     let pointsAdded = (((portfolio['value'] - startingFunds)/startingFunds) * numberOfUsers) - numberOfWeeks;
     let userID = portfolio['userID']
-    const user = await User.findOne({where: {id: userID}});
+    const user = User.findOne({where: {id: userID}});
 
     // The amount of points the user has before the update
     let currentUserPoints = user['points'];

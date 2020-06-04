@@ -56,7 +56,7 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully updates rankings within a specific league
   */
-  app.post('/api/ranking/updateLeagueRankings/:leagueID', rankingController.updateLeagueRankings);
+  app.get('/api/ranking/updateLeagueRankings/:leagueID', rankingController.updateLeagueRankings);
 
   /**
     * @swagger
@@ -77,5 +77,5 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully updates global points for all users within a specific league
   */
-  app.post('/api/ranking/updateGlobalRankings/:leagueID', rankingController.updateGlobalRankings);
+  app.get('/api/ranking/updateGlobalRankings/:leagueID', rankingController.updateGlobalRankings);
 }
