@@ -1,4 +1,6 @@
 const usersRoute = require('./usersRoute');
+const portfolioRoute = require('./portfolioRoute');
+
 var swaggerUi = require('swagger-ui-express')
 var swaggerJSDoc = require('swagger-jsdoc');
 const swaggerDefinition = {
@@ -25,5 +27,6 @@ module.exports = (app) => {
     res.send(swaggerSpec);
   });
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  usersRoute(app)
+  usersRoute(app),
+  portfolioRoute(app)
 };
