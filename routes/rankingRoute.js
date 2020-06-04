@@ -77,5 +77,5 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully updates global points for all users within a specific league
   */
-  app.get('/api/ranking/updateGlobalRankings/:leagueID', rankingController.updateGlobalRankings);
+  app.post('/api/ranking/updateGlobalRankings/:leagueID', rankingController.updateGlobalRankings);
 }
