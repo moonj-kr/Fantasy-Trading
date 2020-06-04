@@ -8,7 +8,7 @@ module.exports = {
         host: true,
         ranking: 2,
         leagueID: 1,
-        userID: 3,
+        userID: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },

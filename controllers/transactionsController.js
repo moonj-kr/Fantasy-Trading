@@ -55,11 +55,12 @@ module.exports = {
   
   makeTransaction(req,res) {
     const leagueID = req.body.leagueID;
-    const sessionID = 'abcde12345';
-    // const sessionID = req.sessionId;
+    // const sessionID = 'abcde12345';
+    const sessionID = req.sessionId;
     const API_KEY = 'U864TMWAO0GRH22S';
     let transactionValue = 0;
     const symbol = req.body.stockSymbol;
+    // let price = getStockData(symbol);
     let price = req.body.price;
     // get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`).then(res => {
     //   price = res.data["Global Quote"]["05. price"];
@@ -71,29 +72,28 @@ module.exports = {
     // console.log("Price: ", price);
     
     return User.findOne({where: {sessionID: sessionID}}).then(user => {
-
-      // Creates a new transaction in the database using information from the request body.
-      Transaction.create({
-        volume: req.body.volume,
-        type: req.body.type,
-        datetime: req.body.datetime,
-        price: price,
-        stockSymbol: symbol,
-        portfolioID: req.body.portfolioID
-      }).then(newTransaction => {
+      // Get portfolio by leagueID, then use the new transaction to update the portfolio value.
+      Portfolio.findOne({
+        where: {
+          leagueID: leagueID, 
+          userID: user.id
+        }
+      }).then(portfolio => {
         
-        // Get portfolio by leagueID, then use the new transaction to update the portfolio value.
-        Portfolio.findOne({
-          where: {
-            leagueID: leagueID, 
-            userID: user.id
-          }
-        }).then(portfolio => {
+        // Creates a new transaction in the database using information from the request body.
+        Transaction.create({
+          volume: req.body.volume,
+          type: req.body.type,
+          datetime: req.body.datetime,
+          price: price,
+          stockSymbol: symbol,
+          portfolioID: portfolio.id
+        }).then(newTransaction => {
           
-          // The transaction value will be positive or negative based on the transaction type.
+          // Determines transaction value based on the transaction type.
           transactionValue = newTransaction.type === 'buy' 
             ? newTransaction.volume * newTransaction.price 
-            : newTransaction.volume * newTransaction.price * -1;
+            : (newTransaction.volume * newTransaction.price) * -1;
           
           // Provides a check to see if the transaction will result in a day trade.
           // Goes through all transactions in the portfolio found by leagueID.
@@ -105,15 +105,21 @@ module.exports = {
                 res.send({message: "You are not allowed to day trade."});
               }
             })
-            // Provides a check to see if the transaction can actually be made.
-            portfolio.buyingPower - transactionValue < 0 
-              ? res.status(400).send(error)
-              : portfolio.buyingPower -= transactionValue;   
+            // Provides a check to see if there is enough buying power for the transaction.
+            if (portfolio.buyingPower - transactionValue < 0) {
+              res.status(400).send(error);
+            } else {
+              let newBuyingPower = portfolio.buyingPower - transactionValue;
+              portfolio.update({buyingPower: newBuyingPower});
+            }
               
-            // Provide a check so the portfolio does not reach a negative value
-            portfolio.value + transactionValue < 0 
-              ? res.status(400).send(error)
-              : portfolio.value += transactionValue;
+            // Provide a check to see if the portfolio does not reach a negative value.
+            if (portfolio.value + transactionValue < 0 ) {
+              res.status(400).send(error);
+            } else {
+              let newPortfolioValue = portfolio.value + transactionValue;
+              portfolio.update({value: newPortfolioValue});
+            }
             
             console.log("Transaction value: " + transactionValue);
             console.log("Portfolio value: " + portfolio.value);

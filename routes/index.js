@@ -29,5 +29,4 @@ module.exports = (app) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   usersRoute(app)
   transactionsRoute(app)
-  // leaguesRoute(app)
 };
