@@ -55,8 +55,10 @@ module.exports = {
   
   makeTransaction(req,res) {
     const leagueID = req.body.leagueID;
-    // const sessionID = 'abcde12345';
-    const sessionID = req.sessionId;
+    const session1 = 'abcde12345';
+    const session2 = '12345abcde';
+    const session3 = '1a2b3c4d5e';
+    // const sessionID = req.sessionId;
     const API_KEY = 'U864TMWAO0GRH22S';
     let transactionValue = 0;
     const symbol = req.body.stockSymbol;
@@ -71,12 +73,12 @@ module.exports = {
     // console.log("Symbol: ", symbol);
     // console.log("Price: ", price);
     
-    return User.findOne({where: {sessionID: sessionID}}).then(user => {
+    return User.findOne({where: {sessionID: session2}}).then(user => {
       // Get portfolio by leagueID, then use the new transaction to update the portfolio value.
       Portfolio.findOne({
         where: {
           leagueID: leagueID, 
-          userID: user.id
+          userID: user.id // there is no user with this session id
         }
       }).then(portfolio => {
         
@@ -107,18 +109,24 @@ module.exports = {
             })
             // Provides a check to see if there is enough buying power for the transaction.
             if (portfolio.buyingPower - transactionValue < 0) {
-              res.status(400).send(error);
+              res.status(400).send({message: "There is not enough buying power for this transaction."});
+              
+              // Provides a check to see if the portfolio does not reach a negative value.
+              if (portfolio.value + transactionValue < 0) {
+                res.status(400).send({message: "There is not enough "})
+              }
             } else {
+              // Update portfolio.
               let newBuyingPower = portfolio.buyingPower - transactionValue;
               portfolio.update({buyingPower: newBuyingPower});
-            }
               
-            // Provide a check to see if the portfolio does not reach a negative value.
-            if (portfolio.value + transactionValue < 0 ) {
-              res.status(400).send(error);
-            } else {
               let newPortfolioValue = portfolio.value + transactionValue;
               portfolio.update({value: newPortfolioValue});
+            }
+              
+            if (portfolio.value + transactionValue < 0) {
+              res.status(400).send(error);
+            } else {
             }
             
             console.log("Transaction value: " + transactionValue);
