@@ -41,22 +41,22 @@ module.exports = (app) => {
 
   /**
     * @swagger
-    * /api/portfolio/getTransactions/{leagueID}:
+    * /api/portfolio/getStockDetails/{leagueID}:
     *   get:
-    *     name: Participants
+    *     name: GETS list of transactions 
     *     summary: gets the number of participants in a league
     *     parameters:
     *       - in: path
-    *         name: leagueName
+    *         name: leagueID
     *         schema:
     *           type: string
     *         required:
-    *           - leagueName
+    *           - leagueID
     *     responses:
     *       200:
     *         description: Sucessfully returns number of particpants in league
     */
-	app.get('/api/portfolio/getTransactions/:leagueID', portfolioController.getTransactions);
+	app.get('/api/portfolio/getStockDetails/:leagueID', portfolioController.getStockDetails);
   /**
     * @swagger
     * /api/portfolio/testScheduleJob:
@@ -65,11 +65,11 @@ module.exports = (app) => {
     *     summary: gets the number of participants in a league
     *     parameters:
     *       - in: path
-    *         name: leagueName
+    *         name: leagueID
     *         schema:
     *           type: string
     *         required:
-    *           - leagueName
+    *           - leagueID
     *     responses:
     *       200:
     *         description: Sucessfully returns number of particpants in league
@@ -84,11 +84,11 @@ module.exports = (app) => {
     *     summary: gets the number of participants in a league
     *     parameters:
     *       - in: path
-    *         name: leagueName
+    *         name: leagueID
     *         schema:
     *           type: string
     *         required:
-    *           - leagueName
+    *           - leagueID
     *     responses:
     *       200:
     *         description: Sucessfully returns number of particpants in league
