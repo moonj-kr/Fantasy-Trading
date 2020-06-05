@@ -12,6 +12,10 @@ var updateLeague = function updateLeague(portfolios) {
   portfolios.forEach((portfolio) => {
       console.log(" ");
       console.log(portfolio['value']);
+      //portfolio['ranking'] = ranking;
+      //portfolio.update({
+      //  ranking: ranking
+      //});
       portfolio['ranking'] = ranking;
       portfolio.save();
       console.log(portfolio['ranking']);
@@ -61,6 +65,7 @@ var updateGlobal = function updateGlobal(portfolios, league) {
     user['points'] = totalPoints;
 
     user.save();
+<<<<<<< HEAD
   })
 }
 
@@ -102,6 +107,8 @@ var updateGlobal = function updateGlobal(portfolios, league) {
     let totalPoints = currentUserPoints + pointsAdded;
 
     user['points'] = totalPoints;
+=======
+>>>>>>> 37f5f7e... more fixes
   })
 }
 
@@ -131,7 +138,7 @@ module.exports = {
       .catch((error) => res.status(400).send(error));
   },
   updateLeagueRankings(req, res) {
-    return Portfolio
+    Portfolio
          .findAll({where: {
             leagueID: req.params.leagueID},
             order: [

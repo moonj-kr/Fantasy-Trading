@@ -56,7 +56,7 @@ module.exports = (app) => {
     *       200:
     *         description: Sucessfully updates rankings within a specific league
   */
-  app.get('/api/ranking/updateLeagueRankings/:leagueID', rankingController.updateLeagueRankings);
+  app.post('/api/ranking/updateLeagueRankings/:leagueID', rankingController.updateLeagueRankings);
 
   /**
     * @swagger
