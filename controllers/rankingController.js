@@ -65,50 +65,6 @@ var updateGlobal = function updateGlobal(portfolios, league) {
     user['points'] = totalPoints;
 
     user.save();
-<<<<<<< HEAD
-  })
-}
-
-/**
- * Finds the number of weeks between two dates
- * @param {Start date} date1
- * @param {End date} date2
- */
-function diffWeeks(date1, date2) {
-  var diff = (date2.getTime() - date1.getTime())/1000;
-
-  diff /= (60 * 60 * 24 * 7);
-
-  return Math.abs(Math.round(diff));
-}
-
-/**
- * Loops through each user in the league and recalculates their global points once their league is over.
- * @param {portfolio of each user in a specific league} portfolios 
- * @param {league that is ending} league 
- */
-var updateGlobal = function updateGlobal(portfolios, league) {
-  const startDate = new Date(league['startDate']);
-  const endDate = new Date(league['endDate']);
-  const startingFunds = league['investmentFunds'];
-  const numberOfUsers = portfolios.length;
-  const numberOfWeeks = diffWeeks(startDate, endDate);
-
-  portfolios.forEach((portfolio) => {
-
-    let pointsAdded = (((portfolio['value'] - startingFunds)/startingFunds) * numberOfUsers) - numberOfWeeks;
-    let userID = portfolio['userID']
-    const user = User.findOne({where: {id: userID}});
-
-    // The amount of points the user has before the update
-    let currentUserPoints = user['points'];
-
-    // The amount of points the user has after the update
-    let totalPoints = currentUserPoints + pointsAdded;
-
-    user['points'] = totalPoints;
-=======
->>>>>>> 37f5f7e... more fixes
   })
 }
 
