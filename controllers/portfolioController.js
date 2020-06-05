@@ -1,3 +1,4 @@
+import timeoutPromise from './timeout-promise';
 const Portfolio = require('../models').Portfolio;
 const User = require('../models').User;
 const League = require('../models').League;
@@ -5,6 +6,7 @@ const Transaction = require('../models').Transaction;
 var schedule = require('node-schedule');
 //const transationsController = require('./transactionsController');
 
+// after testing will add
 function scheduleJob() {}
 
 module.exports = {
@@ -120,6 +122,7 @@ module.exports = {
 		res.status(404).send(errorResponse);
 	},
 
+	// need to test scheduleJob
 	async testScheduleJob(req, res) {
 		let portfolios = await Portfolio.findAll();
 
@@ -130,12 +133,16 @@ module.exports = {
 				// get current stock price api
 				let value = 0; //value + (volume of transaction * current price)
 				let percentChanged = 0; // (updatedValue - originalValue)/originalValue
-				await Portfolio.update({value: value, percentChanged: percentChanged}, {
-					where: {
-						id: portfolio.id
-					}
-				});
+				
+				timeoutPromise(60000,
+					await Portfolio.update({value: value, percentChanged: percentChanged}, {
+						where: {
+							id: portfolio.id
+						}
+					})
+				);
 			}
+			portfolio.save();
 		}
 		res.status(200).send("job scheduled");
 	},
