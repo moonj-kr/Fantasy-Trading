@@ -32,7 +32,7 @@ app.listen(process.env.PORT || 5000, () => {
   //clear sessionIDs on server start
   models.User.findAll().then(users => {
     users.forEach((user, i) => {
-      user.sessionID = null;
+      // user.sessionID = null;
       user.save();
     });
   }).catch(error => {

@@ -54,11 +54,11 @@ module.exports = {
   },
   
   makeTransaction(req,res) {
-    const leagueID = req.body.leagueID;
+    const league = req.body.leagueID;
     const session1 = 'abcde12345';
     const session2 = '12345abcde';
     const session3 = '1a2b3c4d5e';
-    // const sessionID = req.sessionId;
+    const realSession = req.sessionID;
     const API_KEY = 'U864TMWAO0GRH22S';
     let transactionValue = 0;
     const symbol = req.body.stockSymbol;
@@ -74,11 +74,15 @@ module.exports = {
     // console.log("Price: ", price);
     
     return User.findOne({where: {sessionID: session2}}).then(user => {
+      if (user === null) {
+        res.status(400).send({message: "There is no session associated with a user."})
+      }
+      
       // Get portfolio by leagueID, then use the new transaction to update the portfolio value.
       Portfolio.findOne({
         where: {
-          leagueID: leagueID, 
-          userID: user.id // there is no user with this session id
+          leagueID: league, 
+          userID: user.id
         }
       }).then(portfolio => {
         
@@ -100,51 +104,58 @@ module.exports = {
           // Provides a check to see if the transaction will result in a day trade.
           // Goes through all transactions in the portfolio found by leagueID.
           // For each transaction, checks if a stock was bought or sold today already.
-          Transaction.findAll({where: {portfolioID: newTransaction.portfolioID}}).then((transactions,error) => {
+          Transaction.findAll({where: {portfolioID: portfolio.id}}).then(transactions => {
             const currDate = formatDate(new Date());
             transactions.forEach(transaction => {
-              if (transaction.stockSymbol === newTransaction.stockSymbol && formatDate(transaction.date) === currDate) {
-                res.send({message: "You are not allowed to day trade."});
+              // console.log(transaction);
+              if (transaction.stockSymbol === newTransaction.stockSymbol && formatDate(transaction.datetime) === currDate && transaction.type !== newTransaction.type) {
+                // res.status(400).send({message: "You are not allowed to day trade."});
+                // res.status(400).send(error);
+                return res.status(400).json({
+                  status: 'error',
+                  error: "You are not allowed to day trade."
+                })
               }
             })
-            // Provides a check to see if there is enough buying power for the transaction.
-            if (portfolio.buyingPower - transactionValue < 0) {
-              res.status(400).send({message: "There is not enough buying power for this transaction."});
-              
-              // Provides a check to see if the portfolio does not reach a negative value.
-              if (portfolio.value + transactionValue < 0) {
-                res.status(400).send({message: "There is not enough "})
-              }
-            } else {
-              // Update portfolio.
-              let newBuyingPower = portfolio.buyingPower - transactionValue;
-              portfolio.update({buyingPower: newBuyingPower});
-              
-              let newPortfolioValue = portfolio.value + transactionValue;
-              portfolio.update({value: newPortfolioValue});
-            }
-              
-            if (portfolio.value + transactionValue < 0) {
-              res.status(400).send(error);
-            } else {
-            }
-            
-            console.log("Transaction value: " + transactionValue);
-            console.log("Portfolio value: " + portfolio.value);
-            console.log("Buying Power: " + portfolio.buyingPower);
           });
             
-        }).catch(error => {
-          console.log(error)
-          res.status(400).send(error)
-          return
+          // Provides a check to see if there is enough buying power for the transaction.
+          if (portfolio.buyingPower - transactionValue < 0) {
+            console.log("HERE!")
+            // res.status(400).send("There is not enough buying power for this transaction.");
+            return res.status(400).json({
+              status: 'error',
+              error: "There is not enough buying power for this transaction."
+            })
+          }
+          
+          // Provides a check to see if the portfolio does not reach a negative value.
+          if (portfolio.value + transactionValue < 0) {
+            console.log("HERE!!!")
+            return res.status(400).json({
+              status: 'error',
+              error: "Portfolio value cannot be negative."
+            })
+          }
+          // Update portfolio value and buying power.
+          let newBuyingPower = portfolio.buyingPower - transactionValue;
+          portfolio.update({buyingPower: newBuyingPower});
+          
+          let newPortfolioValue = portfolio.value + transactionValue;
+          portfolio.update({value: newPortfolioValue});
+          
+          console.log("Transaction value: " + transactionValue);
+          console.log("Portfolio value: " + portfolio.value);
+          console.log("Buying Power: " + portfolio.buyingPower);
         });
         res.status(200).send(newTransaction)
       }).catch(error => {
         console.log(error)
         res.status(400).send(error)
-        return
       });
+    }).catch(error => {
+      console.log(error)
+      res.status(400).send(error)
     });
   }
 };
