@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 global.jobs = {};
 
 require('./routes')(app);
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`Server listening`)
 
   //clear sessionIDs on server start
