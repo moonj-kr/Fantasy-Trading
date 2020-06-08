@@ -3,7 +3,7 @@ const querystring = require('querystring');
 
 const getRequest = async uri => {
   try {
-    return axios.get(uri, {
+    return await axios.get(uri, {
       headers: {
         'Content-Type': 'application/json'
       }

@@ -26,13 +26,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 global.jobs = {};
 
 require('./routes')(app);
-app.listen(process.env.PORT || 5000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`Server listening`)
 
   //clear sessionIDs on server start
   models.User.findAll().then(users => {
     users.forEach((user, i) => {
-      // user.sessionID = null;
+      user.sessionID = null;
       user.save();
     });
   }).catch(error => {

@@ -5,6 +5,8 @@ const User = require('../models').User;
 
 const get = require('../utils/request').getRequest;
 const formatDate = require('../utils/dates').formatDate;
+const env = process.env.NODE_ENV || 'development';
+const config = require(`${__dirname}/../config/config.json`)[env];
 
 async function getStockData(key,symbol) {
   let stockPrice;
@@ -13,14 +15,13 @@ async function getStockData(key,symbol) {
   } catch (error) {
     console.log(error)
   }
-  
+
   return stockPrice.data["Global Quote"]["05. price"];
 }
 
 module.exports = {
   getTransactions(req,res) {
-    console.log("Reached")
-    const sessionID = 'abcde12345';
+    const sessionID = req.sessionID;
     const leagueID = req.params.leagueID;
     return User.findOne({where: {sessionID: sessionID}}).then(user => {
       Portfolio.findOne({
@@ -52,55 +53,42 @@ module.exports = {
       console.log(error)
     })
   },
-  
-  makeTransaction(req,res) {
+
+  async makeTransaction(req,res) {
     const league = req.body.leagueID;
-    const session1 = 'abcde12345';
-    const session2 = '12345abcde';
-    const session3 = '1a2b3c4d5e';
-    const realSession = req.sessionID;
-    const API_KEY = 'U864TMWAO0GRH22S';
+    const sessionID = req.sessionID;
+    const API_KEY = config.api_key;
     let transactionValue = 0;
     const symbol = req.body.stockSymbol;
-    // let price = getStockData(symbol);
-    let price = req.body.price;
-    // get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`).then(res => {
-    //   price = res.data["Global Quote"]["05. price"];
-    // }).catch(error => {
-    //   console.log(error);
-    //   res.status(400).send({message: "That is not a valid stock symbol."})
-    // });
-    // console.log("Symbol: ", symbol);
-    // console.log("Price: ", price);
-    
-    return User.findOne({where: {sessionID: session2}}).then(user => {
-      if (user === null) {
-        res.status(400).send({message: "There is no session associated with a user."})
-      }
-      
+    const timeOfTrans = Date.now();
+    const price = await getStockData(API_KEY, symbol);
+
+
+    return User.findOne({where: {sessionID: sessionID}}).then(user => {
+
       // Get portfolio by leagueID, then use the new transaction to update the portfolio value.
       Portfolio.findOne({
         where: {
-          leagueID: league, 
+          leagueID: league,
           userID: user.id
         }
       }).then(portfolio => {
-        
+
         // Creates a new transaction in the database using information from the request body.
         Transaction.create({
           volume: req.body.volume,
           type: req.body.type,
-          datetime: req.body.datetime,
+          datetime: timeOfTrans,
           price: price,
           stockSymbol: symbol,
           portfolioID: portfolio.id
         }).then(newTransaction => {
-          
+
           // Determines transaction value based on the transaction type.
-          transactionValue = newTransaction.type === 'buy' 
-            ? newTransaction.volume * newTransaction.price 
+          transactionValue = newTransaction.type === 'buy'
+            ? newTransaction.volume * newTransaction.price
             : (newTransaction.volume * newTransaction.price) * -1;
-          
+
           // Provides a check to see if the transaction will result in a day trade.
           // Goes through all transactions in the portfolio found by leagueID.
           // For each transaction, checks if a stock was bought or sold today already.
@@ -118,7 +106,7 @@ module.exports = {
               }
             })
           });
-            
+
           // Provides a check to see if there is enough buying power for the transaction.
           if (portfolio.buyingPower - transactionValue < 0) {
             console.log("HERE!")
@@ -128,7 +116,7 @@ module.exports = {
               error: "There is not enough buying power for this transaction."
             })
           }
-          
+
           // Provides a check to see if the portfolio does not reach a negative value.
           if (portfolio.value + transactionValue < 0) {
             console.log("HERE!!!")
@@ -140,22 +128,22 @@ module.exports = {
           // Update portfolio value and buying power.
           let newBuyingPower = portfolio.buyingPower - transactionValue;
           portfolio.update({buyingPower: newBuyingPower});
-          
+
           let newPortfolioValue = portfolio.value + transactionValue;
           portfolio.update({value: newPortfolioValue});
-          
+
           console.log("Transaction value: " + transactionValue);
           console.log("Portfolio value: " + portfolio.value);
           console.log("Buying Power: " + portfolio.buyingPower);
+          res.status(200).send(newTransaction)
         });
-        res.status(200).send(newTransaction)
       }).catch(error => {
         console.log(error)
         res.status(400).send(error)
       });
     }).catch(error => {
       console.log(error)
-      res.status(400).send(error)
+      res.status(400).send({message: "cannot find user"})
     });
   }
 };
