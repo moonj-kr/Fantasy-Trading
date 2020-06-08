@@ -74,7 +74,16 @@ module.exports = {
           userID: user.id
         }
       }).then(portfolio => {
-
+        Transaction.findAll({where: {portfolioID: portfolio.id}}).then(transactions => {
+          for(let i=0; i<transactions.length; i++){
+            if(transactions[i].stockSymbol === symbol && formatDate(transactions[i].datetime) === formatDate(timeOfTrans) && transactions[i].type !== req.body.type){
+              return res.status(400).json({
+                status: 'error',
+                error: "Day Trade"
+              });
+            }
+          }
+        });
         // Creates a new transaction in the database using information from the request body.
         Transaction.create({
           volume: req.body.volume,
@@ -93,7 +102,7 @@ module.exports = {
           // Provides a check to see if the transaction will result in a day trade.
           // Goes through all transactions in the portfolio found by leagueID.
           // For each transaction, checks if a stock was bought or sold today already.
-  
+
           // Provides a check to see if there is enough buying power for the transaction.
           if (portfolio.buyingPower - transactionValue < 0) {
             return res.status(400).json({
