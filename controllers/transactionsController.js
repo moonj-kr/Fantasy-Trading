@@ -19,6 +19,7 @@ async function getStockData(key,symbol) {
   return stockPrice.data["Global Quote"]["05. price"];
 }
 
+
 module.exports = {
   getTransactions(req,res) {
     const sessionID = req.sessionID;
@@ -64,7 +65,7 @@ module.exports = {
     const price = await getStockData(API_KEY, symbol);
 
 
-    return User.findOne({where: {sessionID: sessionID}}).then(user => {
+    User.findOne({where: {sessionID: sessionID}}).then(user => {
 
       // Get portfolio by leagueID, then use the new transaction to update the portfolio value.
       Portfolio.findOne({
@@ -92,25 +93,9 @@ module.exports = {
           // Provides a check to see if the transaction will result in a day trade.
           // Goes through all transactions in the portfolio found by leagueID.
           // For each transaction, checks if a stock was bought or sold today already.
-          Transaction.findAll({where: {portfolioID: portfolio.id}}).then(transactions => {
-            const currDate = formatDate(new Date());
-            transactions.forEach(transaction => {
-              // console.log(transaction);
-              if (transaction.stockSymbol === newTransaction.stockSymbol && formatDate(transaction.datetime) === currDate && transaction.type !== newTransaction.type) {
-                // res.status(400).send({message: "You are not allowed to day trade."});
-                // res.status(400).send(error);
-                return res.status(400).json({
-                  status: 'error',
-                  error: "You are not allowed to day trade."
-                })
-              }
-            })
-          });
-
+  
           // Provides a check to see if there is enough buying power for the transaction.
           if (portfolio.buyingPower - transactionValue < 0) {
-            console.log("HERE!")
-            // res.status(400).send("There is not enough buying power for this transaction.");
             return res.status(400).json({
               status: 'error',
               error: "There is not enough buying power for this transaction."
@@ -119,22 +104,17 @@ module.exports = {
 
           // Provides a check to see if the portfolio does not reach a negative value.
           if (portfolio.value + transactionValue < 0) {
-            console.log("HERE!!!")
             return res.status(400).json({
               status: 'error',
               error: "Portfolio value cannot be negative."
             })
           }
           // Update portfolio value and buying power.
-          let newBuyingPower = portfolio.buyingPower - transactionValue;
-          portfolio.update({buyingPower: newBuyingPower});
+          portfolio.buyingPower = portfolio.buyingPower - transactionValue;
+          portfolio.save();
 
-          let newPortfolioValue = portfolio.value + transactionValue;
-          portfolio.update({value: newPortfolioValue});
-
-          console.log("Transaction value: " + transactionValue);
-          console.log("Portfolio value: " + portfolio.value);
-          console.log("Buying Power: " + portfolio.buyingPower);
+          portfolio.value = portfolio.value + transactionValue;
+          portfolio.save();
           res.status(200).send(newTransaction)
         });
       }).catch(error => {
