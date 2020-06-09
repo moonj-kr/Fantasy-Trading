@@ -30,12 +30,40 @@ function diffWeeks(date1, date2) {
   return Math.abs(Math.round(diff));
 }
 
+//function grabLeagueData(league) {
+//  console.log("First step");
+//  console.log(portfolios);
+//  console.log(league);
+//  const startDate = new Date(league['startDate']);
+//  const endDate = new Date(league['endDate']);
+//  const startingFunds = league['investmentFunds'];
+//  const numberOfUsers = portfolios.length;
+//  const numberOfWeeks = diffWeeks(startDate, endDate);
+//
+//  console.log(startingFunds);
+//  console.log(numberOfUsers);
+//  console.log(startDate);
+//  console.log(endDate);
+//  console.log(numberOfWeeks);
+//  console.log(" ");
+//
+//}
+
+//function updateUserPoints(user) {
+  //$.when(user).then((givenUser) => {
+  //  console.log(givenUser);
+  //})
+
+  
+//}
+
 /**
  * Loops through each user in the league and recalculates their global points once their league is over.
  * @param {portfolio of each user in a specific league} portfolios 
  * @param {league that is ending} league 
  */
-var updateGlobal = async function updateGlobal(portfolios, league) {
+async function updateGlobal(portfolios, league) {
+  
   console.log("First step");
   console.log(portfolios);
   console.log(league);
@@ -51,21 +79,23 @@ var updateGlobal = async function updateGlobal(portfolios, league) {
   console.log(endDate);
   console.log(numberOfWeeks);
   console.log(" ");
+  
 
-
-  portfolios.forEach((portfolio) => {
+  for (let i = 0; i < numberOfUsers; i++) {
+  //portfolios.forEach((portfolio) => {
+    let portfolio = portfolios[i];
+    //console.log(portfolio)
     console.log(" ");
 
-    let pointsAdded = (((portfolio['value'] - startingFunds)/startingFunds) * numberOfUsers) - numberOfWeeks;
+    let pointsAdded = ((((portfolio['value'] + portfolio['buyingPower']) - startingFunds)/startingFunds) * numberOfUsers) - numberOfWeeks;
     console.log(pointsAdded);
-    let userID = portfolio['userID'];
+    let userID = portfolio["userID"];
+    console.log(userID);
     let user = await User.findOne({where: {id: userID}});
-
-    console.log(user);
 
     // The amount of points the user has before the update
     let currentUserPoints = user['points'];
-    console.log(currentUserPoints);
+    console.log(user);
 
     // The amount of points the user has after the update
     let totalPoints = currentUserPoints + pointsAdded;
@@ -73,7 +103,7 @@ var updateGlobal = async function updateGlobal(portfolios, league) {
     user['points'] = totalPoints;
 
     user.save();
-  })
+  }
 }
 
 module.exports = {
