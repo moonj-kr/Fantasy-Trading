@@ -77,62 +77,60 @@ module.exports = {
         Transaction.findAll({where: {portfolioID: portfolio.id}}).then(transactions => {
           for(let i=0; i<transactions.length; i++){
             if(transactions[i].stockSymbol === symbol && formatDate(transactions[i].datetime) === formatDate(timeOfTrans) && transactions[i].type !== req.body.type){
-              return res.status(400).json({
-                status: 'error',
-                error: "Day Trade"
-              });
+              return res.status(400).json({message: 'day trade'});
             }
           }
+          // Creates a new transaction in the database using information from the request body.
+          return Transaction.create({
+            volume: req.body.volume,
+            type: req.body.type,
+            datetime: timeOfTrans,
+            price: price,
+            stockSymbol: symbol,
+            portfolioID: portfolio.id
+          }).then(newTransaction => {
+
+            // Determines transaction value based on the transaction type.
+            transactionValue = newTransaction.type === 'buy'
+              ? newTransaction.volume * newTransaction.price
+              : (newTransaction.volume * newTransaction.price) * -1;
+
+            // Provides a check to see if the transaction will result in a day trade.
+            // Goes through all transactions in the portfolio found by leagueID.
+            // For each transaction, checks if a stock was bought or sold today already.
+
+            // Provides a check to see if there is enough buying power for the transaction.
+            if (portfolio.buyingPower - transactionValue < 0) {
+              return res.status(400).json({
+                status: 'error',
+                error: "There is not enough buying power for this transaction."
+              })
+            }
+
+            // Provides a check to see if the portfolio does not reach a negative value.
+            if (portfolio.value + transactionValue < 0) {
+              return res.status(400).json({
+                status: 'error',
+                error: "Portfolio value cannot be negative."
+              })
+            }
+            // Update portfolio value and buying power.
+            portfolio.buyingPower = portfolio.buyingPower - transactionValue;
+            portfolio.save();
+
+            portfolio.value = portfolio.value + transactionValue;
+            portfolio.save();
+            res.status(200).send(newTransaction)
+        }).catch(error => {
+          console.log(error)
+          res.status(400).send(error)
         });
-        // Creates a new transaction in the database using information from the request body.
-        Transaction.create({
-          volume: req.body.volume,
-          type: req.body.type,
-          datetime: timeOfTrans,
-          price: price,
-          stockSymbol: symbol,
-          portfolioID: portfolio.id
-        }).then(newTransaction => {
+      }).catch(error => console.error(error));
 
-          // Determines transaction value based on the transaction type.
-          transactionValue = newTransaction.type === 'buy'
-            ? newTransaction.volume * newTransaction.price
-            : (newTransaction.volume * newTransaction.price) * -1;
-
-          // Provides a check to see if the transaction will result in a day trade.
-          // Goes through all transactions in the portfolio found by leagueID.
-          // For each transaction, checks if a stock was bought or sold today already.
-
-          // Provides a check to see if there is enough buying power for the transaction.
-          if (portfolio.buyingPower - transactionValue < 0) {
-            return res.status(400).json({
-              status: 'error',
-              error: "There is not enough buying power for this transaction."
-            })
-          }
-
-          // Provides a check to see if the portfolio does not reach a negative value.
-          if (portfolio.value + transactionValue < 0) {
-            return res.status(400).json({
-              status: 'error',
-              error: "Portfolio value cannot be negative."
-            })
-          }
-          // Update portfolio value and buying power.
-          portfolio.buyingPower = portfolio.buyingPower - transactionValue;
-          portfolio.save();
-
-          portfolio.value = portfolio.value + transactionValue;
-          portfolio.save();
-          res.status(200).send(newTransaction)
-        });
-      }).catch(error => {
-        console.log(error)
-        res.status(400).send(error)
-      });
     }).catch(error => {
       console.log(error)
-      res.status(400).send({message: "cannot find user"})
+      res.status(400).send({message: "cannot find portfolio"})
     });
+  }).catch(error => {res.status(400).send({message: 'cannot find user'})});
   }
 };
