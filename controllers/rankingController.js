@@ -4,7 +4,7 @@ const Portfolio = require('../models').Portfolio;
 
 /**
  * Loops through and updates the league ranking each week based on each user's portfolio value.
- * @param {portfolio of each user in a specific league} portfolios 
+ * @param {portfolio of each user in a specific league} portfolios
  */
 var updateLeague = function updateLeague(portfolios) {
   let ranking = 1;
@@ -54,16 +54,16 @@ function diffWeeks(date1, date2) {
   //  console.log(givenUser);
   //})
 
-  
+
 //}
 
 /**
  * Loops through each user in the league and recalculates their global points once their league is over.
- * @param {portfolio of each user in a specific league} portfolios 
- * @param {league that is ending} league 
+ * @param {portfolio of each user in a specific league} portfolios
+ * @param {league that is ending} league
  */
 async function updateGlobal(portfolios, league) {
-  
+
   console.log("First step");
   console.log(portfolios);
   console.log(league);
@@ -79,7 +79,7 @@ async function updateGlobal(portfolios, league) {
   console.log(endDate);
   console.log(numberOfWeeks);
   console.log(" ");
-  
+
 
   for (let i = 0; i < numberOfUsers; i++) {
   //portfolios.forEach((portfolio) => {
@@ -100,7 +100,7 @@ async function updateGlobal(portfolios, league) {
     // The amount of points the user has after the update
     let totalPoints = currentUserPoints + pointsAdded;
     //console.log(totalPoints);
-    user['points'] = totalPoints;
+    user['points'] = Math.round(totalPoints);
 
     user.save();
   }
@@ -127,7 +127,7 @@ module.exports = {
           ['points', 'DESC']
         ]
       })
-      .then((users) => 
+      .then((users) =>
       res.status(200).send(users))
       .catch((error) => res.status(400).send(error));
   },
@@ -174,7 +174,7 @@ module.exports = {
     //       leagueID: req.params.leagueID},
     //      })
     //     .then((portfolios) =>
-    //        
+    //
     //       updateGlobal(portfolios),
     //       res.status(200).send(portfolios)
     //     )
