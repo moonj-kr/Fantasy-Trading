@@ -1,6 +1,9 @@
 const usersController = require('./usersController');
-const leaguesController = require('./leaguesController')
+const transactionsController = require('./transactionsController');
+const leaguesController = require('./leaguesController');
+
 module.exports = {
+  transactionsController,
   usersController,
   leaguesController
 };
