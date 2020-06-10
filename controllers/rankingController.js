@@ -8,7 +8,6 @@ const Portfolio = require('../models').Portfolio;
  */
 var updateLeague = function updateLeague(portfolios) {
   let ranking = 1;
-  //console.log(portfolios)
   portfolios.forEach((portfolio) => {
       portfolio['ranking'] = ranking;
       portfolio.save();
@@ -30,33 +29,6 @@ function diffWeeks(date1, date2) {
   return Math.abs(Math.round(diff));
 }
 
-//function grabLeagueData(league) {
-//  console.log("First step");
-//  console.log(portfolios);
-//  console.log(league);
-//  const startDate = new Date(league['startDate']);
-//  const endDate = new Date(league['endDate']);
-//  const startingFunds = league['investmentFunds'];
-//  const numberOfUsers = portfolios.length;
-//  const numberOfWeeks = diffWeeks(startDate, endDate);
-//
-//  console.log(startingFunds);
-//  console.log(numberOfUsers);
-//  console.log(startDate);
-//  console.log(endDate);
-//  console.log(numberOfWeeks);
-//  console.log(" ");
-//
-//}
-
-//function updateUserPoints(user) {
-  //$.when(user).then((givenUser) => {
-  //  console.log(givenUser);
-  //})
-
-
-//}
-
 /**
  * Loops through each user in the league and recalculates their global points once their league is over.
  * @param {portfolio of each user in a specific league} portfolios
@@ -64,42 +36,25 @@ function diffWeeks(date1, date2) {
  */
 async function updateGlobal(portfolios, league) {
 
-  console.log("First step");
-  console.log(portfolios);
-  console.log(league);
   const startDate = new Date(league['startDate']);
   const endDate = new Date(league['endDate']);
   const startingFunds = league['investmentFunds'];
   const numberOfUsers = portfolios.length;
   const numberOfWeeks = diffWeeks(startDate, endDate);
 
-  console.log(startingFunds);
-  console.log(numberOfUsers);
-  console.log(startDate);
-  console.log(endDate);
-  console.log(numberOfWeeks);
-  console.log(" ");
-
-
   for (let i = 0; i < numberOfUsers; i++) {
-  //portfolios.forEach((portfolio) => {
     let portfolio = portfolios[i];
-    //console.log(portfolio)
-    console.log(" ");
 
     let pointsAdded = ((((portfolio['value'] + portfolio['buyingPower']) - startingFunds)/startingFunds) * numberOfUsers) - numberOfWeeks;
-    console.log(pointsAdded);
     let userID = portfolio["userID"];
-    console.log(userID);
     let user = await User.findOne({where: {id: userID}});
 
     // The amount of points the user has before the update
     let currentUserPoints = user['points'];
-    console.log(user);
 
     // The amount of points the user has after the update
     let totalPoints = currentUserPoints + pointsAdded;
-    //console.log(totalPoints);
+    
     user['points'] = Math.round(totalPoints);
 
     user.save();
@@ -157,27 +112,8 @@ module.exports = {
               .then((league) =>
                 updateGlobal(portfolios, league),
                 res.status(200).send("Global Rankings Updated")
-      )
-    )
-
-    //console.log(portfolios);
-
-    //const league = await League.findOne({where: {
-    //  id: req.params.leagueID
-    //}});
-
-    //updateGlobal(portfolios, league);
-    //
-    //res.status(200).send("Update Global Rankings");
-    //return Portfolio
-    //     .findAll({where: {
-    //       leagueID: req.params.leagueID},
-    //      })
-    //     .then((portfolios) =>
-    //
-    //       updateGlobal(portfolios),
-    //       res.status(200).send(portfolios)
-    //     )
-    //     .catch((error) => res.status(400).send(error))
+              )
+              .catch((error) => res.status(400).send(error))
+          )
   }
 }
