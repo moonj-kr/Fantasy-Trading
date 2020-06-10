@@ -5,6 +5,7 @@
     "database": "fantasytrading",
     "host": "127.0.0.1",
     "port": 5432,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "api_key": "U864TMWAO0GRH22S"
   }
 }
