@@ -1,4 +1,6 @@
 'use strict';
+const Portfolio = require('../models').Portfolio
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Portfolios', {
@@ -49,7 +51,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Portfolios');
