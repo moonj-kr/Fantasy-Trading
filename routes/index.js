@@ -1,7 +1,7 @@
 const usersRoute = require('./usersRoute');
-const leaguesRoute = require('./leaguesRoute')
+const leaguesRoute = require('./leaguesRoute');
 const rankingRoute = require('./rankingRoute');
-var swaggerUi = require('swagger-ui-express')
+var swaggerUi = require('swagger-ui-express');
 var swaggerJSDoc = require('swagger-jsdoc');
 const swaggerDefinition = {
   info: {
