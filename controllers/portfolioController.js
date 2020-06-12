@@ -3,6 +3,7 @@ const User = require('../models').User;
 const League = require('../models').League;
 const Transaction = require('../models').Transaction;
 const transactionController = require('./index.js').transactionController;
+const config = require(`${__dirname}/../config/config.json`)[env];
 var schedule = require('node-schedule');
 
 // get current stock price helper fn
@@ -24,7 +25,7 @@ async function scheduleJob() {
 		let transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
 		for(var j = 0; transactions[j]; j++) {
 			let transaction = transactions[j];
-			let key = "U864TMWAO0GRH22S";
+			let key = config.api_key;*;
 
 			// get current stock price api & delay 1 minute
 			let currentPrice = setTimeout(getCurrentPrice, 60000, transaction.stockSymbol, key);
