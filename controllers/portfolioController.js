@@ -6,17 +6,28 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
 var schedule = require('node-schedule');
 var cronJob = require('cron').CronJob;
+const get = require('../utils/request').getRequest;
 
 // get current stock price helper fn
-async function getCurrentPrice(key, symbol) {
-	let stockPrice;
-		try {
-			currentPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
-		} catch (error) {
-			console.log(error)
-		}
-	return(currentPrice);
+async function getCurrentPrice(key,symbol) {
+  let stockPrice;
+  try {
+    stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+  } catch (error) {
+    console.log(error)
+  }
+
+  return stockPrice.data["Global Quote"]["05. price"];
 }
+function setTimeoutForAlpha(key, symbol) {
+   var promise = new Promise(function(resolve, reject) {
+     setTimeout(async function() {
+       resolve(await getCurrentPrice(key, symbol));
+     }, 1000);
+   });
+   return promise;
+}
+
 
 // scheduling job helper fn
 async function scheduleJob() {
@@ -29,8 +40,8 @@ async function scheduleJob() {
 			let key = config.api_key;
 
 			// get current stock price api & delay 1 minute
-			let currentPrice = setTimeout(getCurrentPrice, 60000, transaction.stockSymbol, key);
-
+			//let currentPrice = setTimeout(getCurrentPrice, 60000, key, transaction.stockSymbol);
+			let currentPrice = await setTimeoutForAlpha(key, transaction.stockSymbol);
 			// consider adding error catching for transaction & portfolio
 			let newValue = portfolio.value + (transaction.volume * currentPrice);
 			let percentChanged =  (newValue - portfolio.value)/ portfolio.value;
@@ -44,11 +55,10 @@ async function scheduleJob() {
 			portfolio.save();
 		}
 	}
-	res.status(200).send("job scheduled");
 }
 
 module.exports = {
-	extScheduleJob(req, res) {
+	extScheduleJob() {
 		var job = new cronJob('0 17 * * *', function() {
 			console.log('five pm test');
 			scheduleJob();
@@ -64,7 +74,7 @@ module.exports = {
 		if(portfolio == null) {
 			res.status(404).send("Portfolio Does Not Exist");
 		}
-		res.status(200).send(JSON.stringify(portfolio));
+		res.status(200).send(portfolio);
 	},
 
 	// get all transactions within a portfolio by portfolio id
@@ -116,38 +126,26 @@ module.exports = {
 				let numShares = 0;
 				let equity = 0;
 
-				let currPrice = getCurrentPrice(key, sym);
+				let currPrice = await setTimeoutForAlpha(key, sym);
+				if(sym in transactionsResponse){
+					let existingNumShares = transactionsResponse[sym].numShares;
+					let existingEquity = transactionsResponse[sym].equity;
+					if(transaction.type == 'buy') {
+						transactionsResponse[sym].numShares = existingNumShares + vol;
+						transactionsResponse[sym].equity = existingEquity + (price * vol);
+						let avgStockPrice = transactionsResponse[sym].equity / transactionsResponse[sym].numShares;
+						transactionsResponse[sym].percentChange = (currPrice - avgStockPrice)/avgStockPrice;
 
-				if(transactionsResponse[sym] != undefined) {
-					if(transactionsResponse[sym].numShares != undefined) {
-						numShares = transactionsResponse[sym].numShares;
-						res.send("first");
-					} else if (transactionsResponse[sym].equity != undefined) {
-						let equity = transactionsResponse[sym].equity;
-						res.send("third");
+					} else if(transaction.type == 'sell') {
+						transactionsResponse[sym].numShares = existingNumShares - vol;
+						transactionsResponse[sym].equity = existingEquity - (price * vol);
+						let avgStockPrice = transactionsResponse[sym].equity / transactionsResponse[sym].numShares;
+						transactionsResponse[sym].percentChange = (currPrice - avgStockPrice) / avgStockPrice;
 					}
-				} else {
-					// to avoid undefined errors
-					transactionsResponse[sym] = {};
 				}
-
-				if(transaction.type == 'buy') {
-					transactionsResponse[sym].numShares = numShares + vol;
-					transactionsResponse[sym].equity = equity + (price * vol);
-					let avgStockPrice = transactionsResponse[sym].equity / transactionsResponse[sym].numShares;
-					transactionsResponse[sym].percentChange = (currPrice - avgStockPrice)/avgStockPrice;
-
-				} else if(transaction.type == 'sell') {
-					transactionsResponse[sym] = sym;
-					transactionsResponse[sym].numShares = numShares - vol;
-					transactionsResponse[sym].equity = equity - (price * vol);
-
-					let avgStockPrice = transactionsResponse[sym].equity / transactionsResponse[sym].numShares;
-					transactionsResponse[sym].percentChange = (currPrice - avgStockPrice) / avgStockPrice;
-
-				} else {
+				 else {
 					transactionsResponse[sym] = {
-						numShares: numShares,
+						numShares: vol,
 						lastPrice: currPrice,
 						percentChange: ((currPrice - price) / price),
 						equity: price * vol
@@ -157,9 +155,11 @@ module.exports = {
 		}
 
 		if(errorResponse == "") {
-			res.status(200).send(JSON.stringify(transactionsResponse));
+			res.status(200).send(transactionsResponse);
 		}
-		res.status(404).send(errorResponse);
+		else{
+			res.status(404).send(errorResponse);
+		}
 	},
 
 	// get portfolio value + buying power from userID and leagueID
@@ -187,6 +187,8 @@ module.exports = {
 			responseMessage = currentBalance.toString();
 			res.status(200).send(responseMessage);
 		}
-		res.status(400).send(responseMessage);
+		else{
+			res.status(400).send(responseMessage);
+		}
 	}
 }
