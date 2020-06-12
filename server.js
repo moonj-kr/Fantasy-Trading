@@ -37,7 +37,6 @@ app.listen(process.env.PORT || 5000, () => {
     });
   }).catch(error => {
     console.log(error);
-    res.status(400).send(error);
   });
 
 })
