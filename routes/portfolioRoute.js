@@ -1,6 +1,8 @@
 const portfolioController = require('../controllers').portfolioController;
 
 module.exports = (app) => {
+	app.put('/api/portfolio/extScheduleJob', portfolioController.extScheduleJob);
+
   /**
     * @swagger
     * /api/portfolio/getPortfolio/{leagueID}:
@@ -57,26 +59,8 @@ module.exports = (app) => {
     *         description: Sucessfully returns number of particpants in league
     */
 	app.get('/api/portfolio/getStockDetails/:leagueID', portfolioController.getStockDetails);
-  /**
-    * @swagger
-    * /api/portfolio/testScheduleJob:
-    *   get:
-    *     name: Participants
-    *     summary: gets the number of participants in a league
-    *     parameters:
-    *       - in: path
-    *         name: leagueID
-    *         schema:
-    *           type: string
-    *         required:
-    *           - leagueID
-    *     responses:
-    *       200:
-    *         description: Sucessfully returns number of particpants in league
-    */
-	app.get('/api/portfolio/testScheduleJob', portfolioController.testScheduleJob);
 
-  /**
+	/**
     * @swagger
     * /api/portfolio/getCurrentBalance/{leagueID}:
     *   get:

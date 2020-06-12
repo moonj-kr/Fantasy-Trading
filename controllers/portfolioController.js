@@ -1,19 +1,63 @@
-import timeoutPromise from './timeout-promise';
 const Portfolio = require('../models').Portfolio;
 const User = require('../models').User;
 const League = require('../models').League;
 const Transaction = require('../models').Transaction;
+const env = process.env.NODE_ENV || 'development';
+const config = require(`${__dirname}/../config/config.json`)[env];
 var schedule = require('node-schedule');
-//const transationsController = require('./transactionsController');
+var cronJob = require('cron').CronJob;
 
-// after testing will add
-function scheduleJob() {}
+// get current stock price helper fn
+async function getCurrentPrice(key, symbol) {
+	let stockPrice;
+		try {
+			currentPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+		} catch (error) {
+			console.log(error)
+		}
+	return(currentPrice);
+}
+
+// scheduling job helper fn
+async function scheduleJob() {
+	let portfolios = await Portfolio.findAll();
+	for(var i = 0; portfolios[i]; i++) {
+		let portfolio = portfolios[i];
+		let transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
+		for(var j = 0; transactions[j]; j++) {
+			let transaction = transactions[j];
+			let key = config.api_key;
+
+			// get current stock price api & delay 1 minute
+			let currentPrice = setTimeout(getCurrentPrice, 60000, transaction.stockSymbol, key);
+
+			// consider adding error catching for transaction & portfolio
+			let newValue = portfolio.value + (transaction.volume * currentPrice);
+			let percentChanged =  (newValue - portfolio.value)/ portfolio.value;
+
+			// update portfolio
+			await Portfolio.update({value: newValue, percentChanged: percentChanged}, {
+				where: {
+					id: portfolio.id
+				}
+			});
+			portfolio.save();
+		}
+	}
+	res.status(200).send("job scheduled");
+}
 
 module.exports = {
+	extScheduleJob(req, res) {
+		var job = new cronJob('0 17 * * *', function() {
+			console.log('five pm test');
+			scheduleJob();
+		}, null, true, 'America/Los_Angeles');
+		job.start();
+	},
 	// get portfolio detail by leagueID
 	async getPortfolio(req, res) {
-		//let sessionID = req.sessionID;
-		let sessionID = '12345abcde';
+		let sessionID = req.sessionID;
 		let leagueID = req.params.leagueID;
 		let user = await User.findOne({where: {sessionID: sessionID}});
 		let portfolio = await Portfolio.findOne({where: {userID: user.id, leagueID: leagueID}});
@@ -36,8 +80,7 @@ module.exports = {
 
 	// get stock details from a portfolio by session id and league id
 	async getStockDetails(req, res) {
-		//let sessionID = req.sessionID;
-		let sessionID = 'e5d4c3b2a1';
+		let sessionID = req.sessionID;
 		let leagueID = req.params.leagueID;
 		let league = await League.findOne({where: {id: leagueID}});
 		let user = await User.findOne({where: {sessionID: sessionID}});
@@ -49,8 +92,8 @@ module.exports = {
 			transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
 		}
 
-		// let currPrice = transactionController.getTransaction();
-		let currPrice = 120.87; // hardcoded for now
+		let key = config.api_key;
+
 		let transactionsResponse = {};
 
 		// user error handling
@@ -70,9 +113,11 @@ module.exports = {
 				let sym = transaction.stockSymbol;
 				let vol = transaction.volume;
 				let price = transaction.price;
-
 				let numShares = 0;
 				let equity = 0;
+
+				let currPrice = getCurrentPrice(key, sym);
+
 				if(transactionsResponse[sym] != undefined) {
 					if(transactionsResponse[sym].numShares != undefined) {
 						numShares = transactionsResponse[sym].numShares;
@@ -117,35 +162,9 @@ module.exports = {
 		res.status(404).send(errorResponse);
 	},
 
-	// need to test scheduleJob
-	async testScheduleJob(req, res) {
-		let portfolios = await Portfolio.findAll();
-
-		for(var i = 0; portfolios[i]; i++) {
-			let portfolio = portfolios[i];
-			let transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
-			for(var j = 0; transactions[j]; j++) {
-				// get current stock price api
-				let value = 0; //value + (volume of transaction * current price)
-				let percentChanged = 0; // (updatedValue - originalValue)/originalValue
-
-				timeoutPromise(60000,
-					await Portfolio.update({value: value, percentChanged: percentChanged}, {
-						where: {
-							id: portfolio.id
-						}
-					})
-				);
-			}
-			portfolio.save();
-		}
-		res.status(200).send("job scheduled");
-	},
-
 	// get portfolio value + buying power from userID and leagueID
 	async getCurrentBalance(req, res) {
-		// let sessionID = req.sessionID;
-		let sessionID = '12345abcde';
+		let sessionID = req.sessionID;
 		let leagueID = req.params.leagueID;
 		let user = await User.findOne({where: {sessionID: sessionID}});
 		let league = await League.findOne({where: {id: leagueID}}); // 2

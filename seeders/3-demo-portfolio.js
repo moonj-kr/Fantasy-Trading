@@ -2,7 +2,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Portfolios', [
       {
-        value: 9763.76,
+        value: 10200.76,
         buyingPower: 236.24,
         percentChange: 0.00,
         host: true,
@@ -13,7 +13,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        value: 9705.04,
+        value: 9000.04,
         buyingPower: 294.96,
         percentChange: 0.00,
         host: false,
@@ -24,7 +24,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        value: 9874.35,
+        value: 12000.35,
         buyingPower: 125.65,
         percentChange: 0.00,
         host: false,
@@ -35,7 +35,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        value: 9755.89,
+        value: 21000.89,
         buyingPower: 10244.11,
         percentChange: 0.00,
         host: true,
@@ -46,7 +46,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        value: 9716.97,
+        value: 22000.97,
         buyingPower: 10283.03,
         percentChange: 0.00,
         host: false,
@@ -57,7 +57,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        value: 8384.11,
+        value: 18000.11,
         buyingPower: 11615.89,
         percentChange: 0.00,
         host: false,
