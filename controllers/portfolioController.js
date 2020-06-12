@@ -12,8 +12,7 @@ function scheduleJob() {}
 module.exports = {
 	// get portfolio detail by leagueID
 	async getPortfolio(req, res) {
-		//let sessionID = req.sessionID;
-		let sessionID = '12345abcde';
+		let sessionID = req.sessionID;
 		let leagueID = req.params.leagueID;
 		let user = await User.findOne({where: {sessionID: sessionID}});
 		let portfolio = await Portfolio.findOne({where: {userID: user.id, leagueID: leagueID}});
@@ -38,7 +37,7 @@ module.exports = {
 
 	// get stock details from a portfolio by session id and league id
 	async getStockDetails(req, res) {
-		//let sessionID = req.sessionID;
+		let sessionID = req.sessionID;
 		let sessionID = 'e5d4c3b2a1';
 		let leagueID = req.params.leagueID;
 		let league = await League.findOne({where: {id: leagueID}});
@@ -149,8 +148,7 @@ module.exports = {
 
 	// get portfolio value + buying power from userID and leagueID
 	async getCurrentBalance(req, res) {
-		// let sessionID = req.sessionID;
-		let sessionID = '12345abcde';
+		let sessionID = req.sessionID;
 		let leagueID = req.params.leagueID;
 		let user = await User.findOne({where: {sessionID: sessionID}});
 		let league = await League.findOne({where: {id: leagueID}}); // 2
