@@ -17,7 +17,6 @@ module.exports = {
 		let leagueID = req.params.leagueID;
 		let user = await User.findOne({where: {sessionID: sessionID}});
 		let portfolio = await Portfolio.findOne({where: {userID: user.id, leagueID: leagueID}});
-		
 		if(portfolio == null) {
 			res.status(404).send("Portfolio Does Not Exist");
 		}
@@ -28,8 +27,7 @@ module.exports = {
 	async getAllTransactions(req, res) {
 		let portfolioID = req.params.portfolioID;
 		let portfolio = await Portfolio.findOne({where: {id: portfolioID}});
-		let transactions = await Transaction.findAll({where: {portfolioID: portfolioID}}); 
-
+		let transactions = await Transaction.findAll({where: {portfolioID: portfolioID}});
 		if(portfolio == null) {
 			res.status(404).send("Portfolio does not exist");
 		}
@@ -66,7 +64,6 @@ module.exports = {
 		} else if(transactions == null) {
 			errorResponse = "Transactions do not exist for this portfolio.";
 		}
-		
 		if(transactions != null) {
 			for(var i = 0; transactions[i]; i++) {
 				let transaction = transactions[i];
@@ -76,8 +73,6 @@ module.exports = {
 
 				let numShares = 0;
 				let equity = 0;
-			
-
 				if(transactionsResponse[sym] != undefined) {
 					if(transactionsResponse[sym].numShares != undefined) {
 						numShares = transactionsResponse[sym].numShares;
@@ -101,7 +96,7 @@ module.exports = {
 					transactionsResponse[sym] = sym;
 					transactionsResponse[sym].numShares = numShares - vol;
 					transactionsResponse[sym].equity = equity - (price * vol);
-						
+
 					let avgStockPrice = transactionsResponse[sym].equity / transactionsResponse[sym].numShares;
 					transactionsResponse[sym].percentChange = (currPrice - avgStockPrice) / avgStockPrice;
 
@@ -133,7 +128,7 @@ module.exports = {
 				// get current stock price api
 				let value = 0; //value + (volume of transaction * current price)
 				let percentChanged = 0; // (updatedValue - originalValue)/originalValue
-				
+
 				timeoutPromise(60000,
 					await Portfolio.update({value: value, percentChanged: percentChanged}, {
 						where: {
