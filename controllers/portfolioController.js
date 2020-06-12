@@ -2,9 +2,10 @@ const Portfolio = require('../models').Portfolio;
 const User = require('../models').User;
 const League = require('../models').League;
 const Transaction = require('../models').Transaction;
-const transactionController = require('./index.js').transactionController;
+const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
 var schedule = require('node-schedule');
+var cronJob = require('cron').CronJob;
 
 // get current stock price helper fn
 async function getCurrentPrice(key, symbol) {
@@ -17,7 +18,7 @@ async function getCurrentPrice(key, symbol) {
 	return(currentPrice);
 }
 
-// needs testing
+// scheduling job helper fn
 async function scheduleJob() {
 	let portfolios = await Portfolio.findAll();
 	for(var i = 0; portfolios[i]; i++) {
@@ -25,18 +26,17 @@ async function scheduleJob() {
 		let transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
 		for(var j = 0; transactions[j]; j++) {
 			let transaction = transactions[j];
-			let key = config.api_key;*;
+			let key = config.api_key;
 
 			// get current stock price api & delay 1 minute
 			let currentPrice = setTimeout(getCurrentPrice, 60000, transaction.stockSymbol, key);
 
 			// consider adding error catching for transaction & portfolio
 			let newValue = portfolio.value + (transaction.volume * currentPrice);
-			let value = portfolio.value + (transaction.volume * currentPrice)
 			let percentChanged =  (newValue - portfolio.value)/ portfolio.value;
 
 			// update portfolio
-			await Portfolio.update({value: value, percentChanged: percentChanged}, {
+			await Portfolio.update({value: newValue, percentChanged: percentChanged}, {
 				where: {
 					id: portfolio.id
 				}
@@ -48,6 +48,13 @@ async function scheduleJob() {
 }
 
 module.exports = {
+	extScheduleJob(req, res) {
+		var job = new cronJob('0 17 * * *', function() {
+			console.log('five pm test');
+			scheduleJob();
+		}, null, true, 'America/Los_Angeles');
+		job.start();
+	},
 	// get portfolio detail by leagueID
 	async getPortfolio(req, res) {
 		let sessionID = req.sessionID;
@@ -87,8 +94,8 @@ module.exports = {
 			transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
 		}
 
-		// let currPrice = transactionController.getTransaction();
-		let currPrice = 120.87; // hardcoded for now
+		let key = config.api_key;
+
 		let transactionsResponse = {};
 
 		// user error handling
@@ -109,10 +116,10 @@ module.exports = {
 				let sym = transaction.stockSymbol;
 				let vol = transaction.volume;
 				let price = transaction.price;
-
 				let numShares = 0;
 				let equity = 0;
-			
+
+				let currPrice = getCurrentPrice(key, sym);
 
 				if(transactionsResponse[sym] != undefined) {
 					if(transactionsResponse[sym].numShares != undefined) {

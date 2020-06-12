@@ -1,6 +1,8 @@
 const portfolioController = require('../controllers').portfolioController;
 
 module.exports = (app) => {
+	app.put('/api/portfolio/extScheduleJob', portfolioController.extScheduleJob);
+
   /**
     * @swagger
     * /api/portfolio/getPortfolio/{leagueID}:
