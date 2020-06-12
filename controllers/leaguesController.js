@@ -6,6 +6,11 @@ var schedule = require('node-schedule');
 const nodemailer = require("nodemailer");
 var fs = require('fs');
 var handlebars = require('handlebars');
+const axios = require('axios')
+const env = process.env.NODE_ENV || 'development';
+const config = require(`${__dirname}/../config/config.json`)[env];
+const backend_url = config.backend_url;
+
 
 
 var readHTMLFile = function(path, callback) {
@@ -26,12 +31,22 @@ function generateInviteKey(){
 function scheduleJobs(startDateString, endDateString, leagueID){
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
-  var leagueRankingJob = schedule.scheduleJob({ start: startDate, end: endDate, rule: '0 0 8 */7 * ?' }, function(){
-    console.log('This is where we would call the league ranking api every week!');
+  var leagueRankingJob = schedule.scheduleJob({ start: startDate, end: endDate, rule: '0 8 */7 * *' }, function(){
+    console.log('This is where we call the league ranking api every week!');
+    axios.post(backend_url+'/ranking/updateLeagueRankings/'+leagueID)
+      .then(function (response) {
+        console.log(response);
+      }).catch(error => {console.log(error)});
   });
   var globalRankingJob = schedule.scheduleJob(endDate, function(){
-    console.log('This is where we would call the global ranking api at the end of the league!');
+    console.log('This is where we call the global ranking api at the end of the league!');
+    axios.post(backend_url+'/ranking/updateGlobalRankings/'+leagueID)
+      .then(function (response) {
+        console.log(response);
+      }).catch(error => {console.log(error)});
   });
+  console.log(leagueRankingJob);
+  console.log(globalRankingJob);
   global.jobs[leagueID+"-league"] = leagueRankingJob;
   global.jobs[leagueID+"-global"] = globalRankingJob;
 }
@@ -42,11 +57,19 @@ function updateJobs(startDateString, endDateString, leagueID){
   let originalGlobalRankingJob = global.jobs[leagueID+"-global"];
   originalLeagueRankingJob.cancel();
   originalGlobalRankingJob.cancel();
-  var newLeagueRankingJob = schedule.scheduleJob({start: startDate, end: endDate, rule: '0 0 8 */7 * ?'}, function(){
-    console.log('This is where we would call the league ranking api every week!');
+  var newLeagueRankingJob = schedule.scheduleJob({start: startDate, end: endDate, rule: '0 8 */7 * *'}, function(){
+    console.log('This is where we call the league ranking api every week!');
+    axios.post(backend_url+'/ranking/updateLeagueRankings/'+leagueID)
+      .then(function (response) {
+        console.log(response);
+      }).catch(error => {console.log(error)});
   });
   var newGlobalRankingJob = schedule.scheduleJob(endDate, function(){
-    console.log('This is where we would call the global ranking api at the end of the league!');
+    console.log('This is where we call the global ranking api at the end of the league!');
+    axios.post(backend_url+'/ranking/updateGlobalRankings/'+leagueID)
+      .then(function (response) {
+        console.log(response);
+      }).catch(error => {console.log(error)});
   });
   global.jobs[leagueID+"-league"] = newLeagueRankingJob;
   global.jobs[leagueID+"-global"] = newGlobalRankingJob;
