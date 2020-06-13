@@ -22,21 +22,22 @@ class SideNav extends React.Component{
     //make a call to backend api that gets all the leagues of the user logged in
     // axios.post(backend_url+'/users/login', {username: 'frontend', password: 'frontend'}).then(response => {
     //   console.log(response);
-    axios.get(backend_url+'/users/leagues').then(response => {
-      console.log(response);
-      if(this.state.leagues.length === 0){
+    if(this.state.leagues.length === 0){
+      axios.get(backend_url+'/users/leagues', {credentials: 'same-origin'}).then(response => {
+        console.log(response);
         this.setState({
           leagues: response.data,
           leagueArrowUp: true
         });
-      }
-      else{
-        this.setState({
-          leagues:[],
-          leagueArrowUp: false
-        });
-      }
-    }).catch(error => {console.error(error)});
+      }).catch(error => {console.error(error)});
+    }
+    else{
+      this.setState({
+        leagues:[],
+        leagueArrowUp: false
+      });
+    }
+
     //});
 
   }

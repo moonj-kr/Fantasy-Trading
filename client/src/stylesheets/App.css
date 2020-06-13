@@ -12,6 +12,35 @@
   width: 12em;
   min-height: 100vh;
 }
+.side-login{
+  display: flex;
+  flex-direction: column;
+  background-color: #895df1;
+  align-items: stretch;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 12em;
+  min-height: 100vh;
+}
+.login-container{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 30em;
+}
+.login-button{
+  background-color: #895df1;
+  color: #FFFFFF;
+  border-radius: 1em;
+  font-family: 'Verdana';
+  align-self: flex-end;
+  font-size: 1em;
+  padding: 0.5em;
+}
+.login-form{
+  align-self: center;
+}
 .menu{
   flex-grow: 1;
 }
@@ -19,5 +48,6 @@
   padding-bottom: 3em;
 }
 .text-color{
-  color: #895df1
+  font-family: 'Verdana';
+  color: #895df1;
 }
