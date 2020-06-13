@@ -6,6 +6,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+const backend_url = require('./backendUrl.js').backend_url;
+const axios = require('axios')
+
 
 class SideNav extends React.Component{
   constructor(props){
@@ -16,19 +19,26 @@ class SideNav extends React.Component{
     };
   }
   handleLeagues = () => {
-    //make a call to backend api that gets all the leagues of a certain user
-    if(this.state.leagues.length === 0){
-      this.setState({
-        leagues: ['league a', 'league b', 'league c'],
-        leagueArrowUp: true
-      });
-    }
-    else{
-      this.setState({
-        leagues:[],
-        leagueArrowUp: false
-      });
-    }
+    //make a call to backend api that gets all the leagues of the user logged in
+    // axios.post(backend_url+'/users/login', {username: 'frontend', password: 'frontend'}).then(response => {
+    //   console.log(response);
+    axios.get(backend_url+'/users/leagues').then(response => {
+      console.log(response);
+      if(this.state.leagues.length === 0){
+        this.setState({
+          leagues: response.data,
+          leagueArrowUp: true
+        });
+      }
+      else{
+        this.setState({
+          leagues:[],
+          leagueArrowUp: false
+        });
+      }
+    }).catch(error => {console.error(error)});
+    //});
+
   }
   render(){
     let textColor = {color: '#895df1', fontWeight: 'bold'};
