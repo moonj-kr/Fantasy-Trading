@@ -1,0 +1,23 @@
+.App {
+  display: flex;
+  justify-content: flex-start;
+}
+.side-nav{
+  display: flex;
+  flex-direction: column;
+  background-color: #DCDDDD;
+  align-items: stretch;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 12em;
+  min-height: 100vh;
+}
+.menu{
+  flex-grow: 1;
+}
+.footer{
+  padding-bottom: 3em;
+}
+.text-color{
+  color: #895df1
+}

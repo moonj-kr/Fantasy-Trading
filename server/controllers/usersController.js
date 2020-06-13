@@ -1,6 +1,6 @@
 const models = require('../models');
 const env = process.env.NODE_ENV || 'development';
-const config = require(`${__dirname}/../config/config.json`)[env];
+const config = require(`${__dirname}/../../config/config.json`)[env];
 const bcrypt = require("bcrypt");
 const {QueryTypes} = require('sequelize');
 const Sequelize = require('sequelize');
