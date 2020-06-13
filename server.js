@@ -7,6 +7,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const models = require('./models');
+const portfolioController = require('./controllers/index.js').portfolioController;
 
 const app = express();
 
@@ -37,8 +38,10 @@ app.listen(process.env.PORT || 5000, () => {
     });
   }).catch(error => {
     console.log(error);
-    res.status(400).send(error);
   });
+
+	// update portfolio
+	portfolioController.extScheduleJob();
 
 })
 module.exports = app;

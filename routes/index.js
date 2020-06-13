@@ -1,9 +1,12 @@
 const usersRoute = require('./usersRoute');
-const transactionsRoute = require('./transactionsRoute');
+const portfolioRoute = require('./portfolioRoute');
 const leaguesRoute = require('./leaguesRoute');
+const transactionsRoute = require('./transactionsRoute');
 const rankingRoute = require('./rankingRoute');
+
 var swaggerUi = require('swagger-ui-express');
 var swaggerJSDoc = require('swagger-jsdoc');
+
 const swaggerDefinition = {
   info: {
     title: 'Fantasy Trading Swagger API',
@@ -28,8 +31,10 @@ module.exports = (app) => {
     res.send(swaggerSpec);
   });
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  usersRoute(app)
-  transactionsRoute(app)
+
+  usersRoute(app),
+  portfolioRoute(app),
+  transactionsRoute(app),
   leaguesRoute(app)
   rankingRoute(app)
 };
