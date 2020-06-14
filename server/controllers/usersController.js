@@ -66,7 +66,7 @@ module.exports = {
       user = await models.User.findOne({where: {email: req.body.email}});
     }
     //if email is not registered redirect to login page
-    if (!user){res.redirect('/api/users/login');}
+    if (!user){res.status(400).send('Incorrect password');}
     else{
       bcrypt.compare(salt + req.body.password, user.password, function(err, result){
         if (result == true){
@@ -96,7 +96,7 @@ module.exports = {
           res.status(200).send(user);
         }
         else{
-          res.status(403).send('Incorrect password');
+          res.status(400).send('Incorrect password');
           //res.redirect('/api/users/login');
         }
       });

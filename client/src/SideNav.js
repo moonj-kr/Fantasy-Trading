@@ -20,13 +20,15 @@ class SideNav extends React.Component{
   }
   handleLeagues = () => {
     //make a call to backend api that gets all the leagues of the user logged in
-    // axios.post(backend_url+'/users/login', {username: 'frontend', password: 'frontend'}).then(response => {
-    //   console.log(response);
     if(this.state.leagues.length === 0){
       axios.get(backend_url+'/users/leagues', {withCredentials: true, headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'}}).then(response => {
+        var resArr = [];
+        for(let i=0; i<response.data.length; i++){
+          resArr.push(response.data[i].name);
+        }
         this.setState({
           //leagues: Object.values(response.data),
-          leagues: [],
+          leagues: resArr,
           leagueArrowUp: true
         });
       }).catch(error => {console.error(error)});
@@ -37,9 +39,6 @@ class SideNav extends React.Component{
         leagueArrowUp: false
       });
     }
-
-    //});
-
   }
   render(){
     let textColor = {color: '#895df1', fontWeight: 'bold'};
