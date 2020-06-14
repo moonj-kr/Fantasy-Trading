@@ -57,7 +57,7 @@ class LoginPage extends React.Component{
             <form>
               <TextField onChange={this.handleUsername} id="standard-full-width" label="username" />
               <br></br>
-              <TextField onChange={this.handlePassword} id="standard-full-width" label="password" />
+              <TextField onChange={this.handlePassword} id="standard-password-input" label="password" type="password"/>
             </form>
             {this.state.loginError==null ? null : <text style={{color: 'red'}}>{this.state.loginError}</text>}
           </div>
