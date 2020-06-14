@@ -28,7 +28,13 @@ class LoginPage extends React.Component{
     this.setState({password: event.target.value});
   }
   onLogin = () => {
-    axios.post(backend_url+'/users/login', {username: this.state.username, password: this.state.password}).then(response => {
+    axios.post(backend_url+'/users/login', {
+      username: this.state.username,
+      password: this.state.password
+    }, {
+      withCredentials: true,
+      headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
+    }}).then(response => {
       if(response.status === 200){
         this.setState({
           redirect: true,

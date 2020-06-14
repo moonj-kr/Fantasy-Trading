@@ -11,7 +11,7 @@ const portfolioController = require('./controllers/index.js').portfolioControlle
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({credentials: true, origin: "http://localhost:3000"}));
 //express session
 app.use(cookieParser());
 app.use(session({

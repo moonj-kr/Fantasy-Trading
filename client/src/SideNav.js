@@ -23,10 +23,10 @@ class SideNav extends React.Component{
     // axios.post(backend_url+'/users/login', {username: 'frontend', password: 'frontend'}).then(response => {
     //   console.log(response);
     if(this.state.leagues.length === 0){
-      axios.get(backend_url+'/users/leagues', {credentials: 'same-origin'}).then(response => {
-        console.log(response);
+      axios.get(backend_url+'/users/leagues', {withCredentials: true, headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'}}).then(response => {
         this.setState({
-          leagues: response.data,
+          //leagues: Object.values(response.data),
+          leagues: [],
           leagueArrowUp: true
         });
       }).catch(error => {console.error(error)});
@@ -53,10 +53,10 @@ class SideNav extends React.Component{
             <MenuItem style={textColor}>stocks</MenuItem>
             <MenuItem style={textColor} onClick={this.handleLeagues}>
               leagues{this.state.leagueArrowUp ? <ArrowDropUpIcon />: <ArrowDropDownIcon />}
-              </MenuItem>
-            {this.state.leagues.map(league => (
-              <MenuItem style={{paddingLeft: '1.5em', color: '#7F2A9E'}}>{league}</MenuItem>
-            ))}
+            </MenuItem>
+              {this.state.leagues.map(league => (
+                <MenuItem style={{paddingLeft: '1.5em', color: '#7F2A9E'}}>{league}</MenuItem>
+              ))}
             {this.state.leagueArrowUp ? <MenuItem style={{paddingLeft: '1.5em', color: '#7F2A9E'}}>create new league</MenuItem> : null}
             <MenuItem style={textColor}>global</MenuItem>
           </MenuList>
