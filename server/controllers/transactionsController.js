@@ -6,7 +6,7 @@ const User = require('../models').User;
 const get = require('../utils/request').getRequest;
 const formatDate = require('../utils/dates').formatDate;
 const env = process.env.NODE_ENV || 'development';
-const config = require(`${__dirname}/../../config/config.json`)[env];
+const config = require(`${__dirname}/../config/config.json`)[env];
 
 async function getStockData(key,symbol) {
   let stockPrice;

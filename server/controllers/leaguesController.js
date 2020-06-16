@@ -8,7 +8,7 @@ var fs = require('fs');
 var handlebars = require('handlebars');
 const axios = require('axios')
 const env = process.env.NODE_ENV || 'development';
-const config = require(`${__dirname}/../../config/config.json`)[env];
+const config = require(`${__dirname}/../config/config.json`)[env];
 const backend_url = config.backend_url;
 
 
