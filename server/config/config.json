@@ -6,7 +6,7 @@
     "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres",
-    "api_key": ["U864TMWAO0GRH22S", "5EDZ5BZ8UBWSWBFJ"],
+    "api_key": "U864TMWAO0GRH22S",
     "backend_url": "http://localhost:5000/api"
   }
 }
