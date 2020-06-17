@@ -7,8 +7,9 @@ import Button from '@material-ui/core/Button';
 import { Redirect } from 'react-router-dom';
 
 
-const backend_url = require('./backendUrl.js').backend_url;
-const axios = require('axios')
+const backend_url = require('./utils/backendUrl.js').backend_url;
+const get = require('./utils/requests.js').getRequest;
+const post = require('./utils/requests.js').postRequest;
 
 
 class LoginPage extends React.Component{
@@ -28,13 +29,7 @@ class LoginPage extends React.Component{
     this.setState({password: event.target.value});
   }
   onLogin = () => {
-    axios.post(backend_url+'/users/login', {
-      username: this.state.username,
-      password: this.state.password
-    }, {
-      withCredentials: true,
-      headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'
-    }}).then(response => {
+    post(backend_url+'/users/login', {username: this.state.username, password: this.state.password}).then(response => {
       if(response.status === 200){
         this.setState({
           redirect: true,

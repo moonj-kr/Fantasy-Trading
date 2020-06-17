@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './stylesheets/index.css';
-import App from './App';
+import HomePage from './HomePage.js';
 import LoginPage from './LoginPage.js';
 import {
   BrowserRouter as Router,
@@ -14,7 +14,7 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route path="/home">
-        <App />
+        <HomePage />
       </Route>
       <Route path="/">
         <LoginPage />

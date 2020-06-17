@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-const backend_url = require('./backendUrl.js').backend_url;
+const backend_url = require('./utils/backendUrl.js').backend_url;
 const axios = require('axios')
 
 

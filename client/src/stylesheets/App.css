@@ -2,20 +2,20 @@
   display: flex;
   justify-content: flex-start;
 }
-.side-nav{
+.side-column{
   display: flex;
   flex-direction: column;
-  background-color: #DCDDDD;
+  background-color: #7702fa;
   align-items: stretch;
   padding-left: 1em;
   padding-right: 1em;
-  width: 12em;
+  width: 3em;
   min-height: 100vh;
 }
 .side-login{
   display: flex;
   flex-direction: column;
-  background-color: #895df1;
+  background-color: #7702fa;
   align-items: stretch;
   padding-left: 1em;
   padding-right: 1em;
@@ -28,6 +28,13 @@
   align-items: stretch;
   justify-content: center;
   width: 30em;
+}
+.home-container{
+  display: flex;
+  flex-direction: row;
+  padding-left: 1em;
+  padding-right: 2em;
+  padding-top: 1em;
 }
 .login-button{
   background-color: #895df1;
@@ -50,4 +57,17 @@
 .text-color{
   font-family: 'Verdana';
   color: #895df1;
+}
+.profile-pic{
+  display: block;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+  padding-right: 0.5em;
+}
+.header-text{
+  font-family: 'mr-eaves-xl-modern', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #7702fa;
 }
