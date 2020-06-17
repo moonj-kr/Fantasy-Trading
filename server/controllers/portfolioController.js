@@ -9,15 +9,17 @@ var cronJob = require('cron').CronJob;
 const get = require('../utils/request').getRequest;
 
 // get current stock price helper fn
-async function getCurrentPrice(key,symbol, agent) {
+async function getCurrentPrice(key,symbol) {
   let stockPrice;
   try {
-    stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`, agent);
+    //stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+    //stockPrice = await get(`https://api-v2.intrinio.com/securities/${symbol}/prices/realtime?api_key=${key}`);
+    stockPrice = await get (`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${key}`)
   } catch (error) {
     console.log(error)
   }
-  console.log(stockPrice);
-  return stockPrice.data["Global Quote"]["05. price"];
+  //return stockPrice.data["Global Quote"]["05. price"];
+  return stockPrice.data['c'];
 }
 function setTimeoutForAlpha(key, symbol) {
    var promise = new Promise(function(resolve, reject) {
@@ -144,12 +146,14 @@ module.exports = {
 					}
 				}
 				 else {
-           try{
-             currPrice = await getCurrentPrice(keys[key_index], sym);
-           }
-           catch(error){
-             currPrice = await setTimeoutForAlpha(keys[key_index], sym);
-           }
+           // try{
+           //   currPrice = await getCurrentPrice(keys[key_index], sym);
+           // }
+           // catch(error){
+           //   currPrice = await setTimeoutForAlpha(keys[key_index], sym);
+           // }
+           currPrice = await getCurrentPrice(key, sym);
+
 					transactionsResponse[sym] = {
 						numShares: vol,
 						lastPrice: currPrice,
