@@ -22,7 +22,8 @@ class HomePage extends React.Component{
       username: null,
       arrowUp: false,
       redirectLogin: false,
-      leagues: []
+      leagues: [],
+      leagueInfo: {}
     }
   }
   componentDidMount(){
@@ -42,13 +43,23 @@ class HomePage extends React.Component{
     });
     get(backend_url+'/users/leagues').then(response => {
       var resArr = [];
+      var info = this.state.leagueInfo;
       for(let i=0; i<response.data.length; i++){
-        resArr.push(response.data[i].name);
+        let name = response.data[i].name;
+        get(backend_url+'/leagues/list/'+name).then(res => {
+          let endDate = Date.parse(res.data.endDate)
+          let currentDate = Date.now();
+          let daysRemaining = Math.round((endDate-currentDate)/86400000);
+          info[name] = daysRemaining;
+        });
+        resArr.push(name);
       }
       this.setState({
-        leagues: resArr
+        leagues: resArr,
+        leagueInfo: info
       });
-    }).catch(error => {console.error(error)})
+    }).catch(error => {console.error(error)});
+    console.log(this.state.leagueInfo);
   }
   onExpand = () => {
     if(this.state.arrowUp){
@@ -108,7 +119,7 @@ class HomePage extends React.Component{
             </div>
         </div>
         <div className="leagues-container">
-          <LeaguesPreview leagues={this.state.leagues} />
+          <LeaguesPreview leagues={this.state.leagues} leagueInfo={this.state.leagueInfo} />
         </div>
       </div>
         {this.renderRedirect()}

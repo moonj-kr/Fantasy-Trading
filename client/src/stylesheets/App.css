@@ -88,16 +88,22 @@
 .leagues-container{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   padding-left: 1em;
   padding-right: 2em;
   width: 100%;
   height: 100%;
+  align-content: space-evenly;
 }
 .league{
+  display: inline-block;
   background-color: #E5E8E8;
-  padding: 5px;
-  width: 5em;
+  padding-top: 1em;
+  width: 12em;
   height: 5em;
-  margin: 1em;
+  margin: 0.5em;
+  margin-top: auto;
+  margin-bottom: auto;
   border-radius: 1em;
+  text-align: center;
 }
