@@ -3,7 +3,6 @@ import './stylesheets/materialui1.css';
 import './stylesheets/materialui2.css';
 import './stylesheets/App.css';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { Redirect } from 'react-router-dom';
 
 
@@ -47,7 +46,6 @@ class LoginPage extends React.Component{
     }
   }
   render(){
-    //let textColor = {color: '#895df1', fontWeight: 'bold'};
     return(
       <div className="App">
         <div className="side-login">

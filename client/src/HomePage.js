@@ -7,6 +7,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import { Redirect } from 'react-router-dom';
+import LeaguesPreview from './LeaguesPreview.js';
+
 const backend_url = require('./utils/backendUrl.js').backend_url;
 const get = require('./utils/requests.js').getRequest;
 const post = require('./utils/requests.js').postRequest;
@@ -16,34 +19,99 @@ class HomePage extends React.Component{
     super(props);
     this.state = {
       profilePicture: null,
-      username: null
+      username: null,
+      arrowUp: false,
+      redirectLogin: false,
+      leagues: []
     }
   }
   componentDidMount(){
     get(backend_url+'/users/profile-details').then(response => {
       this.setState({
-        username: response.data['username'],
-        profilePicture: response.data['profilePicture']
+        username: response.data['username']
       });
     }).catch(error => {
       this.setState({
-        username: null,
-        profilePicture: null
+        username: null
       });
     });
+    get(backend_url+'/users/profile-picture').then(response => {
+      this.setState({profilePicture: response.config.url});
+    }).catch(error => {
+      this.setState({profilePicture: null});
+    });
+    get(backend_url+'/users/leagues').then(response => {
+      var resArr = [];
+      for(let i=0; i<response.data.length; i++){
+        resArr.push(response.data[i].name);
+      }
+      this.setState({
+        leagues: resArr
+      });
+    }).catch(error => {console.error(error)})
+  }
+  onExpand = () => {
+    if(this.state.arrowUp){
+      this.setState({arrowUp: false});
+    }
+    else{
+      this.setState({arrowUp: true});
+    }
+  }
+  renderRedirect = () => {
+    if(this.state.redirectLogin){
+      return <Redirect to="/" />
+    }
+  }
+  logout = () => {
+    get(backend_url+'/users/logout').then(response => {
+      this.setState({redirectLogin: true});
+    }).catch(error => {console.error(error)})
   }
   render(){
+    console.log(this.state.profilePicture);
+    let pic;
+    if(this.state.profilePicture == null){
+      pic = require('./stylesheets/default-avatar.jpg');
+    }
+    else{
+      pic = this.state.profilePicture
+    }
+    let arrowIconStyle = {verticalAlign: 'middle', margin: 'auto'}
+    let dropdownMenuStyle = {color: '#7702fa'}
+    let menuListStyle = {backgroundColor: '#E5E8E8', borderRadius: '1em'}
     return(
       <div className="App">
         <div className="side-column">
         </div>
         <div className="home-container">
-          <img className="profile-pic" src={this.state.profilePicture} alt="profile-picture" />
-          <div style={{paddingLeft: '1em'}}>
-            <p style={{color: '#7702fa'}}>welcome,</p>
-            <h3 className="header-text">@{this.state.username} </h3>
-          </div>
+          <div className="top-bar">
+            <img className="profile-pic" src={pic} alt="profile-picture" />
+            <div style={{paddingLeft: '1em'}}>
+              <p style={{color: '#7702fa', marginBlockEnd: 'auto'}}>welcome,</p>
+              <h3 onClick={this.onExpand} className="header-text">@{this.state.username}
+                {this.state.arrowUp ?
+                  <ArrowDropUpIcon style={arrowIconStyle}/>
+                  : <ArrowDropDownIcon style={arrowIconStyle}/>
+                }
+              </h3>
+              {this.state.arrowUp ?
+                <MenuList style={menuListStyle}>
+                  <MenuItem style={dropdownMenuStyle}>edit profile</MenuItem>
+                  <MenuItem onClick={this.logout} style={dropdownMenuStyle}>logout</MenuItem>
+                </MenuList>
+                : null
+              }
+            </div>
+            <div className="logo-container">
+              <img className="logo" src={require("./stylesheets/smalllogo.png")} />
+            </div>
         </div>
+        <div className="leagues-container">
+          <LeaguesPreview leagues={this.state.leagues} />
+        </div>
+      </div>
+        {this.renderRedirect()}
       </div>
     );
   }
