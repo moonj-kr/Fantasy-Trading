@@ -11,12 +11,14 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 async function getStockData(key,symbol) {
   let stockPrice;
   try {
-    stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+    //stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+    stockPrice = await get (`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${key}`);
   } catch (error) {
     console.log(error)
   }
 
-  return stockPrice.data["Global Quote"]["05. price"];
+  //return stockPrice.data["Global Quote"]["05. price"];
+  return stockPrice.data['c'];
 }
 
 

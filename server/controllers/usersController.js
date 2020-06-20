@@ -66,7 +66,7 @@ module.exports = {
       user = await models.User.findOne({where: {email: req.body.email}});
     }
     //if email is not registered redirect to login page
-    if (!user){res.redirect('/api/users/login');}
+    if (!user){res.status(400).send('Incorrect password');}
     else{
       bcrypt.compare(salt + req.body.password, user.password, function(err, result){
         if (result == true){
@@ -82,7 +82,9 @@ module.exports = {
             //Create new portfolio
             models.League.findOne({where: {invitationKey: req.body.invitationKey}}).then(league => {
               models.Portfolio.create({
-                value: league.investmentFunds,
+                value: 0,
+                buyingPower: league.investmentFunds,
+                percentChange: 0,
                 host: false,
                 ranking: null
               }).then(portfolio => {
@@ -94,7 +96,7 @@ module.exports = {
           res.status(200).send(user);
         }
         else{
-          res.status(403).send('Incorrect password');
+          res.status(400).send('Incorrect password');
           //res.redirect('/api/users/login');
         }
       });
@@ -171,7 +173,16 @@ module.exports = {
     else{
       res.status(400).send({message: "User must be logged in"});
     }
-    res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')});
+    
+    // Check if user has uploaded a profile picture
+    if(user.profilePicture){
+      res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')})
+    }
+    // Send default avatar
+    else{
+      res.status(200).sendFile('uploads\\default-avatar.jpg', {root: path.resolve(__dirname, '../')})
+    }
+
   },
   async updatePassword(req, res){
     let salt = config.salt;

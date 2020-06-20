@@ -8,9 +8,10 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const models = require('./models');
 const portfolioController = require('./controllers/index.js').portfolioController;
+const cors = require('cors');
 
 const app = express();
-
+app.use(cors({credentials: true, origin: "http://localhost:3000"}));
 //express session
 app.use(cookieParser());
 app.use(session({
@@ -27,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 global.jobs = {};
 
 require('./routes')(app);
-app.listen(process.env.PORT || 5000, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
   console.log(`Server listening`)
 
   //clear sessionIDs on server start
@@ -43,5 +44,6 @@ app.listen(process.env.PORT || 5000, () => {
 	// update portfolio
 	portfolioController.extScheduleJob();
 
-})
+});
+server.timeout = 100000;
 module.exports = app;

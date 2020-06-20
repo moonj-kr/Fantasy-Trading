@@ -12,18 +12,19 @@ const get = require('../utils/request').getRequest;
 async function getCurrentPrice(key,symbol) {
   let stockPrice;
   try {
-    stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+    //stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+    stockPrice = await get (`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${key}`)
   } catch (error) {
     console.log(error)
   }
-
-  return stockPrice.data["Global Quote"]["05. price"];
+  //return stockPrice.data["Global Quote"]["05. price"];
+  return stockPrice.data['c'];
 }
 function setTimeoutForAlpha(key, symbol) {
    var promise = new Promise(function(resolve, reject) {
      setTimeout(async function() {
        resolve(await getCurrentPrice(key, symbol));
-     }, 1000);
+     }, 60000);
    });
    return promise;
 }
@@ -38,10 +39,13 @@ async function scheduleJob() {
 		for(var j = 0; transactions[j]; j++) {
 			let transaction = transactions[j];
 			let key = config.api_key;
-
-			// get current stock price api & delay 1 minute
-			//let currentPrice = setTimeout(getCurrentPrice, 60000, key, transaction.stockSymbol);
-			let currentPrice = await setTimeoutForAlpha(key, transaction.stockSymbol);
+      let currentPrice;
+      // get current stock price api & delay 1 minute
+      try{
+        currentPrice = await getCurrentPrice(key, transaction.stockSymbol);
+      }catch(error){
+        currentPrice = await setTimeoutForAlpha(key, transaction.stockSymbol);
+      }
 			// consider adding error catching for transaction & portfolio
 			let newValue = portfolio.value + (transaction.volume * currentPrice);
 			let percentChanged =  (newValue - portfolio.value)/ portfolio.value;
@@ -103,7 +107,6 @@ module.exports = {
 		}
 
 		let key = config.api_key;
-
 		let transactionsResponse = {};
 
 		// user error handling
@@ -123,11 +126,9 @@ module.exports = {
 				let sym = transaction.stockSymbol;
 				let vol = transaction.volume;
 				let price = transaction.price;
-				let numShares = 0;
-				let equity = 0;
-
-				let currPrice = await setTimeoutForAlpha(key, sym);
+        let currPrice;
 				if(sym in transactionsResponse){
+          currPrice = transactionsResponse[sym].lastPrice;
 					let existingNumShares = transactionsResponse[sym].numShares;
 					let existingEquity = transactionsResponse[sym].equity;
 					if(transaction.type == 'buy') {
@@ -144,6 +145,14 @@ module.exports = {
 					}
 				}
 				 else {
+           // try{
+           //   currPrice = await getCurrentPrice(keys[key_index], sym);
+           // }
+           // catch(error){
+           //   currPrice = await setTimeoutForAlpha(keys[key_index], sym);
+           // }
+           currPrice = await getCurrentPrice(key, sym);
+
 					transactionsResponse[sym] = {
 						numShares: vol,
 						lastPrice: currPrice,
