@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './stylesheets/index.css';
-import HomePage from './HomePage.js';
-import LoginPage from './LoginPage.js';
+import HomePage from './components/HomePage.js';
+import LoginPage from './components/LoginPage.js';
 import {
   BrowserRouter as Router,
   Switch,
