@@ -13,7 +13,6 @@ async function getCurrentPrice(key,symbol) {
   let stockPrice;
   try {
     //stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
-    //stockPrice = await get(`https://api-v2.intrinio.com/securities/${symbol}/prices/realtime?api_key=${key}`);
     stockPrice = await get (`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${key}`)
   } catch (error) {
     console.log(error)
