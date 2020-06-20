@@ -81,13 +81,7 @@ class HomePage extends React.Component{
   }
   render(){
     console.log(this.state.profilePicture);
-    let pic;
-    if(this.state.profilePicture == null){
-      pic = require('./stylesheets/default-avatar.jpg');
-    }
-    else{
-      pic = this.state.profilePicture
-    }
+    let pic = this.state.profilePicture
     let arrowIconStyle = {verticalAlign: 'middle', margin: 'auto'}
     let dropdownMenuStyle = {color: '#7702fa'}
     let menuListStyle = {backgroundColor: '#E5E8E8', borderRadius: '1em'}

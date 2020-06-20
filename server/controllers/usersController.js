@@ -173,7 +173,16 @@ module.exports = {
     else{
       res.status(400).send({message: "User must be logged in"});
     }
-    res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')});
+    
+    // Check if user has uploaded a profile picture
+    if(user.profilePicture){
+      res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')})
+    }
+    // Send default avatar
+    else{
+      res.status(200).sendFile('uploads\\default-avatar.jpg', {root: path.resolve(__dirname, '../')})
+    }
+
   },
   async updatePassword(req, res){
     let salt = config.salt;
