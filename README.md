@@ -7,10 +7,14 @@ Setup Instructions
   4. Set password for this user
   5. Create database (name: fantasytrading) owned by user fantasytrading
   6. Create file called config.json  in config/ and copy and paste the contents from config_template.json into this file --> fill in password field
-  7. npm install
-  8. npx sequelize-cli db:migrate
-  8. npm start
-  9. server on localhost:5000/api
+  7. cd server --> npm install
+  8. cd ..
+  9. cd client --> npm install
+  10. cd ..
+  11. npm install
+  12. npx sequelize-cli db:migrate
+  13. npm start
+  14. server on localhost:5000/api
   
   # Troubleshooting Steps
   ERROR: Cannot find "/Users/jisook.moon/Desktop/Fantasy-Trading/config/config/config.json". Have you run "sequelize init"?
