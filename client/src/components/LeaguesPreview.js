@@ -3,6 +3,8 @@ import '../stylesheets/App.css';
 import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+const backend_url = require('../utils/backendUrl.js').backend_url;
+const get = require('../utils/requests.js').getRequest;
 
 class LeaguesPreview extends React.Component{
   constructor(props){
@@ -16,7 +18,7 @@ class LeaguesPreview extends React.Component{
         <h2 style={{color: '#7702fa'}}>current leagues</h2>
         <ul className="leagues-container">
           {Object.entries(this.props.leagueInfo).map(([league, daysRemaining]) => (
-            <div className="league">
+            <div key={league} className="league">
               <a style={linkStyle} href="http://www.google.com">{league}</a>
               <p style={{color: '#7702fa', fontSize: '0.75em'}}>
                 <HourglassFullIcon style={{fontSize: 'small', position: 'absolute'}}/>&nbsp;&nbsp;&nbsp;&nbsp;
