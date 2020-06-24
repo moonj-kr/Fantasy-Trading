@@ -7,7 +7,6 @@ import { Redirect } from 'react-router-dom';
 
 
 const backend_url = require('../utils/backendUrl.js').backend_url;
-const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
 
 

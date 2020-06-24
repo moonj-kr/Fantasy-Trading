@@ -2,16 +2,11 @@ import React from 'react';
 import '../stylesheets/App.css';
 import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import { Redirect } from 'react-router-dom';
-import LeaguesPreview from './LeaguesPreview.js';
 import Header from './Header.js';
+import HourglassFullIcon from '@material-ui/icons/HourglassFull';
+
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
-const post = require('../utils/requests.js').postRequest;
 
 class HomePage extends React.Component{
   constructor(props){
@@ -75,6 +70,29 @@ class HomePage extends React.Component{
     );
   }
 }
-
+class LeaguesPreview extends React.Component{
+  render(){
+    let linkStyle = {color: '#7702fa', fontWeight: 'bold'}
+    return(
+      <div>
+        <h2 style={{color: '#7702fa'}}>current leagues</h2>
+        <ul className="leagues-container">
+          {Object.entries(this.props.leagueInfo).map(([league, daysRemaining]) => (
+            <div key={league} className="league">
+              <a style={linkStyle} href="http://www.google.com">{league}</a>
+              <p style={{color: '#7702fa', fontSize: '0.75em'}}>
+                <HourglassFullIcon style={{fontSize: 'small', position: 'absolute'}}/>&nbsp;&nbsp;&nbsp;&nbsp;
+                ends in {daysRemaining} days
+              </p>
+            </div>
+          ))}
+          <div className="league">
+            <a style={linkStyle} href="http://www.google.com">+ create a new league</a>
+          </div>
+        </ul>
+      </div>
+    )
+  }
+}
 
 export default HomePage;

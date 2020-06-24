@@ -7,11 +7,10 @@ import MenuList from '@material-ui/core/MenuList';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { Redirect } from 'react-router-dom';
-import LeaguesPreview from './LeaguesPreview.js';
 
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
-const post = require('../utils/requests.js').postRequest;
+
 
 class Header extends React.Component{
   constructor(props){
@@ -22,23 +21,7 @@ class Header extends React.Component{
       render: false
     }
   }
-  componentDidMount(){
-    get(backend_url+'/users/profile-details').then(response => {
-      this.setState({
-        username: response.data.username
-      });
-    }).catch(error => {
-      this.setState({
-        username: null
-      });
-    });
-    get(backend_url+'/users/profile-picture').then(response => {
-      this.setState({profilePicture: response.config.url});
-    }).catch(error => {
-      this.setState({profilePicture: null});
-    });
-    this.setState({render: true})
-  }
+
   onExpand = () => {
     if(this.state.arrowUp){
       this.setState({arrowUp: false});
@@ -63,7 +46,7 @@ class Header extends React.Component{
     let menuListStyle = {backgroundColor: '#E5E8E8', borderRadius: '1em'}
     return(
       <div className="top-bar">
-        <img className="profile-pic" src={this.props.profilePicture} alt="profile-picture" />
+        <img className="profile-pic" src={this.props.profilePicture} alt="profile" />
         <div style={{paddingLeft: '1em'}}>
           <p style={{color: '#7702fa', marginBlockEnd: 'auto'}}>welcome,</p>
           <h3 onClick={this.onExpand} className="header-text">@{this.props.username}
