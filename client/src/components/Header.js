@@ -64,7 +64,7 @@ class Header extends React.Component{
           }
         </div>
         <div className="logo-container">
-          <img className="logo" src={require("../images/smalllogo.png")} />
+          <img className="logo" src={require("../images/smalllogo.png")} alt="logo" />
         </div>
         {this.renderRedirect()}
     </div>

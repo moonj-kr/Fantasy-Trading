@@ -87,7 +87,7 @@ class LeaguesPreview extends React.Component{
             </div>
           ))}
           <div className="league">
-            <a style={linkStyle} href="http://www.google.com">+ create a new league</a>
+            <a style={linkStyle} href="/create">+ create a new league</a>
           </div>
         </ul>
       </div>
