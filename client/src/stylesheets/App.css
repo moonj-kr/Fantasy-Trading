@@ -111,3 +111,35 @@
   border-radius: 1em;
   text-align: center;
 }
+.email-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.form-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-left: 1em;
+}
+.email-invite{
+  background-color: #E5E8E8;
+  color: #7702fa;
+  width: 13em;
+  height: 3em;
+  margin: 0.5em;
+  border-radius: 1em;
+  text-align: center;
+}
+.save-button{
+  background-color: #7702fa;
+  color: #FFFFFF;
+  width: 6em;
+  height: 2em;
+  font-size: 1em;
+  border-radius: 2em;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: 5em;
+  margin-top: 2em;
+}
