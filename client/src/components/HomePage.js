@@ -14,8 +14,6 @@ class HomePage extends React.Component{
     this.state = {
       profilePicture: null,
       username: null,
-      leagues: [],
-      leagueInfo: {},
       render: false
     }
   }
@@ -34,6 +32,34 @@ class HomePage extends React.Component{
     }).catch(error => {
       this.setState({profilePicture: null});
     });
+     this.setState({render: true});
+  }
+
+  render(){
+    return(
+      <div className="App">
+        <div className="side-column">
+        </div>
+        <div className="home-container">
+          <Header profilePicture={this.state.profilePicture} username={this.state.username} />
+          <div className="leagues-container">
+            <LeaguesPreview  />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+class LeaguesPreview extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      leagues: [],
+      leagueInfo: {},
+      render: false
+    }
+  }
+  componentDidMount(){
     get(backend_url+'/users/leagues').then(response => {
       var resArr = [];
       var info = this.state.leagueInfo;
@@ -54,30 +80,13 @@ class HomePage extends React.Component{
     }).catch(error => {console.error(error)});
     this.setState({render: true});
   }
-
-  render(){
-    return(
-      <div className="App">
-        <div className="side-column">
-        </div>
-        <div className="home-container">
-          <Header profilePicture={this.state.profilePicture} username={this.state.username} />
-          <div className="leagues-container">
-            <LeaguesPreview leagues={this.state.leagues} leagueInfo={this.state.leagueInfo} />
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-class LeaguesPreview extends React.Component{
   render(){
     let linkStyle = {color: '#7702fa', fontWeight: 'bold'}
     return(
       <div>
         <h2 style={{color: '#7702fa'}}>current leagues</h2>
         <ul className="leagues-container">
-          {Object.entries(this.props.leagueInfo).map(([league, daysRemaining]) => (
+          {Object.entries(this.state.leagueInfo).map(([league, daysRemaining]) => (
             <div key={league} className="league">
               <a style={linkStyle} href="http://www.google.com">{league}</a>
               <p style={{color: '#7702fa', fontSize: '0.75em'}}>
