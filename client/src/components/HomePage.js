@@ -32,7 +32,7 @@ class HomePage extends React.Component{
     }).catch(error => {
       this.setState({profilePicture: null});
     });
-     this.setState({render: true});
+    this.setState({render: true});
   }
 
   render(){
@@ -54,29 +54,21 @@ class LeaguesPreview extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      leagues: [],
-      leagueInfo: {},
+      leagues: {},
       render: false
     }
   }
   componentDidMount(){
     get(backend_url+'/users/leagues').then(response => {
-      var resArr = [];
-      var info = this.state.leagueInfo;
+      var result = this.state.leagues;
       for(let i=0; i<response.data.length; i++){
         let name = response.data[i].name;
-        get(backend_url+'/leagues/list/'+name).then(res => {
-          let endDate = Date.parse(res.data.endDate)
-          let currentDate = Date.now();
-          let daysRemaining = Math.round((endDate-currentDate)/86400000);
-          info[name] = daysRemaining;
-        });
-        resArr.push(name);
+        let endDate = Date.parse(response.data[i].endDate)
+        let currentDate = Date.now();
+        let daysRemaining = Math.round((endDate-currentDate)/86400000);
+        result[name] = [daysRemaining, response.data[i]];
       }
-      this.setState({
-        leagues: resArr,
-        leagueInfo: info
-      });
+      this.setState({leagues: result});
     }).catch(error => {console.error(error)});
     this.setState({render: true});
   }
@@ -86,9 +78,9 @@ class LeaguesPreview extends React.Component{
       <div>
         <h2 style={{color: '#7702fa'}}>current leagues</h2>
         <ul className="leagues-container">
-          {Object.entries(this.state.leagueInfo).map(([league, daysRemaining]) => (
+          {Object.entries(this.state.leagues).map(([league, [daysRemaining, data]]) => (
             <div key={league} className="league">
-              <a style={linkStyle} href="http://www.google.com">{league}</a>
+              <a style={linkStyle} href={"/league/" + data.name}>{league}</a>
               <p style={{color: '#7702fa', fontSize: '0.75em'}}>
                 <HourglassFullIcon style={{fontSize: 'small', position: 'absolute'}}/>&nbsp;&nbsp;&nbsp;&nbsp;
                 ends in {daysRemaining} days

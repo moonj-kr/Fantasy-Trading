@@ -4,6 +4,7 @@ import './stylesheets/index.css';
 import HomePage from './components/HomePage.js';
 import LoginPage from './components/LoginPage.js';
 import CreateLeaguePage from './components/CreateLeaguePage.js';
+import LeaguePage from './components/LeaguePage.js';
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,6 +14,9 @@ import {
 ReactDOM.render(
   <Router>
     <Switch>
+      <Route path="/league/:name">
+        <LeaguePage />
+      </Route>
       <Route path="/create">
         <CreateLeaguePage />
       </Route>
