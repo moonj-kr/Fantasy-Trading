@@ -30,6 +30,7 @@ module.exports = {
         email: req.body.email,
         points: 0,
         sessionID: req.sessionID,
+        profilePicture: path.resolve(__dirname, '../../', 'server\\uploads\\default-avatar.jpg')
       }).then(user => {
         //invitationKey passed in if registration triggered from invitation email
         if(req.body.invitationKey){
@@ -65,8 +66,8 @@ module.exports = {
     else if (req.body.email) {
       user = await models.User.findOne({where: {email: req.body.email}});
     }
-    //if email is not registered redirect to login page
-    if (!user){res.status(400).send('Incorrect password');}
+    //User is not registered
+    if (!user){res.status(400).send('User not registered');}
     else{
       bcrypt.compare(salt + req.body.password, user.password, function(err, result){
         if (result == true){
@@ -145,9 +146,14 @@ module.exports = {
   },
   uploadProfilePicture(req, res){
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
+      if (! req.file || ! req.file.path) {
+        return res.status(400).send(error);
+      }
       //remove old profile picture
       if(user.profilePicture){
-        fs.unlinkSync(path.resolve(__dirname, '../', user.profilePicture));
+        if(!user.profilePicture.includes("default-avatar")){
+          fs.unlinkSync(path.resolve(__dirname, '../../', user.profilePicture));
+        }
       }
       user.profilePicture = req.file.path;
       user.save()
@@ -176,11 +182,11 @@ module.exports = {
 
     // Check if user has uploaded a profile picture
     if(user.profilePicture){
-      res.status(200).sendFile(user.profilePicture, {root: path.resolve(__dirname, '../')})
+      res.status(200).sendFile(path.resolve(__dirname, '../../', user.profilePicture))
     }
-    // Send default avatar
+    // Send default avatar if no current profile picture path exists
     else{
-      res.status(200).sendFile('uploads\\default-avatar.jpg', {root: path.resolve(__dirname, '../')})
+      res.status(200).sendFile('\\uploads\\default-avatar.jpg', {root: path.resolve(__dirname, '../')})
     }
 
   },
