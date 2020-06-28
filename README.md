@@ -13,7 +13,7 @@ Setup Instructions
   10. cd ..
   11. npm install
   12. npx sequelize-cli db:migrate
-  13. npm start
+  13. npm run dev
   14. server on localhost:5000/api
   
   # Troubleshooting Steps
