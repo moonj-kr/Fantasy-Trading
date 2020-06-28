@@ -8,6 +8,11 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import { Redirect } from 'react-router-dom';
+
+
 
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
@@ -24,7 +29,7 @@ class CreateLeaguePage extends React.Component{
       nameError: false,
       budget: null,
       budgetError: false,
-      startDate: null,
+      startDate: this.formatDate(new Date()),
       startDateError: false,
       endDate: null,
       endDateError: false,
@@ -33,7 +38,8 @@ class CreateLeaguePage extends React.Component{
       render: false,
       emailError: false,
       createError: null,
-      openDialog: false
+      openDialog: false,
+      redirectLeague: false,
     }
   }
   componentDidMount(){
@@ -101,7 +107,8 @@ class CreateLeaguePage extends React.Component{
   }
   handleEndDate = (event) => {
     const endDate = Date.parse(event.target.value);
-    let daysBetween = Math.round((endDate-this.state.todaysDate)/86400000);
+    const startDate = Date.parse(this.state.startDate);
+    let daysBetween = Math.round((endDate-startDate)/86400000);
     if(endDate <= this.state.todaysDate || daysBetween<10){
       this.setState({endDateError: true});
     }
@@ -177,6 +184,14 @@ class CreateLeaguePage extends React.Component{
   handleClose = () => {
     this.setState({openDialog: false});
   }
+  redirectLeague = () => {
+    this.setState({redirectLeague: true});
+  }
+  renderRedirect = () => {
+    if(this.state.redirectLeague){
+      return <Redirect to={"/league/"+this.state.name} />
+    }
+  }
   render(){
     const purpleStyle = {color: '#7702fa', borderColor: '#7702fa', margin: '1em'}
     const dialogStyle = this.state.createError == null ? {backgroundColor: '#95DB7E'} : {backgroundColor: '#EA7E7E'}
@@ -206,6 +221,7 @@ class CreateLeaguePage extends React.Component{
               InputProps={{
                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
               }}
+              helperText={this.state.budgetError ? "must be at least $1000": ""}
             />
             <TextField
               style={purpleStyle}
@@ -216,6 +232,7 @@ class CreateLeaguePage extends React.Component{
               onChange={this.handleStartDate}
               error={this.state.startDateError}
               defaultValue={this.formatDate(this.state.todaysDate)}
+              helperText={this.state.startDateError ? "start date must be after today": ""}
             />
             <TextField
               style={purpleStyle}
@@ -226,6 +243,7 @@ class CreateLeaguePage extends React.Component{
               onChange={this.handleEndDate}
               error={this.state.endDateError}
               defaultValue={this.formatDate(this.state.todaysDate)}
+              helperText={this.state.endDateError ? "league must be at least 10 days": ""}
             />
           </div>
           <div style={{paddingLeft: '1em'}}>
@@ -265,8 +283,16 @@ class CreateLeaguePage extends React.Component{
             <DialogTitle id="alert-dialog-title" style={dialogStyle}>
               {this.state.createError == null?"League created successfully!":this.state.createError}
             </DialogTitle>
+            {this.state.createError == null ?
+              <DialogActions style={{backgroundColor: '#95DB7E'}}>
+                <Button onClick={this.redirectLeague} variant="contained">
+                  Go to League!
+                </Button>
+              </DialogActions> : null
+            }
           </Dialog>
         </div>
+        {this.renderRedirect()}
       </div>
     );
   }
