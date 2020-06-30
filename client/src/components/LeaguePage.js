@@ -3,6 +3,7 @@ import '../stylesheets/App.css';
 import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import Header from './Header.js';
+import LeaguePortfolioGraph from './LeaguePortfolioGraph.js';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 const backend_url = require('../utils/backendUrl.js').backend_url;
@@ -67,10 +68,14 @@ class LeaguePage extends React.Component{
               <p>{this.state.leagueDetails.endDate}</p>
             </div>
           </div>
+		  	<div className="portfolio-graph">
+				<LeaguePortfolioGraph graph={"test"} />
+			</div>
+			<div className="search-stock">search stock</div>
+			<div className="your-stock">your stock</div>
         </div>
       </div>
     )
   }
-
 }
 export default LeaguePage;
