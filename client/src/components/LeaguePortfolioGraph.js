@@ -8,12 +8,23 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { Redirect } from 'react-router-dom';
 import {createMuiTheme} from "@material-ui/core";
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import green from '@material-ui/core/colors/green';
 
 import { Line } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: green[500],
+    },
+  },
+});
 
 class LeaguePortfolioGraph extends React.Component{
 	constructor(props){
@@ -73,9 +84,20 @@ class LeaguePortfolioGraph extends React.Component{
             }
           </h3>
           {this.state.arrowUp ?
-			<MDBContainer>
-        		<Line data={this.state.dataLine} options={{ responsive: true }, {legend:{display:false}}} />
-      		</MDBContainer>
+			  	<div>
+					<MDBContainer>
+						<Line data={this.state.dataLine} options={{ responsive: true }, {legend:{display:false}}} />
+					</MDBContainer>
+					<Grid container alignItems="flex-start" justify="flex-end" direction="row">
+
+		 				<Button color="primary">1D</Button>
+		 				<Button color="primary">1W</Button>
+		 				<Button color="primary">1M</Button>
+		 				<Button color="primary">3M</Button>
+		 				<Button color="primary">1Y</Button>
+		 				<Button color="primary">ALL</Button>
+					</Grid>
+				</div>
             : null
           }
         </div>

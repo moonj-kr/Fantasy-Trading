@@ -1,10 +1,10 @@
 {
   "development": {
     "username": "fantasytrading",
-    "password": "SEmajor5ever",
+    "password": "password",
     "database": "fantasytrading",
     "host": "127.0.0.1",
-    "port": 5432,
+    "port": 5433,
     "dialect": "postgres",
     "api_key": "brko71vrh5r8d4o94qug",
     "backend_url": "http://localhost:5000/api"
