@@ -28,7 +28,12 @@ class LoginPage extends React.Component{
     this.setState({password: event.target.value});
   }
   onLogin = () => {
-    post(backend_url+'/users/login', {username: this.state.username, password: this.state.password}).then(response => {
+    let key = null;
+    if(this.props.match.params.invitationKey){
+      key = this.props.match.params.invitationKey.split("=")[1];
+    }
+    console.log(this.props.match.params.invitationKey)
+    post(backend_url+'/users/login', {username: this.state.username, password: this.state.password, invitationKey: key}).then(response => {
       if(response.status === 200){
         this.setState({
           redirect: true,
@@ -64,7 +69,7 @@ class LoginPage extends React.Component{
           <br></br>
           <br></br>
           {this.renderRedirect()}
-          <button onClick={this.onLogin} className="login-button">login</button>
+          <button onClick={this.onLogin} className="login-button">LOGIN</button>
         </div>
       </div>
     );
