@@ -2,6 +2,52 @@
   display: flex;
   justify-content: flex-start;
 }
+.Landing{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.top-landing{
+  display: flex;
+  flex-direction: column;
+  background-color: #7702fa;
+  justify-content: flex-start;
+  min-height: 40vh;
+  min-width: 100%;
+}
+.top-bar-landing{
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  //height: 100%;
+  padding-bottom: 3em;
+}
+.landing-title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //padding-bottom: 10em;
+}
+.bottom-landing{
+  display: flex;
+  flex-direction: row;
+  //background-color: #7702fa;
+  justify-content: flex-start;
+}
+.landing-description{
+  display: flex;
+  flex-direction: column;
+  padding-left: 8em;
+  padding-top: 8em;
+}
+.landing-description-title{
+  display: flex;
+  flex-direction: column;
+}
+.landing-description-details{
+  display: flex;
+  flex-direction: column;
+}
 .side-column{
   display: block;
   flex-direction: column;
@@ -76,6 +122,20 @@
   color: #7702fa;
   margin-top: auto;
   margin-bottom: auto;
+}
+.header-text-white{
+  font-family: 'mr-eaves-xl-modern', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #FFFFFF;
+  padding-right: 2em;
+  //margin-top: -1em;
+  //margin-top: auto;
+  //margin-bottom: auto;
+}
+.full-logo{
+  width: 25em;
+  height: 3em;
 }
 .logo-container{
   margin-left: auto;
