@@ -12,7 +12,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
+    "@date-io/date-fns": "^2.6.2",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^3.2.10",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "concurrently": "^5.2.0",

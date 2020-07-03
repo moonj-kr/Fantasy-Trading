@@ -75,7 +75,7 @@ function updateJobs(startDateString, endDateString, leagueID){
   global.jobs[leagueID+"-global"] = newGlobalRankingJob;
 
 }
-function sendEmail(email, firstName, leagueName){
+function sendEmail(email, firstName, lastName, leagueName, startDate, profilePicture){
   nodemailer.createTestAccount((err, account) => {
     let transporter = nodemailer.createTransport({
       host: "smtp.mailtrap.io",
@@ -92,11 +92,13 @@ function sendEmail(email, firstName, leagueName){
       //   pass: "ritswen2020"
       // }
     });
-    readHTMLFile(__dirname + '/email.html', function(err, html) {
+    readHTMLFile(__dirname + '/emailV2.html', function(err, html) {
       var template = handlebars.compile(html);
       var replacements = {
            firstName: firstName,
-           leagueName: leagueName
+           lastName: lastName,
+           leagueName: leagueName,
+           startDate: startDate
       };
       var htmlToSend = template(replacements);
       let mailOptions = {
@@ -104,7 +106,19 @@ function sendEmail(email, firstName, leagueName){
         to: email, // list of receivers
         subject: "You've been invited to join " + leagueName, // Subject line
         text: firstName + " has invited you to join their league " + leagueName + "! \nCompete with your friends and show off your stock trading skills! \nPlease click the link below to accept their invite" , // plain text body
-        html: htmlToSend
+        html: htmlToSend,
+        attachments: [
+          {
+           filename: 'logo-full.png',
+           path: `${__dirname}/images/logo-full.png`,
+           cid: 'logo' //same cid value as in the html img src
+          },
+          {
+            filename: profilePicture,
+            path: `${__dirname}/../${profilePicture}`,
+            cid: 'profilePicture'
+          }
+        ]
       };
       transporter.sendMail(mailOptions, (error, info) => {
         if(error){
@@ -211,11 +225,12 @@ module.exports = {
       let message;
       if(!error.errors){
         message = "User must be logged in"
+        res.status(403).send({message: message});
       }
       else{
         message = error.errors[0].message
+        res.status(304).send({message: message});
       }
-      res.status(400).send({message: message});
     });
   },
   sendInvite(req, res){
@@ -228,7 +243,7 @@ module.exports = {
         Portfolio.findOne({where: {leagueID: league.id, userID: user.id}}).then(portfolio => {
           if(portfolio.host == true){
             emails.forEach((address, i) => {
-              sendEmail(address, user.firstName, league.name);
+              sendEmail(address, user.firstName, user.lastName, league.name, league.startDate, user.profilePicture);
               User.findOne({where:{email: address}}).then(user => {
                 let status;
                 if(user){

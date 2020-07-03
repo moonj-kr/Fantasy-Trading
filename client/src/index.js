@@ -5,6 +5,8 @@ import LandingPage from './components/LandingPage.js';
 import RegisterPage from './components/RegisterPage.js';
 import LoginPage from './components/LoginPage.js';
 import HomePage from './components/HomePage.js';
+import CreateLeaguePage from './components/CreateLeaguePage.js';
+import LeaguePage from './components/LeaguePage.js';
 
 import {
   BrowserRouter as Router,
@@ -19,6 +21,12 @@ ReactDOM.render(
       <Route path="/login/:invitationKey?" component={LoginPage} />
       <Route path="/home">
         <HomePage />
+      </Route>
+      <Route path="/league/:name">
+        <LeaguePage />
+      </Route>
+      <Route path="/create">
+        <CreateLeaguePage />
       </Route>
       <Route path="/">
         <LandingPage />

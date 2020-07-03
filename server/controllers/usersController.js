@@ -114,7 +114,7 @@ module.exports = {
     });
   },
   leagues(req, res){
-    sequelize.query(`SELECT "name" FROM "Leagues" l INNER JOIN "Portfolios" p ON "l"."id" =
+    sequelize.query(`SELECT "l"."id","name","startDate","endDate","invitationKey","investmentFunds" FROM "Leagues" l INNER JOIN "Portfolios" p ON "l"."id" =
         "p"."leagueID" INNER JOIN "Users" u ON "p"."userID" = "u"."id" WHERE "u"."sessionID" =
         '${req.sessionID}'`, { type: QueryTypes.SELECT }).then(leagues => {
         res.status(200).send(leagues);
