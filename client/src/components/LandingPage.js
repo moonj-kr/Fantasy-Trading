@@ -57,9 +57,18 @@ class LandingPage extends React.Component{
               <h1 className="header-text" style={{width:"100%", textAlign:"center"}}>Insert Visuals and Introduction/explanation of site here</h1>
             </div>
             <div className="landing-description-details">
-              <h3 className="header-text" style={{width:"100%", textAlign:"center"}}>Zero risk addiction</h3>
+              <h3 className="header-text" style={{width:"100%", textAlign:"center"}}>Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                mollit anim id est laborum.
+              </h3>
             </div>
-            </div>
+          </div>
+          <div className="landing-picture">
+            <img className="landing-picture-dimensions" src={require("../images/StockViewWidget01.PNG")} />
+          </div>
         </div>
         {this.renderRegisterRedirect()}
         {this.renderLoginRedirect()}

@@ -5,7 +5,7 @@
 .Landing{
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: stretch;
 }
 .top-landing{
   display: flex;
@@ -31,22 +31,39 @@
 .bottom-landing{
   display: flex;
   flex-direction: row;
-  //background-color: #7702fa;
-  justify-content: flex-start;
+  justify-content: stretch;
+  min-height: 55vh;
 }
 .landing-description{
   display: flex;
   flex-direction: column;
-  padding-left: 8em;
-  padding-top: 8em;
+  justify-content: center;
+  width: 50%;
+  //height: 100%;
+  align-items: stretch;
 }
 .landing-description-title{
   display: flex;
-  flex-direction: column;
+  width: 80%;
+  align-self: center;
 }
 .landing-description-details{
   display: flex;
-  flex-direction: column;
+  width: 80%;
+  align-self: center;
+}
+.landing-picture{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 50%;
+  //height: 100%;
+  align-items: center;
+}
+.landing-picture-dimensions{
+  width: 25em;
+  height: 15em;
 }
 .side-column{
   display: block;
