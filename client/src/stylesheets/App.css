@@ -92,6 +92,11 @@
   justify-content: center;
   width: 30em;
 }
+.editprofile-container{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
 .home-container{
   display: flex;
   flex-direction: column;

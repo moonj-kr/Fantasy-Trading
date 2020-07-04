@@ -41,7 +41,7 @@ class HomePage extends React.Component{
         <div className="side-column">
         </div>
         <div className="home-container">
-          <Header profilePicture={this.state.profilePicture} username={this.state.username} />
+          <Header prevRoute={this.props.match.path} profilePicture={this.state.profilePicture} username={this.state.username} />
           <div className="leagues-container">
             <LeaguesPreview  />
           </div>

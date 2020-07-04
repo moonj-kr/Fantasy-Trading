@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage.js';
 import RegisterPage from './components/RegisterPage.js';
 import LoginPage from './components/LoginPage.js';
 import HomePage from './components/HomePage.js';
+import EditProfile from './components/EditProfile.js';
 import CreateLeaguePage from './components/CreateLeaguePage.js';
 import LeaguePage from './components/LeaguePage.js';
 
@@ -19,9 +20,8 @@ ReactDOM.render(
     <Switch>
       <Route path="/register/:invitationKey?" component={RegisterPage} />
       <Route path="/login/:invitationKey?" component={LoginPage} />
-      <Route path="/home">
-        <HomePage />
-      </Route>
+      <Route path="/home" component={HomePage} />
+      <Route path="/editprofile" component={EditProfile} />
       <Route path="/league/:name">
         <LeaguePage />
       </Route>

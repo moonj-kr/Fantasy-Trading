@@ -31,7 +31,6 @@ class LoginPage extends React.Component{
     if(this.props.match.params.invitationKey){
       key = this.props.match.params.invitationKey.split("=")[1];
     }
-    console.log(this.props.match.params.invitationKey)
     post(backend_url+'/users/login', {username: this.state.username, password: this.state.password, invitationKey: key}).then(response => {
       if(response.status === 200){
         this.setState({
