@@ -30,7 +30,7 @@ module.exports = {
         email: req.body.email,
         points: 0,
         sessionID: req.sessionID,
-        profilePicture: path.resolve(__dirname, '../../', 'server\\uploads\\default-avatar.jpg')
+        profilePicture: path.resolve(__dirname, '../../', 'server/uploads/default-avatar.jpg')
       }).then(user => {
         //invitationKey passed in if registration triggered from invitation email
         if(req.body.invitationKey){
@@ -200,7 +200,7 @@ module.exports = {
     }
     // Send default avatar if no current profile picture path exists
     else{
-      res.status(200).sendFile('\\uploads\\default-avatar.jpg', {root: path.resolve(__dirname, '../')})
+      res.status(200).sendFile('/uploads/default-avatar.jpg', {root: path.resolve(__dirname, '../')})
     }
 
   },
