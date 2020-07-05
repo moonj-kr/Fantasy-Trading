@@ -212,7 +212,8 @@ module.exports = {
           buyingPower: req.body.investmentFunds,
           percentChange: 0,
           host: true,
-          ranking: null
+          ranking: null,
+          prevValues: []
         }).then(portfolio => {
           portfolio.setLeague(league);
           portfolio.setUser(user);
