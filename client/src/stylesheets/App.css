@@ -105,7 +105,12 @@
   display: flex;
   flex-direction: row;
   padding-top: 2em;
-  justify-content: space-between;
+  justify-content: space-evenly;
+}
+.editprofile-upload{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .editprofile-form{
   display: inline-block;

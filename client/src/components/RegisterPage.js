@@ -48,18 +48,14 @@ class RegisterPage extends React.Component{
           redirectHome: true,
           registerError: null
         });
-        console.log("RedirectHome set to true")
-        console.log(this.state.redirectHome)
       }
       else{
-        console.log(response)
         this.setState({registerError: 'incorrect register'});
       }
     }).catch(error => {this.setState({registerError: 'incorrect register'})});
   }
   renderHomeRedirect = () => {
     if(this.state.redirectHome){
-      console.log("redirect to /home")
       return <Redirect to="/home" />
     }
   }

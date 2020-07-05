@@ -19,7 +19,9 @@ class EditProfile extends React.Component{
       email: null,
       password: null,
       profilePicture: this.props.location.state.profilePicture,
-      redirect: false
+      selectedFile: null,
+      redirect: false,
+      updateUserError: null
     }
   }
   handleFirstName = (event) => {
@@ -38,13 +40,32 @@ class EditProfile extends React.Component{
     this.setState({password: event.target.value});
   }
   onSaveChanges = () => {
-    this.setState({redirect: true})
+    post(backend_url+'/users/profile-details', {username: this.state.username, firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password}).then(response => {
+      if(response.status === 200){
+        this.setState({
+          redirect: true,
+          updateUserError: null
+        });
+      }
+      else{
+        this.setState({updateUserError: 'Update user failed'});
+      }
+    }).catch(error => {this.setState({registerError: 'Update user failed'})});
   }
   renderRedirect = () => {
     let prevRoute = this.props.location.state.prevRoute
     if(this.state.redirect && prevRoute){
       return <Redirect to={prevRoute} />
     }
+  }
+  fileSelectedHandler = (event) => {
+    this.setState({selectedFile: event.target.files[0]})
+  }
+  fileUploadHandler = () => {
+    const formData = new FormData();
+    formData.append('profilePicture',this.state.selectedFile)
+    post(backend_url+'/users/profile-picture', formData).then(response => {
+    }).catch(error => {this.setState({loginError: 'File upload error'})});
   }
   render(){
     return(
@@ -59,7 +80,11 @@ class EditProfile extends React.Component{
             </div>
           </div>
           <div className="editprofile-body">
-            <img className="editprofile-pic" src={this.state.profilePicture} alt="profile" />
+            <div className="editprofile-upload">
+              <img className="editprofile-pic" src={this.state.profilePicture} alt="profile" />
+              <input type="file" onChange={this.fileSelectedHandler}/>
+              <button onClick={this.fileUploadHandler}>Upload</button>
+            </div>
             <div className="editprofile-form">
               <form>
                 <TextField onChange={this.handleFirstName} id="standard-full-width" label="firstName" />

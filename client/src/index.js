@@ -22,15 +22,9 @@ ReactDOM.render(
       <Route path="/login/:invitationKey?" component={LoginPage} />
       <Route path="/home" component={HomePage} />
       <Route path="/editprofile" component={EditProfile} />
-      <Route path="/league/:name">
-        <LeaguePage />
-      </Route>
-      <Route path="/create">
-        <CreateLeaguePage />
-      </Route>
-      <Route path="/">
-        <LandingPage />
-      </Route>
+      <Route path="/league/:name" component={LeaguePage} />
+      <Route path="/create" component={CreateLeaguePage} />
+      <Route path="/" component={LandingPage} />
     </Switch>
   </Router>,
   document.getElementById('root')

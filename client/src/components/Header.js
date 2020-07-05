@@ -38,8 +38,6 @@ class Header extends React.Component{
   }
   renderEditProfileRedirect = () => {
     if(this.state.redirectEditProfile){
-      console.log("Header, redirect to EditProfile")
-      console.log(this.props.prevRoute)
       return <Redirect to={{
         pathname: "/editprofile",
         state: { prevRoute: this.props.prevRoute, profilePicture: this.props.profilePicture }
