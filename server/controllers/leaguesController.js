@@ -75,7 +75,7 @@ function updateJobs(startDateString, endDateString, leagueID){
   global.jobs[leagueID+"-global"] = newGlobalRankingJob;
 
 }
-function sendEmail(email, firstName, lastName, leagueName, startDate, profilePicture){
+function sendEmail(email, firstName, lastName, leagueName, startDate, profilePicture, invitationKey){
   nodemailer.createTestAccount((err, account) => {
     let transporter = nodemailer.createTransport({
       host: "smtp.mailtrap.io",
@@ -100,6 +100,8 @@ function sendEmail(email, firstName, lastName, leagueName, startDate, profilePic
            leagueName: leagueName,
            startDate: startDate
       };
+      let registerUrl = 'http://localhost:3000/register/'+invitationKey;
+      let loginUrl = 'http://localhost:3000/login/'+invitationKey
       var htmlToSend = template(replacements);
       let mailOptions = {
         from: '"Fantasy Trading" <fantasytrading2020@gmail.com>', // sender address
@@ -117,6 +119,16 @@ function sendEmail(email, firstName, lastName, leagueName, startDate, profilePic
             filename: profilePicture,
             path: `${__dirname}/../${profilePicture}`,
             cid: 'profilePicture'
+          },
+          {
+            filename: false,
+            path: registerUrl,
+            cid: 'registerUrl'
+          },
+          {
+            filename: false,
+            path: loginUrl,
+            cid: 'loginUrl'
           }
         ]
       };
@@ -244,7 +256,7 @@ module.exports = {
         Portfolio.findOne({where: {leagueID: league.id, userID: user.id}}).then(portfolio => {
           if(portfolio.host == true){
             emails.forEach((address, i) => {
-              sendEmail(address, user.firstName, user.lastName, league.name, league.startDate, user.profilePicture);
+              sendEmail(address, user.firstName, user.lastName, league.name, league.startDate, user.profilePicture, invitationKey);
               User.findOne({where:{email: address}}).then(user => {
                 let status;
                 if(user){
