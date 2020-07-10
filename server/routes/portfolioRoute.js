@@ -45,7 +45,7 @@ module.exports = (app) => {
     * @swagger
     * /api/portfolio/getStockDetails/{leagueID}:
     *   get:
-    *     name: GETS list of transactions 
+    *     name: GETS list of transactions
     *     summary: gets the number of participants in a league
     *     parameters:
     *       - in: path
@@ -78,4 +78,22 @@ module.exports = (app) => {
     *         description: Sucessfully returns number of particpants in league
     */
 	app.get('/api/portfolio/getCurrentBalance/:leagueID', portfolioController.getCurrentBalance);
+	/**
+    * @swagger
+    * /api/portfolio/prevValues/{leagueID}:
+    *   get:
+    *     name: 
+    *     summary: gets the array of previous portfolio values
+    *     parameters:
+    *       - in: path
+    *         name: leagueID
+    *         schema:
+    *           type: string
+    *         required:
+    *           - leagueID
+    *     responses:
+    *       200:
+    *         description: successfully returns the previous portfolio values
+    */
+	app.get('/api/portfolio/prevValues/:leagueID', portfolioController.getPreviousValues);
 }

@@ -36,6 +36,8 @@ async function scheduleJob() {
 	for(var i = 0; portfolios[i]; i++) {
 		let portfolio = portfolios[i];
 		let transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
+    let prevValuesArr = portfolio.prevValues;
+    prevValuesArr.push(portfolio.value);
 		for(var j = 0; transactions[j]; j++) {
 			let transaction = transactions[j];
 			let key = config.api_key;
@@ -50,8 +52,9 @@ async function scheduleJob() {
 			let newValue = portfolio.value + (transaction.volume * currentPrice);
 			let percentChanged =  (newValue - portfolio.value)/ portfolio.value;
 
+
 			// update portfolio
-			await Portfolio.update({value: newValue, percentChanged: percentChanged}, {
+			await Portfolio.update({value: newValue, percentChanged: percentChanged, prevValues: prevValuesArr}, {
 				where: {
 					id: portfolio.id
 				}
@@ -199,5 +202,32 @@ module.exports = {
 		else{
 			res.status(400).send(responseMessage);
 		}
-	}
+	},
+  async getPreviousValues(req, res){
+    let sessionID = req.sessionID;
+		let leagueID = req.params.leagueID;
+		let user = await User.findOne({where: {sessionID: sessionID}});
+		let league = await League.findOne({where: {id: leagueID}});
+		let portfolio = null;
+		let prevValues = null;
+		if(league != null) {
+			portfolio = await Portfolio.findOne({where: {userID: user.id, leagueID: leagueID}});
+		}
+		if(portfolio != null) {
+			prevValues = portfolio.prevValues;
+		}
+
+		// user error handling
+		let responseMessage = "";
+		if(user == null) {
+			responseMessage = "Error with sessionID. User does not exist";
+		} else if(league == null) {
+			responseMessage = "League does not exist";
+		} else if(prevValues != null){
+			res.status(200).send(prevValues);
+		}
+		else{
+			res.status(400).send(responseMessage);
+		}
+  }
 }

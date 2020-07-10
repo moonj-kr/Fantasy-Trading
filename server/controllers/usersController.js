@@ -46,7 +46,8 @@ module.exports = {
               buyingPower: league.investmentFunds,
               percentChange: 0,
               host: false,
-              ranking: null
+              ranking: null,
+              prevValues: []
             }).then(portfolio => {
               portfolio.setLeague(league);
               portfolio.setUser(user);
@@ -87,7 +88,8 @@ module.exports = {
                 buyingPower: league.investmentFunds,
                 percentChange: 0,
                 host: false,
-                ranking: null
+                ranking: null,
+                prevValues: []
               }).then(portfolio => {
                 portfolio.setLeague(league);
                 portfolio.setUser(user);
