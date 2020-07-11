@@ -48,16 +48,17 @@ class LandingPage extends React.Component{
           <div className="landing-title">
             <img className="full-logo" src={require("../images/fullwhitelogo.png")} />
             {/*<h1 className="header-text-white" style={{width:"100%", textAlign:"center"}}>Fantasy Trading</h1>*/}
-            <h3 className="header-text-white" style={{width:"100%", textAlign:"center"}}>insert tag line here</h3>
+            <h3 className="header-text-white" style={{width:"100%", textAlign:"center", fontSize:"0.9em"}}>insert tag line here</h3>
           </div>
         </div>
         <div className="bottom-landing">
           <div className="landing-description">
             <div className="landing-description-title">
-              <h1 className="header-text" style={{width:"100%", textAlign:"center"}}>Insert Visuals and Introduction/explanation of site here</h1>
+              <h2 className="header-text" style={{width:"100%", textAlign:"left"}}>Insert visuals and introduction of site here</h2>
             </div>
+            <br></br>
             <div className="landing-description-details">
-              <h3 className="header-text" style={{width:"100%", textAlign:"center"}}>Lorem ipsum dolor sit amet,
+              <h3 className="header-text" style={{width:"100%", textAlign:"left", fontWeight:"200"}}>Lorem ipsum dolor sit amet,
                 consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
