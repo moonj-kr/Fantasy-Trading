@@ -25,6 +25,9 @@ module.exports = {
       ranking: {
         type: Sequelize.INTEGER
       },
+      prevValues: {
+        type: Sequelize.ARRAY(Sequelize.DOUBLE)
+      },
       leagueID: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
