@@ -94,14 +94,17 @@ function sendEmail(email, firstName, lastName, leagueName, startDate, profilePic
     });
     readHTMLFile(__dirname + '/emailV2.html', function(err, html) {
       var template = handlebars.compile(html);
+      let registerUrl = 'http://localhost:3000/register/'+invitationKey;
+      let loginUrl = 'http://localhost:3000/login/'+invitationKey
       var replacements = {
            firstName: firstName,
            lastName: lastName,
            leagueName: leagueName,
-           startDate: startDate
+           startDate: startDate,
+           registerUrl: registerUrl,
+           loginUrl: loginUrl
       };
-      let registerUrl = 'http://localhost:3000/register/'+invitationKey;
-      let loginUrl = 'http://localhost:3000/login/'+invitationKey
+
       var htmlToSend = template(replacements);
       let mailOptions = {
         from: '"Fantasy Trading" <fantasytrading2020@gmail.com>', // sender address
@@ -117,18 +120,8 @@ function sendEmail(email, firstName, lastName, leagueName, startDate, profilePic
           },
           {
             filename: profilePicture,
-            path: `${__dirname}/../${profilePicture}`,
+            path: profilePicture,
             cid: 'profilePicture'
-          },
-          {
-            filename: false,
-            path: registerUrl,
-            cid: 'registerUrl'
-          },
-          {
-            filename: false,
-            path: loginUrl,
-            cid: 'loginUrl'
           }
         ]
       };
