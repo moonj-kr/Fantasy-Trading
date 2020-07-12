@@ -40,7 +40,7 @@ class RegisterPage extends React.Component{
   onRegister = () => {
     let key = null;
     if(this.props.match.params.invitationKey){
-      key = this.props.match.params.invitationKey.split("=")[1];
+      key = this.props.match.params.invitationKey;
     }
     post(backend_url+'/users/register', {username: this.state.username, firstName: this.state.firstName, lastName: this.state.lastName, email: this.state.email, password: this.state.password, invitationKey: key}).then(response => {
       if(response.status === 201){
