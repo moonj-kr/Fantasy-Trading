@@ -200,7 +200,7 @@ class CreateLeaguePage extends React.Component{
         <div className="side-column">
         </div>
         <div className="home-container">
-          <Header profilePicture={this.state.profilePicture} username={this.state.username} />
+          <Header prevRoute={this.props.match.path} profilePicture={this.state.profilePicture} username={this.state.username} />
           <h2 style={{color: '#7702fa'}}>create new league</h2>
           <div className="form-container">
             <TextField

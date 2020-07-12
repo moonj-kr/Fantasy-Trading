@@ -30,7 +30,7 @@ module.exports = {
         email: req.body.email,
         points: 0,
         sessionID: req.sessionID,
-        profilePicture: path.resolve(__dirname, '../../', 'server\\uploads\\default-avatar.jpg')
+        profilePicture: path.resolve(__dirname, '../../', 'server/uploads/default-avatar.jpg')
       }).then(user => {
         //invitationKey passed in if registration triggered from invitation email
         if(req.body.invitationKey){
@@ -134,11 +134,25 @@ module.exports = {
     })
   },
   updateUser(req, res){
+    let salt = config.salt;
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user => {
-      user.username = req.body.username;
-      user.email= req.body.email;
-      user.firstName= req.body.firstName;
-      user.lastName= req.body.lastName;
+      if(req.body.username){
+        user.username = req.body.username;
+      }
+      if(req.body.email){
+        user.email = req.body.email;
+      }
+      if(req.body.firstName){
+        user.firstName = req.body.firstName;
+      }
+      if(req.body.lastName){
+        user.lastName = req.body.lastName;
+      }
+      if(req.body.password){
+        bcrypt.hash(salt + req.body.password, 10, function(err, hash){
+          user.password = hash;
+        });
+      }
       user.save();
       res.status(200).send(user);
     }).catch(error => {
@@ -188,7 +202,7 @@ module.exports = {
     }
     // Send default avatar if no current profile picture path exists
     else{
-      res.status(200).sendFile('\\uploads\\default-avatar.jpg', {root: path.resolve(__dirname, '../')})
+      res.status(200).sendFile('/uploads/default-avatar.jpg', {root: path.resolve(__dirname, '../')})
     }
 
   },
