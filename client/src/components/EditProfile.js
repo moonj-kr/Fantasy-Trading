@@ -4,6 +4,7 @@ import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import TextField from '@material-ui/core/TextField';
 import { Redirect } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
 
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
@@ -71,6 +72,9 @@ class EditProfile extends React.Component{
     return(
       <div className="App">
         <div className="side-column">
+          <a href="/home">
+            <HomeIcon style={{color: '#FFFFFF', marginTop: '1em', fontSize: '2em'}} />
+          </a>
         </div>
         <div className="editprofile-container">
           <div className="top-bar">

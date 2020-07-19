@@ -5,7 +5,7 @@ import '../stylesheets/materialui2.css';
 import Header from './Header.js';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Redirect } from 'react-router-dom';
-
+import HomeIcon from '@material-ui/icons/Home';
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
@@ -65,6 +65,9 @@ class LeaguePage extends React.Component{
     return(
       <div className="App">
         <div className="side-column">
+          <a href="/home">
+            <HomeIcon style={{color: '#FFFFFF', marginTop: '1em', fontSize: '2em'}} />
+          </a>
         </div>
         <div className="home-container">
           <Header prevRoute={this.props.match.url} profilePicture={this.state.profilePicture} username={this.state.username} />

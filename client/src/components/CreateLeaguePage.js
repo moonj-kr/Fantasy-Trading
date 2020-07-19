@@ -11,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import { Redirect } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
 
 
 
@@ -57,7 +58,7 @@ class CreateLeaguePage extends React.Component{
     }).catch(error => {
       this.setState({profilePicture: null});
     });
-    if(this.props.location.state.leagueDetails != null){
+    if(this.props.location.state != null){
       let leagueDetails = this.props.location.state.leagueDetails;
       get(backend_url+'/leagues/invites/'+leagueDetails.invitationKey).then(response => {
         let emailsArray = [];
@@ -72,9 +73,8 @@ class CreateLeaguePage extends React.Component{
           emails: emailsArray
         });
       })
-      this.setState({render: true});
     }
-    //this.setState({render: true});
+    this.setState({render: true});
   }
   formatDate(date) {
     var d = new Date(date),
@@ -178,22 +178,43 @@ class CreateLeaguePage extends React.Component{
     }
     return true;
   }
+  update = () => {
+    post(backend_url+'/leagues/update', {
+      id: this.props.location.state.leagueDetails.id,
+      name: this.state.name,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      investmentFunds: this.state.budget
+    }).then(response => {
+      post(backend_url+'/leagues/sendInvite', {
+        emails: this.state.emails,
+        invitationKey: response.data.invitationKey
+      }).then(res => {
+        this.setState({createError: null})
+      }).catch(error => {this.setState({createError: 'invites could not be sent'})});
+    }).catch(error => {this.setState({createError: 'only host user can update league'})});
+  }
   save = () => {
     const errors = this.checkForNulls();
     if(!errors){
-      post(backend_url+'/leagues/create', {
-        name: this.state.name,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
-        investmentFunds: this.state.budget
-      }).then(response => {
-        post(backend_url+'/leagues/sendInvite', {
-          emails: this.state.emails,
-          invitationKey: response.data.invitationKey
-        }).then(res => {
-          this.setState({createError: null})
-        }).catch(error => {this.setState({createError: 'invites could not be sent'})});
-      }).catch(error => {this.setState({createError: 'league name is taken'})});
+      if(this.props.location.state != null){
+        this.update();
+      }
+      else{
+        post(backend_url+'/leagues/create', {
+          name: this.state.name,
+          startDate: this.state.startDate,
+          endDate: this.state.endDate,
+          investmentFunds: this.state.budget
+        }).then(response => {
+          post(backend_url+'/leagues/sendInvite', {
+            emails: this.state.emails,
+            invitationKey: response.data.invitationKey
+          }).then(res => {
+            this.setState({createError: null})
+          }).catch(error => {this.setState({createError: 'invites could not be sent'})});
+        }).catch(error => {this.setState({createError: 'league name is taken'})});
+      }
     }
     this.setState({openDialog: true});
   }
@@ -210,26 +231,35 @@ class CreateLeaguePage extends React.Component{
     }
   }
   render(){
+    let leagueDetails = null;
+    if(this.props.location.state != null){
+      leagueDetails = this.props.location.state.leagueDetails;
+    }
     const purpleStyle = {color: '#7702fa', borderColor: '#7702fa', margin: '1em'}
     const dialogStyle = this.state.createError == null ? {backgroundColor: '#95DB7E'} : {backgroundColor: '#EA7E7E'}
     return(
       <div className="App">
         <div className="side-column">
+          <a href="/home">
+            <HomeIcon style={{color: '#FFFFFF', marginTop: '1em', fontSize: '2em'}} />
+          </a>
         </div>
         <div className="home-container">
           <Header prevRoute={this.props.match.path} profilePicture={this.state.profilePicture} username={this.state.username} />
           <h2 style={{color: '#7702fa'}}>create new league</h2>
           <div className="form-container">
             <TextField
+              key="league_name"
               style={purpleStyle}
               id="standard-full-width"
               label="name"
               variant="outlined"
               onChange={this.handleName}
               error={this.state.nameError}
-              defaultValue={this.state.name}
+              defaultValue={leagueDetails==null?null:leagueDetails.name}
             />
             <TextField
+              key="league_budget"
               style={purpleStyle}
               id="standard-full-width"
               label="budget"
@@ -239,10 +269,11 @@ class CreateLeaguePage extends React.Component{
               InputProps={{
                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
               }}
-              defaultValue={this.state.budget}
+              defaultValue={leagueDetails==null?null:leagueDetails.investmentFunds}
               helperText={this.state.budgetError ? "must be at least $1000": ""}
             />
             <TextField
+              key="league_start"
               style={purpleStyle}
               id="date"
               label="set start date"
@@ -250,10 +281,11 @@ class CreateLeaguePage extends React.Component{
               variant="outlined"
               onChange={this.handleStartDate}
               error={this.state.startDateError}
-              defaultValue={this.state.startDate}
+              defaultValue={leagueDetails==null?this.formatDate(this.state.todaysDate):leagueDetails.startDate}
               helperText={this.state.startDateError ? "start date must be after today": ""}
             />
             <TextField
+              key="league_end"
               style={purpleStyle}
               id="date"
               label="set end date"
@@ -261,7 +293,7 @@ class CreateLeaguePage extends React.Component{
               variant="outlined"
               onChange={this.handleEndDate}
               error={this.state.endDateError}
-              defaultValue={this.state.endDate}
+              defaultValue={leagueDetails==null?this.formatDate(this.state.todaysDate):leagueDetails.endDate}
               helperText={this.state.endDateError ? "league must be at least 10 days": ""}
             />
           </div>
