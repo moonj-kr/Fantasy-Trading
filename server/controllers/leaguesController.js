@@ -201,6 +201,14 @@ module.exports = {
   list(req, res){
     return League.findAll().then((leagues) => {res.status(200).send(leagues)}).catch(error => {res.status(400).send(error)})
   },
+  getEmails(req,res){
+    return Invite.findAll({
+      attributes: ['email'],
+      where: {invitationKey: req.params.invitationKey}
+    }).then((invites) => {
+      res.status(200).send(invites)
+    }).catch(error => {res.status(400).send(error)})
+  },
   create(req, res) {
     const invitationKey = generateInviteKey();
     const sessionID = req.sessionID;

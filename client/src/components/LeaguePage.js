@@ -4,6 +4,7 @@ import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import Header from './Header.js';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { Redirect } from 'react-router-dom';
 
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
@@ -15,6 +16,7 @@ class LeaguePage extends React.Component{
     this.state = {
       username: null,
       profilePicture: null,
+      redirectUpdate: false,
       leagueDetails: {}
     }
   }
@@ -42,6 +44,23 @@ class LeaguePage extends React.Component{
     });
     this.setState({render: true});
   }
+  redirectToUpdate = () => {
+    if(this.state.redirectUpdate){
+      this.setState({redirectUpdate: false});
+    }
+    else{
+      this.setState({redirectUpdate: true});
+    }
+  }
+  renderRedirectToUpdate = () => {
+    if(this.state.redirectUpdate){
+      return <Redirect to={{
+        pathname: "/create",
+        state: {leagueDetails: this.state.leagueDetails}
+        }}
+        />
+    }
+  }
   render(){
     return(
       <div className="App">
@@ -51,7 +70,7 @@ class LeaguePage extends React.Component{
           <Header prevRoute={this.props.match.url} profilePicture={this.state.profilePicture} username={this.state.username} />
           <div className="league-header">
             <h3>{this.state.leagueDetails.name}</h3>
-            <SettingsIcon style={{marginLeft: 'auto'}} />
+            <SettingsIcon onClick={this.redirectToUpdate} style={{marginLeft: 'auto'}} />
           </div>
           <div className="league-details">
             <div className="league-detail" style={{marginRight: 'auto'}}>
@@ -67,6 +86,7 @@ class LeaguePage extends React.Component{
               <p>{this.state.leagueDetails.endDate}</p>
             </div>
           </div>
+          {this.renderRedirectToUpdate()}
         </div>
       </div>
     )

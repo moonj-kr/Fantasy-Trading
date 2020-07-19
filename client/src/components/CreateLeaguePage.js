@@ -31,7 +31,7 @@ class CreateLeaguePage extends React.Component{
       budgetError: false,
       startDate: this.formatDate(new Date()),
       startDateError: false,
-      endDate: null,
+      endDate: this.formatDate(new Date()),
       endDateError: false,
       emails: [],
       addEmail: false,
@@ -57,7 +57,24 @@ class CreateLeaguePage extends React.Component{
     }).catch(error => {
       this.setState({profilePicture: null});
     });
-    this.setState({render: true});
+    if(this.props.location.state.leagueDetails != null){
+      let leagueDetails = this.props.location.state.leagueDetails;
+      get(backend_url+'/leagues/invites/'+leagueDetails.invitationKey).then(response => {
+        let emailsArray = [];
+        for(let i=0; i<response.data.length; i++){
+          emailsArray.push(response.data[i].email);
+        }
+        this.setState({
+          name: leagueDetails.name,
+          startDate: leagueDetails.startDate,
+          endDate: leagueDetails.endDate,
+          budget: leagueDetails.investmentFunds,
+          emails: emailsArray
+        });
+      })
+      this.setState({render: true});
+    }
+    //this.setState({render: true});
   }
   formatDate(date) {
     var d = new Date(date),
@@ -210,6 +227,7 @@ class CreateLeaguePage extends React.Component{
               variant="outlined"
               onChange={this.handleName}
               error={this.state.nameError}
+              defaultValue={this.state.name}
             />
             <TextField
               style={purpleStyle}
@@ -221,6 +239,7 @@ class CreateLeaguePage extends React.Component{
               InputProps={{
                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
               }}
+              defaultValue={this.state.budget}
               helperText={this.state.budgetError ? "must be at least $1000": ""}
             />
             <TextField
@@ -231,7 +250,7 @@ class CreateLeaguePage extends React.Component{
               variant="outlined"
               onChange={this.handleStartDate}
               error={this.state.startDateError}
-              defaultValue={this.formatDate(this.state.todaysDate)}
+              defaultValue={this.state.startDate}
               helperText={this.state.startDateError ? "start date must be after today": ""}
             />
             <TextField
@@ -242,7 +261,7 @@ class CreateLeaguePage extends React.Component{
               variant="outlined"
               onChange={this.handleEndDate}
               error={this.state.endDateError}
-              defaultValue={this.formatDate(this.state.todaysDate)}
+              defaultValue={this.state.endDate}
               helperText={this.state.endDateError ? "league must be at least 10 days": ""}
             />
           </div>

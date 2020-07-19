@@ -37,6 +37,19 @@ module.exports = (app) => {
   app.get('/api/leagues/list', leaguesController.list);
   /**
     * @swagger
+    * /api/leagues/invites:
+    *   get:
+    *     tags:
+    *       - Leagues
+    *     name: Get invites
+    *     summary: shows all the invites of a particular league
+    *     responses:
+    *       200:
+    *         description: Sucessfully lists all invites
+  */
+  app.get('/api/leagues/invites/:invitationKey', leaguesController.getEmails);
+  /**
+    * @swagger
     * /api/leagues/create:
     *   post:
     *     tags:
