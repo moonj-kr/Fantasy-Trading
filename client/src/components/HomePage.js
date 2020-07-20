@@ -76,7 +76,7 @@ class LeaguesPreview extends React.Component{
     let linkStyle = {color: '#7702fa', fontWeight: 'bold'}
     return(
       <div>
-        <h2 style={{color: '#7702fa'}}>current leagues</h2>
+        <h2 style={{color: '#7702fa', marginBlockStart: '0px', marginBlockEnd: '0px'}}>current leagues</h2>
         <ul className="leagues-container">
           {Object.entries(this.state.leagues).map(([league, [daysRemaining, data]]) => (
             <div key={league} className="league">

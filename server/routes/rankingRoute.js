@@ -1,7 +1,7 @@
 const rankingController = require('../controllers').rankingController;
 
 module.exports = (app) => {
- 
+
   /**
     * @swagger
     * /api/ranking/leagueRankings/{leagueID}:
@@ -36,6 +36,19 @@ module.exports = (app) => {
     *         description: Sucessfully returns the points and userID for each user in all leagues
   */
   app.get('/api/ranking/globalRankings', rankingController.globalRankings);
+  /**
+    * @swagger
+    * /api/ranking/global:
+    *   get:
+    *     tags:
+    *       - Ranking
+    *     name: Get Current Global Ranking
+    *     summary: Gets the current user's global ranking
+    *     responses:
+    *       200:
+    *         description: Sucessfully returns the current global ranking
+  */
+  app.get('/api/ranking/global', rankingController.getCurrentGlobalRanking);
 
   /**
     * @swagger
@@ -78,4 +91,5 @@ module.exports = (app) => {
     *         description: Sucessfully updates global points for all users within a specific league
   */
   app.post('/api/ranking/updateGlobalRankings/:leagueID', rankingController.updateGlobalRankings);
+
 }
