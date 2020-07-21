@@ -12,9 +12,10 @@ Setup Instructions
   9. cd client --> npm install
   10. cd ..
   11. npm install
-  12. npx sequelize-cli db:migrate
-  13. npm run dev
-  14. server on localhost:5000/api
+  12. cd server 
+  13. npx sequelize-cli db:migrate
+  14. npm run dev
+  15. server on localhost:5000/api
   
   # Troubleshooting Steps
   ERROR: Cannot find "/Users/jisook.moon/Desktop/Fantasy-Trading/config/config/config.json". Have you run "sequelize init"?
