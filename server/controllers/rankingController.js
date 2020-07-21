@@ -46,17 +46,17 @@ async function updateGlobal(portfolios, league) {
     let portfolio = portfolios[i];
 
     let pointsAdded = ((((portfolio['value'] + portfolio['buyingPower']) - startingFunds)/startingFunds) * numberOfUsers) - numberOfWeeks;
-    let userID = portfolio["userID"];
+    let userID = portfolio.userID;
     let user = await User.findOne({where: {id: userID}});
 
     // The amount of points the user has before the update
-    let currentUserPoints = user['points'];
+    let currentUserPoints = user.points;
 
     // The amount of points the user has after the update
     let totalPoints = currentUserPoints + pointsAdded;
-    
-    user['points'] = Math.round(totalPoints);
 
+    user.points = Math.round(totalPoints);
+    user.changeInPoints = Math.round(pointsAdded);
     user.save();
   }
 }
@@ -77,7 +77,7 @@ module.exports = {
   globalRankings(req, res) {
     return User
       .findAll({
-        attributes: ['id', 'points'],
+        attributes: ['username', 'points', 'changeInPoints'],
         order: [
           ['points', 'DESC']
         ]
@@ -85,6 +85,18 @@ module.exports = {
       .then((users) =>
       res.status(200).send(users))
       .catch((error) => res.status(400).send(error));
+  },
+  getCurrentGlobalRanking(req, res){
+    return User.findOne({where: {sessionID: req.sessionID}}).then((user) => {
+      User.findAll({attributes: ['id', 'points'], order: [['points', 'DESC']]}).then((users) => {
+        for(let index=0; index<users.length; index++){
+          let rank = index+1;
+          if(users[index].id == user.id){
+            res.status(200).send({rank: rank});
+          }
+        }
+      }).catch((error) => {console.log(error)})
+    }).catch((error) => {res.status(400).send(error)})
   },
   updateLeagueRankings(req, res) {
     Portfolio

@@ -2,6 +2,65 @@
   display: flex;
   justify-content: flex-start;
 }
+.Landing{
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+.top-landing{
+  display: flex;
+  flex-direction: column;
+  background-color: #7702fa;
+  justify-content: flex-start;
+  min-height: 40vh;
+  min-width: 100%;
+}
+.top-bar-landing{
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  padding-bottom: 3em;
+}
+.landing-title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.bottom-landing{
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  min-height: 55vh;
+}
+.landing-description{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  align-items: stretch;
+}
+.landing-description-title{
+  display: flex;
+  width: 80%;
+  align-self: center;
+  font-size: 0.9em;
+}
+.landing-description-details{
+  display: flex;
+  width: 80%;
+  align-self: center;
+  font-size: 0.8em;
+}
+.landing-picture{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+.landing-picture-dimensions{
+  width: 25em;
+  height: 15em;
+}
 .side-column{
   display: block;
   flex-direction: column;
@@ -11,6 +70,7 @@
   padding-right: 1em;
   width: 3em;
   min-height: 100vh;
+  text-align: center;
 }
 .side-login{
   display: flex;
@@ -28,6 +88,42 @@
   align-items: stretch;
   justify-content: center;
   width: 30em;
+}
+.editprofile-container{
+  display: flex;
+  flex-direction: column;
+  padding-left: 6em;
+  padding-right: 6em;
+  padding-top: 4em;
+  width: 100%;
+  height: 100%;
+}
+.editprofile-body{
+  display: flex;
+  flex-direction: row;
+  padding-top: 2em;
+  justify-content: space-evenly;
+}
+.editprofile-upload{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.editprofile-form{
+  display: inline-block;
+  background-color: #E5E8E8;
+  width: 25em;
+  height: 16em;
+  margin: 0.5em;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 1em;
+  text-align: center;
+}
+.editprofile-bottom{
+  display: flex;
+  flex-direction: row-reverse;
+  padding-top: 2em;
 }
 .home-container{
   display: flex;
@@ -63,6 +159,12 @@
   width: 4em;
   height: 4em;
 }
+.editprofile-pic{
+  display: block;
+  border-radius: 50%;
+  width: 15em;
+  height: 15em;
+}
 .text-color{
   font-family: 'mr-eaves-xl-modern', sans-serif;
   font-weight: 700;
@@ -76,6 +178,20 @@
   color: #7702fa;
   margin-top: auto;
   margin-bottom: auto;
+}
+.header-text-white{
+  font-family: 'mr-eaves-xl-modern', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: #FFFFFF;
+  padding-right: 2em;
+  //margin-top: -1em;
+  //margin-top: auto;
+  //margin-bottom: auto;
+}
+.full-logo{
+  width: 25em;
+  height: 3em;
 }
 .logo-container{
   margin-left: auto;

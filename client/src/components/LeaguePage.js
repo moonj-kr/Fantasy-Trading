@@ -5,7 +5,8 @@ import '../stylesheets/materialui2.css';
 import Header from './Header.js';
 import LeaguePortfolioGraph from './LeaguePortfolioGraph.js';
 import SettingsIcon from '@material-ui/icons/Settings';
-
+import { Redirect } from 'react-router-dom';
+import HomeIcon from '@material-ui/icons/Home';
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
@@ -16,6 +17,7 @@ class LeaguePage extends React.Component{
     this.state = {
       username: null,
       profilePicture: null,
+      redirectUpdate: false,
       leagueDetails: {}
     }
   }
@@ -43,16 +45,36 @@ class LeaguePage extends React.Component{
     });
     this.setState({render: true});
   }
+  redirectToUpdate = () => {
+    if(this.state.redirectUpdate){
+      this.setState({redirectUpdate: false});
+    }
+    else{
+      this.setState({redirectUpdate: true});
+    }
+  }
+  renderRedirectToUpdate = () => {
+    if(this.state.redirectUpdate){
+      return <Redirect to={{
+        pathname: "/create",
+        state: {leagueDetails: this.state.leagueDetails}
+        }}
+        />
+    }
+  }
   render(){
     return(
       <div className="App">
         <div className="side-column">
+          <a href="/home">
+            <HomeIcon style={{color: '#FFFFFF', marginTop: '1em', fontSize: '2em'}} />
+          </a>
         </div>
         <div className="home-container">
-          <Header profilePicture={this.state.profilePicture} username={this.state.username} />
+          <Header prevRoute={this.props.match.url} profilePicture={this.state.profilePicture} username={this.state.username} />
           <div className="league-header">
             <h3>{this.state.leagueDetails.name}</h3>
-            <SettingsIcon style={{marginLeft: 'auto'}} />
+            <SettingsIcon onClick={this.redirectToUpdate} style={{marginLeft: 'auto'}} />
           </div>
           <div className="league-details">
             <div className="league-detail" style={{marginRight: 'auto'}}>
@@ -68,11 +90,15 @@ class LeaguePage extends React.Component{
               <p>{this.state.leagueDetails.endDate}</p>
             </div>
           </div>
+<<<<<<< HEAD
 		  	<div className="portfolio-graph">
 				<LeaguePortfolioGraph graph={"test"} />
 			</div>
 			<div className="search-stock">search stock</div>
 			<div className="your-stock">your stock</div>
+=======
+          {this.renderRedirectToUpdate()}
+>>>>>>> d394c9ede8eda7fff6ebf94055bbaf40642f0c7f
         </div>
       </div>
     )

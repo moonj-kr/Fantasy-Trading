@@ -34,6 +34,9 @@ module.exports = {
       profilePicture: {
         type: Sequelize.STRING
       },
+      changeInPoints:{
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

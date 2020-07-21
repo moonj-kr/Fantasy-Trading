@@ -161,6 +161,11 @@ module.exports = (app) => {
     *         type: string
     *         required: true
     *         description: New lastName
+    *       - in: body
+    *         name: password
+    *         type: string
+    *         required: true
+    *         description: New password
     *     responses:
     *       200:
     *         description: Sucessfully returns updated user

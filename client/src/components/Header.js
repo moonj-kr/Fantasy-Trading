@@ -17,7 +17,8 @@ class Header extends React.Component{
     super(props);
     this.state = {
       arrowUp: false,
-      redirectLogin: false,
+      redirectLogout: false,
+      redirectEditProfile: false,
       render: false
     }
   }
@@ -30,15 +31,27 @@ class Header extends React.Component{
       this.setState({arrowUp: true});
     }
   }
-  renderRedirect = () => {
-    if(this.state.redirectLogin){
+  renderLogoutRedirect = () => {
+    if(this.state.redirectLogout){
       return <Redirect to="/" />
+    }
+  }
+  renderEditProfileRedirect = () => {
+    if(this.state.redirectEditProfile){
+      return <Redirect to={{
+        pathname: "/editprofile",
+        state: { prevRoute: this.props.prevRoute, profilePicture: this.props.profilePicture }
+        }}
+        />
     }
   }
   logout = () => {
     get(backend_url+'/users/logout').then(response => {
-      this.setState({redirectLogin: true});
+      this.setState({redirectLogout: true});
     }).catch(error => {console.error(error)})
+  }
+  editProfile = () => {
+    this.setState({redirectEditProfile: true});
   }
   render(){
     let arrowIconStyle = {verticalAlign: 'middle', margin: 'auto'}
@@ -57,7 +70,7 @@ class Header extends React.Component{
           </h3>
           {this.state.arrowUp ?
             <MenuList style={menuListStyle}>
-              <MenuItem style={dropdownMenuStyle}>edit profile</MenuItem>
+              <MenuItem onClick={this.editProfile} style={dropdownMenuStyle}>edit profile</MenuItem>
               <MenuItem onClick={this.logout} style={dropdownMenuStyle}>logout</MenuItem>
             </MenuList>
             : null
@@ -66,7 +79,8 @@ class Header extends React.Component{
         <div className="logo-container">
           <img className="logo" src={require("../images/smalllogo.png")} alt="logo" />
         </div>
-        {this.renderRedirect()}
+        {this.renderLogoutRedirect()}
+        {this.renderEditProfileRedirect()}
     </div>
     );
   }

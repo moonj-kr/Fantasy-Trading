@@ -41,7 +41,7 @@ class HomePage extends React.Component{
         <div className="side-column">
         </div>
         <div className="home-container">
-          <Header profilePicture={this.state.profilePicture} username={this.state.username} />
+          <Header prevRoute={this.props.match.path} profilePicture={this.state.profilePicture} username={this.state.username} />
           <div className="leagues-container">
             <LeaguesPreview  />
           </div>
@@ -76,7 +76,7 @@ class LeaguesPreview extends React.Component{
     let linkStyle = {color: '#7702fa', fontWeight: 'bold'}
     return(
       <div>
-        <h2 style={{color: '#7702fa'}}>current leagues</h2>
+        <h2 style={{color: '#7702fa', marginBlockStart: '0px', marginBlockEnd: '0px'}}>current leagues</h2>
         <ul className="leagues-container">
           {Object.entries(this.state.leagues).map(([league, [daysRemaining, data]]) => (
             <div key={league} className="league">
