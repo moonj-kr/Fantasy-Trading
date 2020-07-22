@@ -90,15 +90,14 @@ class LeaguePage extends React.Component{
               <p>{this.state.leagueDetails.endDate}</p>
             </div>
           </div>
-<<<<<<< HEAD
-		  	<div className="portfolio-graph">
-				<LeaguePortfolioGraph graph={"test"} />
-			</div>
-			<div className="search-stock">search stock</div>
-			<div className="your-stock">your stock</div>
-=======
-          {this.renderRedirectToUpdate()}
->>>>>>> d394c9ede8eda7fff6ebf94055bbaf40642f0c7f
+
+		<div className="portfolio-graph">
+			<LeaguePortfolioGraph graph={"test"} />
+		</div>
+		<div className="search-stock">search stock</div>
+		<div className="your-stock">your stock</div>
+
+		{this.renderRedirectToUpdate()}
         </div>
       </div>
     )

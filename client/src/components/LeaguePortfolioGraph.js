@@ -83,6 +83,7 @@ class LeaguePortfolioGraph extends React.Component{
 				: <ArrowDropUpIcon style={arrowIconStyle}/>
             }
           </h3>
+
           {this.state.arrowUp ?
 			  	<div>
 					<MDBContainer>
@@ -90,8 +91,8 @@ class LeaguePortfolioGraph extends React.Component{
 					</MDBContainer>
 					<Grid container alignItems="flex-start" justify="flex-end" direction="row">
 
-		 				<Button color="primary">1D</Button>
-		 				<Button color="primary">1W</Button>
+		 				<Button onClick={() => { this.setState(this.state.dataLine.datasets[0].data= [1,2,3,4,5,6,7])}} color="primary">1D</Button>
+		 				<Button onClick={() => {alert(this.state.dataLine.datasets[0].data)}}color="primary">1W</Button>
 		 				<Button color="primary">1M</Button>
 		 				<Button color="primary">3M</Button>
 		 				<Button color="primary">1Y</Button>
