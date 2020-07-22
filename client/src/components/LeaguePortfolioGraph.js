@@ -15,8 +15,10 @@ import green from '@material-ui/core/colors/green';
 import { Line } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 
-const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
+const post = require('../utils/requests.js').postRequest;
+const backend_url = require('../utils/backendUrl.js').backend_url;
+
 
 const theme = createMuiTheme({
   palette: {
@@ -31,6 +33,7 @@ class LeaguePortfolioGraph extends React.Component{
     	super(props);
     	this.state = {
       		arrowUp: true,
+			graphView: "",
 			dataLine:{
 				labels: ["5/21", "5/22", "5/23", "5/24", "5/25", "5/26", "5/27"],
 				datasets: [
@@ -61,14 +64,24 @@ class LeaguePortfolioGraph extends React.Component{
 		}
 	}
 
-  onExpand = () => {
-    if(this.state.arrowUp){
-      this.setState({arrowUp: false});
-    }
-    else{
-      this.setState({arrowUp: true});
-    }
-  }
+	onExpand = () => {
+		if(this.state.arrowUp){
+		  this.setState({arrowUp: false});
+		} else {
+		  this.setState({arrowUp: true});
+		}
+	};
+
+	updateGraph = (graphView) => {
+		if(graphView == "") {
+			this.setState(this.state.dataLine.datasets[0].data=[1,2,3,4,5,6,7]);
+		} else {
+			//post(backend_url+'/portfolio/
+			this.setState(this.state.dataLine.datasets[0].data=[11,12,13,14,45,16,17]);
+		}
+	}
+	
+
 
   render(){
     let arrowIconStyle = {verticalAlign: 'middle', margin: 'auto'}
@@ -91,12 +104,12 @@ class LeaguePortfolioGraph extends React.Component{
 					</MDBContainer>
 					<Grid container alignItems="flex-start" justify="flex-end" direction="row">
 
-		 				<Button onClick={() => { this.setState(this.state.dataLine.datasets[0].data= [1,2,3,4,5,6,7])}} color="primary">1D</Button>
-		 				<Button onClick={() => {alert(this.state.dataLine.datasets[0].data)}}color="primary">1W</Button>
-		 				<Button color="primary">1M</Button>
-		 				<Button color="primary">3M</Button>
-		 				<Button color="primary">1Y</Button>
-		 				<Button color="primary">ALL</Button>
+		 				<Button onClick={() => { this.updateGraph("1D")}} color="primary">1D</Button>
+		 				<Button onClick={() => { this.updateGraph("1W")}} color="primary">1W</Button>
+		 				<Button onClick={() => { this.updateGraph("1M")}} color="primary">1M</Button>
+		 				<Button onClick={() => { this.updateGraph("3M")}} color="primary">3M</Button>
+		 				<Button onClick={() => { this.updateGraph("1Y")}} color="primary">1Y</Button>
+		 				<Button onClick={() => { this.updateGraph("ALL")}} color="primary">ALL</Button>
 					</Grid>
 				</div>
             : null
