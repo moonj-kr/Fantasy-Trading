@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     percentChange: DataTypes.DOUBLE,
     host: DataTypes.BOOLEAN,
     ranking: DataTypes.INTEGER,
-    prevValues: DataTypes.ARRAY(DataTypes.DOUBLE)
+    prevValues: DataTypes.ARRAY(DataTypes.DOUBLE),
+    datesArray: DataTypes.ARRAY(DataTypes.DATE)
   }, {});
   Portfolio.associate = function(models) {
     Portfolio.belongsTo(models.League, {

@@ -37,7 +37,9 @@ async function scheduleJob() {
 		let portfolio = portfolios[i];
 		let transactions = await Transaction.findAll({where: {portfolioID: portfolio.id}});
     let prevValuesArr = portfolio.prevValues;
+    let datesArray = portfolio.datesArray;
     prevValuesArr.push(portfolio.value);
+    datesArray.push(new Date()-1);
 		for(var j = 0; transactions[j]; j++) {
 			let transaction = transactions[j];
 			let key = config.api_key;

@@ -28,6 +28,9 @@ module.exports = {
       prevValues: {
         type: Sequelize.ARRAY(Sequelize.DOUBLE)
       },
+      datesArray:{
+        type: Sequelize.ARRAY(Sequelize.DATE)
+      },
       leagueID: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',

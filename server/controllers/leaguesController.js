@@ -226,7 +226,8 @@ module.exports = {
           percentChange: 0,
           host: true,
           ranking: null,
-          prevValues: []
+          prevValues: [],
+          datesArray: []
         }).then(portfolio => {
           portfolio.setLeague(league);
           portfolio.setUser(user);
