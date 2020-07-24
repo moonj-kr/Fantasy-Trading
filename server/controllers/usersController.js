@@ -28,6 +28,7 @@ module.exports = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
+        changeInPoints: 0,
         points: 0,
         sessionID: req.sessionID,
         profilePicture: path.resolve(__dirname, '../../', 'server/uploads/default-avatar.jpg')
