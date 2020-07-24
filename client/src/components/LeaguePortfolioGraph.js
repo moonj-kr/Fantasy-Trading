@@ -18,15 +18,8 @@ import { MDBContainer } from "mdbreact";
 const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
 const backend_url = require('../utils/backendUrl.js').backend_url;
-
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: green[500],
-    },
-  },
-});
+const pathVar = window.location.pathname.split('/')[2];
+//const leagueName = pathVar.replace('%20', " ");
 
 class LeaguePortfolioGraph extends React.Component{
 	constructor(props){
@@ -73,10 +66,14 @@ class LeaguePortfolioGraph extends React.Component{
 	};
 
 	updateGraph = (graphView) => {
+//		let leagueID = get(backend_url+'/leagues/list/' + leagueName);
+//		let data = post(backend_url+'/portfolio/prevValues/' + leagueID);
+
 		if(graphView == "") {
 			this.setState(this.state.dataLine.datasets[0].data=[1,2,3,4,5,6,7]);
 		} else {
 			//post(backend_url+'/portfolio/
+			//this.setState(alert(leagueID));
 			this.setState(this.state.dataLine.datasets[0].data=[11,12,13,14,45,16,17]);
 		}
 	}
@@ -102,8 +99,7 @@ class LeaguePortfolioGraph extends React.Component{
 					<MDBContainer>
 						<Line data={this.state.dataLine} options={{ responsive: true }, {legend:{display:false}}} />
 					</MDBContainer>
-					<Grid container alignItems="flex-start" justify="flex-end" direction="row">
-
+					<Grid className="graph-buttons" container alignItems="flex-start" justify="flex-end" direction="row">
 		 				<Button onClick={() => { this.updateGraph("1D")}} color="primary">1D</Button>
 		 				<Button onClick={() => { this.updateGraph("1W")}} color="primary">1W</Button>
 		 				<Button onClick={() => { this.updateGraph("1M")}} color="primary">1M</Button>
