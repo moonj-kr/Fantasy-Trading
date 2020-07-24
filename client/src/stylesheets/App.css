@@ -299,7 +299,6 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100%;
   margin: 0.5em;
 }
 .circle-rank{
@@ -328,4 +327,22 @@
 }
 .points-change{
   margin-left: 0.75em;
+}
+.leaderboard-container{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 20em;
+}
+.player{
+  background-color: #E5E8E8;
+  border-radius: 1em;
+  height: 2.75em;
+  width: 25em;
+  margin: 0.5em;
+}
+.player-rank{
+  color: #7702fa;
+  display: inline-flex;
+  font-size: 1em;
 }
