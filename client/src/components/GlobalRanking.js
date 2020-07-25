@@ -106,10 +106,10 @@ class LeaderboardLabel extends React.Component{
         <p className="labels" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
         {this.props.renderSecondCol ?
           <>
-            <p className="label" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
-            <p className="label" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
-            <p className="label" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
-            <p className="label" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+            <p className="labels" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
+            <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
+            <p className="labels" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
+            <p className="labels" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
           </>
           : <div></div>}
       </div>
