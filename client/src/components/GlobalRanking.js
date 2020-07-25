@@ -27,13 +27,19 @@ class GlobalRanking extends React.Component{
       });
     }).catch(error => {console.log(error)});
     get(backend_url+'/ranking/globalRankings').then(response => {
-      this.setState({
-        leaderboard: response.data
-      });
+      if(response.data.length > 10){
+        this.setState({
+          leaderboard: response.data.slice(1, 11)
+        });
+      }
+      else{
+        this.setState({
+          leaderboard: response.data
+        });
+      }
     }).catch(error => {console.log(error)});
   }
   render(){
-    console.log(this.state.changeInPoints);
     let iconAlignStyle = {verticalAlign: 'middle', margin: 'auto'}
     return(
       <div>
@@ -57,7 +63,7 @@ class GlobalRanking extends React.Component{
           </div>
         </div>
         <h3 style={{color: '#7702fa', marginBlockStart: '0px', marginBlockEnd: '0px', marginTop: '1em'}}><StarIcon style={iconAlignStyle} />top players</h3>
-        <LeaderboardLabel />
+        <LeaderboardLabel renderSecondCol={this.state.leaderboard.length > 5}/>
         <div className="leaderboard-container">
           {this.state.leaderboard.map((player, index) => (
             <Player details={player} rank={index+1} />
@@ -98,10 +104,14 @@ class LeaderboardLabel extends React.Component{
         <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
         <p className="labels" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
         <p className="labels" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
-        <p className="labels" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
-        <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
-        <p className="labels" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
-        <p className="labels" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+        {this.props.renderSecondCol ?
+          <>
+            <p className="label" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
+            <p className="label" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
+            <p className="label" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
+            <p className="label" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+          </>
+          : <div></div>}
       </div>
     )
   }

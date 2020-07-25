@@ -9,6 +9,7 @@ module.exports = {
         email: 'rxb9639@g.rit.edu',
         sessionID: '12345abcde',
         points: 300,
+        changeInPoints: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -20,6 +21,7 @@ module.exports = {
         email: 'lxg8800@g.rit.edu',
         sessionID: '1a2b3c4d5e',
         points: 400,
+        changeInPoints: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -31,6 +33,7 @@ module.exports = {
         email: 'cxs7700@g.rit.edu',
         sessionID: 'abcde12345',
         points: 500,
+        changeInPoints: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -42,6 +45,7 @@ module.exports = {
         email: 'jxm6162@rit.edu',
         sessionID: 'e5d4c3b2a1',
         points: 600,
+        changeInPoints: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -53,6 +57,7 @@ module.exports = {
         email: 'rxv3774@g.rit.edu',
         sessionID: '12345fghij',
         points: 700,
+        changeInPoints: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -64,6 +69,7 @@ module.exports = {
         email: 'google@google.com',
         sessionID: 'fghij12345',
         points: 0,
+        changeInPoints: 0,
         createdAt: new Date(),
         updatedAt: new Date()
       }
