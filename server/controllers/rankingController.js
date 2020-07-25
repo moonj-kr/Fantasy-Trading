@@ -92,7 +92,7 @@ module.exports = {
         for(let index=0; index<users.length; index++){
           let rank = index+1;
           if(users[index].id == user.id){
-            res.status(200).send({rank: rank});
+            res.status(200).send({rank: rank, changeInPoints: user.changeInPoints, points: user.points});
           }
         }
       }).catch((error) => {console.log(error)})
