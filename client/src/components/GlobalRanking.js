@@ -73,16 +73,16 @@ class Player extends React.Component{
   }
 
   render(){
-    let iconAlignStyle = {verticalAlign: 'middle', margin: 'auto'}
+    let iconAlignStyle = {position: 'absolute', float: 'right', marginLeft: '0.5em'}
     return(
       <div className="player">
-        <h3 className="player-rank" style={{marginLeft: '1em'}}>{this.props.rank}</h3>
-        <h3 className="player-rank" style={{marginLeft: '1.5em'}}>{this.props.details.username}</h3>
-        <h3 className="player-rank" style={{marginLeft: '10.5em'}}>
+        <h3 className="player-rank" style={{width: '2em', marginLeft: '1em'}}>{this.props.rank}</h3>
+        <h3 className="player-rank" style={{width: '14em'}}>{this.props.details.username}</h3>
+        <h3 className="player-rank" style={{width: '5em'}}>
           {this.props.details.changeInPoints}
           {this.props.details.changeInPoints<0 ? <ArrowDropDownIcon style={iconAlignStyle} /> : <ArrowDropUpIcon style={iconAlignStyle} />}
         </h3>
-        <h3 className="player-rank" style={{marginLeft: '4em'}}>{this.props.details.points}</h3>
+        <h3 className="player-rank" style={{width: '2em'}}>{this.props.details.points}</h3>
       </div>
     )
   }
@@ -94,14 +94,14 @@ class LeaderboardLabel extends React.Component{
   render(){
     return(
       <div>
-        <p className="player-rank" style={{marginLeft: '1em', marginBottom: '0em'}}>rank</p>
-        <p className="player-rank" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
-        <p className="player-rank" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
-        <p className="player-rank" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
-        <p className="player-rank" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
-        <p className="player-rank" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
-        <p className="player-rank" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
-        <p className="player-rank" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+        <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>rank</p>
+        <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
+        <p className="labels" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
+        <p className="labels" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+        <p className="labels" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
+        <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
+        <p className="labels" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
+        <p className="labels" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
       </div>
     )
   }
