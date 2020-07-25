@@ -27,13 +27,19 @@ class GlobalRanking extends React.Component{
       });
     }).catch(error => {console.log(error)});
     get(backend_url+'/ranking/globalRankings').then(response => {
-      this.setState({
-        leaderboard: response.data
-      });
+      if(response.data.length > 10){
+        this.setState({
+          leaderboard: response.data.slice(1, 11)
+        });
+      }
+      else{
+        this.setState({
+          leaderboard: response.data
+        });
+      }
     }).catch(error => {console.log(error)});
   }
   render(){
-    console.log(this.state.changeInPoints);
     let iconAlignStyle = {verticalAlign: 'middle', margin: 'auto'}
     return(
       <div>
@@ -57,7 +63,7 @@ class GlobalRanking extends React.Component{
           </div>
         </div>
         <h3 style={{color: '#7702fa', marginBlockStart: '0px', marginBlockEnd: '0px', marginTop: '1em'}}><StarIcon style={iconAlignStyle} />top players</h3>
-        <LeaderboardLabel />
+        <LeaderboardLabel renderSecondCol={this.state.leaderboard.length > 5}/>
         <div className="leaderboard-container">
           {this.state.leaderboard.map((player, index) => (
             <Player details={player} rank={index+1} />
@@ -73,16 +79,16 @@ class Player extends React.Component{
   }
 
   render(){
-    let iconAlignStyle = {verticalAlign: 'middle', margin: 'auto'}
+    let iconAlignStyle = {position: 'absolute', float: 'right', marginLeft: '0.5em'}
     return(
       <div className="player">
-        <h3 className="player-rank" style={{marginLeft: '1em'}}>{this.props.rank}</h3>
-        <h3 className="player-rank" style={{marginLeft: '1.5em'}}>{this.props.details.username}</h3>
-        <h3 className="player-rank" style={{marginLeft: '10.5em'}}>
+        <h3 className="player-rank" style={{width: '2em', marginLeft: '1em'}}>{this.props.rank}</h3>
+        <h3 className="player-rank" style={{width: '14em'}}>{this.props.details.username}</h3>
+        <h3 className="player-rank" style={{width: '5em'}}>
           {this.props.details.changeInPoints}
           {this.props.details.changeInPoints<0 ? <ArrowDropDownIcon style={iconAlignStyle} /> : <ArrowDropUpIcon style={iconAlignStyle} />}
         </h3>
-        <h3 className="player-rank" style={{marginLeft: '4em'}}>{this.props.details.points}</h3>
+        <h3 className="player-rank" style={{width: '2em'}}>{this.props.details.points}</h3>
       </div>
     )
   }
@@ -94,14 +100,18 @@ class LeaderboardLabel extends React.Component{
   render(){
     return(
       <div>
-        <p className="player-rank" style={{marginLeft: '1em', marginBottom: '0em'}}>rank</p>
-        <p className="player-rank" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
-        <p className="player-rank" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
-        <p className="player-rank" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
-        <p className="player-rank" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
-        <p className="player-rank" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
-        <p className="player-rank" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
-        <p className="player-rank" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+        <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>rank</p>
+        <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
+        <p className="labels" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
+        <p className="labels" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+        {this.props.renderSecondCol ?
+          <>
+            <p className="label" style={{marginLeft: '3em', marginBottom: '0em'}}>rank</p>
+            <p className="label" style={{marginLeft: '1em', marginBottom: '0em'}}>username</p>
+            <p className="label" style={{marginLeft: '8em', marginBottom: '0em'}}>change</p>
+            <p className="label" style={{marginLeft: '2em', marginBottom: '0em'}}>points</p>
+          </>
+          : <div></div>}
       </div>
     )
   }
