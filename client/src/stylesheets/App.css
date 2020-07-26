@@ -354,7 +354,7 @@
   background-color: #E5E8E8;
   border-radius: 1em;
   height: 2.75em;
-  width: 25em;
+  width: 50%;
   margin: 0.5em;
   display: flex;
   flex-direction: row;
@@ -374,7 +374,13 @@
   flex-direction: column;
 }
 .labels{
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
   color: #7702fa;
   font-size: 1em;
+  margin-bottom: 0em;
+}
+.label{
+  display: flex;
+  flex-direction: column;
 }
