@@ -128,6 +128,15 @@ module.exports = {
         res.status(400).send(error);
       });
   },
+  getUsername(req, res){
+    const userID = req.params.userID;
+    models.User.findOne({where: {id: userID}}).then(user =>{
+      res.status(200).send(user.username);
+    }).catch(error => {
+      console.log(error);
+      res.status(400).send(error);
+    })
+  },
   getUser(req, res){
     models.User.findOne({where: {sessionID: req.sessionID}}).then(user =>{
       res.status(200).send(user);

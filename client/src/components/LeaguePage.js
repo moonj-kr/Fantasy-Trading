@@ -6,6 +6,7 @@ import Header from './Header.js';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Redirect } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
+import LeagueRankings from './LeagueRankings.js'
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
@@ -88,6 +89,9 @@ class LeaguePage extends React.Component{
               <h5 className="league-column">end</h5>
               <p>{this.state.leagueDetails.endDate}</p>
             </div>
+          </div>
+          <div className="leagueRankings-container">
+            {this.state.leagueDetails.id ? <LeagueRankings leagueID={this.state.leagueDetails.id} /> : null}
           </div>
           {this.renderRedirectToUpdate()}
         </div>

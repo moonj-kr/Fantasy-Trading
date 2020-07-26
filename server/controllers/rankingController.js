@@ -67,7 +67,7 @@ module.exports = {
     return Portfolio
       .findAll({where: {
         leagueID: leagueId},
-        attributes: ['userID', 'value', 'ranking'],
+        attributes: ['userID', 'value', 'ranking', 'percentChange'],
         order: [
           ['ranking', 'ASC']
         ]})

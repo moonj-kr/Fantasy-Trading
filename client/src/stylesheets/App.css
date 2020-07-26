@@ -224,6 +224,15 @@
   padding-left: 1em;
   padding-right: 2em;
 }
+.leagueRankings-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-top: 2em;
+  padding-left: 1em;
+  padding-right: 2em;
+}
+
 .league{
   display: inline-block;
   background-color: #E5E8E8;
@@ -334,6 +343,13 @@
   flex-wrap: wrap;
   height: 20em;
 }
+.leaguesLeaderboard-container{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  height: 20em;
+}
 .player{
   background-color: #E5E8E8;
   border-radius: 1em;
@@ -342,6 +358,14 @@
   margin: 0.5em;
   display: flex;
   flex-direction: row;
+}
+.player-leagues{
+  display: flex;
+  flex-direction: row;
+  background-color: #E5E8E8;
+  border-radius: 1em;
+  height: 2.75em;
+  margin: 0.5em;
 }
 .player-rank{
   color: #7702fa;
