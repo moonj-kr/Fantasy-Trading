@@ -75,10 +75,10 @@ class Player extends React.Component{
     let iconAlignStyle = {position: 'absolute', float: 'right', marginLeft: '0.5em'}
     return(
       <div className="player-leagues">
-        <h3 className="player-rank" style={{width: '7em', marginLeft: '1em'}}>{this.props.details.ranking}</h3>
-        <h3 className="player-rank" style={{width: '29em'}}>{this.state.username}</h3>
-        <h3 className="player-rank" style={{width: '10em'}}>${this.props.details.value}</h3>
-        <h3 className="player-rank" style={{width: '4em'}}>
+        <h3 className="player-rank" style={{width: '9%', marginLeft: '1%'}}>{this.props.details.ranking}</h3>
+        <h3 className="player-rank" style={{width: '60%'}}>{this.state.username}</h3>
+        <h3 className="player-rank" style={{width: '15%'}}>${this.props.details.value}</h3>
+        <h3 className="player-rank" style={{width: '5%'}}>
           {this.props.details.percentChange>0 ? '+' : '-'}
           {this.props.details.percentChange}
         </h3>
@@ -93,10 +93,10 @@ class LeaderboardLabel extends React.Component{
   render(){
     return(
       <div>
-        <p className="labels" style={{marginLeft: '1em', marginBottom: '0em'}}>rank</p>
-        <p className="labels" style={{marginLeft: '5em', marginBottom: '0em'}}>user</p>
-        <p className="labels" style={{marginLeft: '27em', marginBottom: '0em'}}>total value</p>
-        <p className="labels" style={{marginLeft: '5em', marginBottom: '0em'}}>%change</p>
+        <p className="league-ranking-labels" style={{width: '9%', marginLeft: '1%', marginBottom: '0em'}}>rank</p>
+        <p className="league-ranking-labels" style={{width: '60%', marginBottom: '0em'}}>user</p>
+        <p className="league-ranking-labels" style={{width: '15%', marginBottom: '0em'}}>total value</p>
+        <p className="league-ranking-labels" style={{width: '5%', marginBottom: '0em'}}>%change</p>
       </div>
     )
   }
