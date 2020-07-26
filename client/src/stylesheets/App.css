@@ -284,6 +284,7 @@
   background-color: #E5E8E8;
   border-radius: 2em;
   padding: 0.25em;
+  margin-bottom: 1em;
 }
 .league-detail{
   color: #7702fa;
@@ -390,4 +391,50 @@
 .label{
   display: flex;
   flex-direction: column;
+}
+.search{
+    position: relative;
+    border-radius: 1em;
+    background-color: #E5E8E8;
+    margin-left: 0;
+    width: 100%;
+}
+.search-icon {
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7702fa;
+  margin-left: 1em;
+}
+.input-root{
+  margin-left: 3em;
+  color: inherit;
+}
+.input-input{
+  width: 100%;
+}
+.stock-suggestions{
+  list-style-type: none;
+}
+.suggestion{
+  color: #7702fa;
+  background-color: #E5E8E8;
+  margin-bottom: 0.25em;
+  border-radius: 1em;
+}
+.suggestion-symbol{
+  display: inline-flex;
+  margin-left: 0.5em;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  font-weight: bold;
+}
+.suggestion-name{
+  display: inline-flex;
+  margin-left: 0.5em;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  color: #000000;
 }

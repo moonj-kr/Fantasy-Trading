@@ -7,9 +7,15 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { Redirect } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
 import LeagueRankings from './LeagueRankings.js'
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+const axios = require('axios');
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
+const API_KEY = require('../utils/backendUrl.js').alpha_api_key;
+const SEARCH_ENDPOINT =  require('../utils/backendUrl.js').alpha_search_endpoint;
 
 class LeaguePage extends React.Component{
   constructor(props){
@@ -18,7 +24,9 @@ class LeaguePage extends React.Component{
       username: null,
       profilePicture: null,
       redirectUpdate: false,
-      leagueDetails: {}
+      leagueDetails: {},
+      query: '',
+      results: []
     }
   }
   componentDidMount(){
@@ -62,6 +70,18 @@ class LeaguePage extends React.Component{
         />
     }
   }
+  getStockSuggestions = () => {
+    axios.get(`${SEARCH_ENDPOINT}&keywords=${this.state.query}&apikey=${API_KEY}`).then(response => {
+      this.setState({results: response.data.bestMatches});
+    }).catch(error => {console.error(error)});
+  }
+  handleSearchChange = (event) => {
+    this.setState({
+      query: event.target.value
+    }, () => {
+      this.getStockSuggestions();
+    });
+  }
   render(){
     return(
       <div className="App">
@@ -90,6 +110,21 @@ class LeaguePage extends React.Component{
               <p>{this.state.leagueDetails.endDate}</p>
             </div>
           </div>
+          <div className="search">
+            <div className="search-icon">
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search Stocks..."
+              classes={{
+                root: "input-root",
+                input: "input-input",
+              }}
+              onChange={this.handleSearchChange}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+          <StockSuggestions results={this.state.results} leagueId={this.state.leagueDetails.id} />
           <div className="leagueRankings-container">
             {this.state.leagueDetails.id ? <LeagueRankings leagueID={this.state.leagueDetails.id} /> : null}
           </div>
@@ -99,5 +134,27 @@ class LeaguePage extends React.Component{
     )
   }
 
+}
+class StockSuggestions extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render(){
+    let symbol = "1. symbol";
+    let name = "2. name";
+    return(
+      <ul className="stock-suggestions">
+        {this.props.results.map(result => (
+          <a href={"/stock/"+result[symbol]+"/"+this.props.leagueId} style={{textDecoration: 'none'}} >
+            <li className="suggestion" key={result[symbol]}>
+              <p className="suggestion-symbol">{result[symbol]}</p>
+              <p className="suggestion-name">{result[name]}</p>
+              <OpenInNewIcon style={{display: 'inline-flex', verticalAlign: 'middle', fontSize: 'medium', marginLeft: '0.5em'}}/>
+            </li>
+          </a>
+        ))}
+      </ul>
+    )
+  }
 }
 export default LeaguePage;
