@@ -47,7 +47,7 @@ module.exports = {
               buyingPower: league.investmentFunds,
               percentChange: 0,
               host: false,
-              ranking: null,
+              ranking: 0,
               prevValues: [],
               datesArray: []
             }).then(portfolio => {
@@ -90,7 +90,7 @@ module.exports = {
                 buyingPower: league.investmentFunds,
                 percentChange: 0,
                 host: false,
-                ranking: null,
+                ranking: 0,
                 prevValues: [],
                 datesArray: []
               }).then(portfolio => {
