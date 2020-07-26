@@ -121,6 +121,26 @@ module.exports = (app) => {
   app.get('/api/users/leagues', usersController.leagues);
   /**
     * @swagger
+    * /api/users/username:
+    *   get:
+    *     tags:
+    *       - Users
+    *     name: username
+    *     summary: Retrieves username using userID
+    *     parameters:
+    *       - in: path
+    *         name: userID
+    *         schema:
+    *           type: string
+    *         required:
+    *           - userID
+    *     responses:
+    *       200:
+    *         description: Sucessfully username
+  */
+  app.get('/api/users/username/:userID', usersController.getUsername);
+  /**
+    * @swagger
     * /api/users/details:
     *   get:
     *     tags:

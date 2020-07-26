@@ -6,6 +6,7 @@ import Header from './Header.js';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Redirect } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
+import LeagueRankings from './LeagueRankings.js'
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
@@ -124,6 +125,9 @@ class LeaguePage extends React.Component{
             />
           </div>
           <StockSuggestions results={this.state.results} leagueId={this.state.leagueDetails.id} />
+          <div className="leagueRankings-container">
+            {this.state.leagueDetails.id ? <LeagueRankings leagueID={this.state.leagueDetails.id} /> : null}
+          </div>
           {this.renderRedirectToUpdate()}
         </div>
       </div>
