@@ -54,11 +54,11 @@ class LandingPage extends React.Component{
         <div className="bottom-landing">
           <div className="landing-description">
             <div className="landing-description-title">
-              <h2 className="header-text" style={{width:"100%", textAlign:"left"}}>Insert visuals and introduction of site here</h2>
+              <h2 className="header-text" style={{width:"100%", textAlign:"left"}}>Welcome to the world of Fantasy Trading!</h2>
             </div>
             <br></br>
             <div className="landing-description-details">
-              <h3 className="header-text" style={{width:"100%", textAlign:"left", fontWeight:"200"}}>Welcome to the world of Fantasy Trading! Improve your stock trading skills by competing with your friends in a league to see whose portfolio makes the most money. Trade stocks from all exchanges using fake money so that you won’t have to worry about losing your real money. You’ll be able practice and take risks in this sandboxed environment while also getting bragging rights with your friends. To award our most skilled members, you will be able to compete on a global leaderboard as well! Your performance in the leagues will factor into how to rank across all of our users.
+              <h3 className="header-text" style={{width:"100%", textAlign:"left", fontWeight:"200"}}>Improve your stock trading skills by competing with your friends in a league to see whose portfolio makes the most money. Trade stocks from all exchanges using fake money so that you won’t have to worry about losing your real money. You’ll be able practice and take risks in this sandboxed environment while also getting bragging rights with your friends. To award our most skilled members, you will be able to compete on a global leaderboard as well! Your performance in the leagues will factor into how to rank across all of our users.
               Join today by registering an account and creating your first league! Invite your friends using their emails. Portfolios will be updated every day to reflect the current price of the stocks. You’ll be able to look up stocks, and fictitiously buy/sell shares all in one place.
 
               Buy low and sell high fantasy traders! Good luck!

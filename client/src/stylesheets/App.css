@@ -215,6 +215,24 @@
   height: 100%;
   align-content: space-evenly;
 }
+.global-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  padding-top: 2em;
+  padding-left: 1em;
+  padding-right: 2em;
+}
+.leagueRankings-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-top: 2em;
+  padding-left: 1em;
+  padding-right: 2em;
+}
+
 .league{
   display: inline-block;
   background-color: #E5E8E8;
@@ -266,6 +284,7 @@
   background-color: #E5E8E8;
   border-radius: 2em;
   padding: 0.25em;
+  margin-bottom: 1em;
 }
 .league-detail{
   color: #7702fa;
@@ -286,6 +305,7 @@
   margin-block-start: 0.5em;
   margin-block-end: 0.5em;
 }
+<<<<<<< HEAD
 .portfolio-graph{
 }
 .search-stocks{
@@ -307,4 +327,147 @@
 
 .your-stocks{
   padding-top: 10px;
+}
+.currentrank-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 0.5em;
+}
+.circle-rank{
+  background-color: #7702fa;
+  color: #FFFFFF;
+  border-radius: 50%;
+  width: 5em;
+  height: 5em;
+  text-align: center;
+}
+.rank{
+  font-weight: bold;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+.points-rank{
+  background-color: #7702fa;
+  color: #FFFFFF;
+  border-radius: 2em;
+  margin-left: 1em;
+  width: 12em;
+  height: 5em;
+  text-align: center;
+}
+.points-change{
+  margin-left: 0.75em;
+}
+.leaderboard-container{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 20em;
+}
+.leaguesLeaderboard-container{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  height: 20em;
+}
+.player{
+  background-color: #E5E8E8;
+  border-radius: 1em;
+  height: 2.75em;
+  width: 50%;
+  margin: 0.5em;
+  display: flex;
+  flex-direction: row;
+}
+.player-leagues{
+  display: flex;
+  flex-direction: row;
+  background-color: #E5E8E8;
+  border-radius: 1em;
+  height: 2.75em;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+.player-rank{
+  color: #7702fa;
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+}
+.labels{
+  display: flex;
+  flex-direction: row;
+  color: #7702fa;
+  font-size: 1em;
+  margin-bottom: 0em;
+}
+.league-ranking-labels{
+  display: inline-flex;
+  color: #7702fa;
+  font-size: 1em;
+  margin-bottom: 0em;
+}
+.label{
+  display: flex;
+  flex-direction: column;
+}
+.search{
+    position: relative;
+    border-radius: 1em;
+    background-color: #E5E8E8;
+    margin-left: 0;
+    width: 100%;
+}
+.search-icon {
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7702fa;
+  margin-left: 1em;
+}
+.input-root{
+  margin-left: 3em;
+  color: inherit;
+}
+.input-input{
+  width: 100%;
+}
+.stock-suggestions{
+  list-style-type: none;
+}
+.suggestion{
+  color: #7702fa;
+  background-color: #E5E8E8;
+  margin-bottom: 0.25em;
+  border-radius: 1em;
+}
+.suggestion-symbol{
+  display: inline-flex;
+  margin-left: 0.5em;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  font-weight: bold;
+}
+.suggestion-name{
+  display: inline-flex;
+  margin-left: 0.5em;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  color: #000000;
+}
+.stock-details{
+  display: flex;
+  flex-direction: row;
+  color: #7702fa;
+}
+.stock-headers{
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-bottom: 0.5em;
 }

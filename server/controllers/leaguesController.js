@@ -225,7 +225,7 @@ module.exports = {
           buyingPower: req.body.investmentFunds,
           percentChange: 0,
           host: true,
-          ranking: null,
+          ranking: 0,
           prevValues: [],
           datesArray: []
         }).then(portfolio => {

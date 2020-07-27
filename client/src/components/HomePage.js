@@ -4,7 +4,7 @@ import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import Header from './Header.js';
 import HourglassFullIcon from '@material-ui/icons/HourglassFull';
-
+import GlobalRanking from './GlobalRanking.js'
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const get = require('../utils/requests.js').getRequest;
 
@@ -44,6 +44,9 @@ class HomePage extends React.Component{
           <Header prevRoute={this.props.match.path} profilePicture={this.state.profilePicture} username={this.state.username} />
           <div className="leagues-container">
             <LeaguesPreview  />
+          </div>
+          <div className="global-container">
+            <GlobalRanking />
           </div>
         </div>
       </div>

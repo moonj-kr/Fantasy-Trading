@@ -21,6 +21,10 @@ const backend_url = require('../utils/backendUrl.js').backend_url;
 const pathVar = window.location.pathname.split('/')[2];
 //const leagueName = pathVar.replace('%20', " ");
 
+// test arrays
+let prevValues =[700.11,770.36,620.21,810.55,888.62,970.37,720.12,800.99,930.54,1000.26,1200.16,1251.00,1103.46,1225.73,1536.27,1901.34];
+let datesArray = ['2020-07-01 11:35:26.315+09', '2020-07-02 11:35:50.313+09', '2020-07-03 11:35:50.313+09','2020-07-04 11:35:50.313+09','2020-07-05 11:35:50.313+09','2020-07-06 11:35:50.313+09','2020-07-07 11:35:50.313+09','2020-07-08 11:35:50.313+09','2020-07-09 11:35:50.313+09','2020-07-10 11:35:50.313+09','2020-07-11 11:35:50.313+09','2020-07-12 11:35:50.313+09','2020-07-13 11:35:50.313+09','2020-07-14 11:35:50.313+09','2020-07-15 11:35:50.313+09','2020-07-16 11:35:50.313+09'];
+
 class LeaguePortfolioGraph extends React.Component{
 	constructor(props){
     	super(props);
@@ -69,16 +73,48 @@ class LeaguePortfolioGraph extends React.Component{
 //		let leagueID = get(backend_url+'/leagues/list/' + leagueName);
 //		let data = post(backend_url+'/portfolio/prevValues/' + leagueID);
 
-		if(graphView == "") {
-			this.setState(this.state.dataLine.datasets[0].data=[1,2,3,4,5,6,7]);
-		} else {
-			//post(backend_url+'/portfolio/
-			//this.setState(alert(leagueID));
-			this.setState(this.state.dataLine.datasets[0].data=[11,12,13,14,45,16,17]);
+		//post(backend_url+'/portfolio/
+		//this.setState(alert(leagueID));
+		//TODO: add highlight to button to indicate which graphView
+
+		let parsedDates= [];
+
+		for(let i = 0; i < datesArray.length; i++) {
+			// TODO: Decide date display
+			parsedDates.push(datesArray[i].split(" ")[0])
 		}
-	}
+
+		if(graphView == "") {
+		} else if (graphView == "1D"){
+			this.setState(this.state.dataLine.labels=parsedDates.slice(-2));
+			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-2));
 	
 
+			//this.setState(this.state.dataLine.datasets[0].data=[11,12,13,14,45,16,17]);
+
+		} else if (graphView == "1W") {
+			this.setState(this.state.dataLine.labels=parsedDates.slice(-7));
+			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-7));
+	
+		} else if (graphView == "1M") {
+			this.setState(this.state.dataLine.labels=parsedDates.slice(-30));
+			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-30));
+		
+		} else if (graphView == "3M") {
+			this.setState(this.state.dataLine.labels=parsedDates.slice(-90));
+			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-90));
+
+		} else if (graphView == "1Y") {
+			this.setState(this.state.dataLine.labels=parsedDates.slice(-360));
+			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-360));
+
+		} else if (graphView == "ALL") {
+			this.setState(this.state.dataLine.labels=parsedDates);
+			this.setState(this.state.dataLine.datasets[0].data=prevValues);
+		} else { // day 1
+			//this.setState(this.state.dataLine.datasets[0].data=[1,2,3,4,5,6,7]);
+		}
+	}
 
   render(){
     let arrowIconStyle = {verticalAlign: 'middle', margin: 'auto'}

@@ -8,7 +8,7 @@ import HomePage from './components/HomePage.js';
 import EditProfile from './components/EditProfile.js';
 import CreateLeaguePage from './components/CreateLeaguePage.js';
 import LeaguePage from './components/LeaguePage.js';
-
+import StockPage from './components/StockPage.js';
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,6 +18,7 @@ import {
 ReactDOM.render(
   <Router>
     <Switch>
+      <Route path="/stock/:leagueid/:symbol" component={StockPage} />
       <Route path="/register/:invitationKey?" component={RegisterPage} />
       <Route path="/login/:invitationKey?" component={LoginPage} />
       <Route path="/home" component={HomePage} />
