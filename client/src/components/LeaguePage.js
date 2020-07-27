@@ -116,9 +116,6 @@ class LeaguePage extends React.Component{
 		<div className="portfolio-graph">
 			<LeaguePortfolioGraph graph={"test"} />
 		</div>
-		<div className="your-stocks">
-			<LeagueYourStocks stocks={"test"} />
-		</div>
 
 		{this.renderRedirectToUpdate()}
           <div className="search">
