@@ -20,6 +20,28 @@ async function getCurrentPrice(key,symbol) {
   //return stockPrice.data["Global Quote"]["05. price"];
   return stockPrice.data['c'];
 }
+// get current stock price helper fn
+async function getPreviousClosePrice(key,symbol) {
+  let stockPrice;
+  try {
+    //stockPrice = await get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`);
+    stockPrice = await get (`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${key}`)
+  } catch (error) {
+    console.log(error)
+  }
+  //return stockPrice.data["Global Quote"]["05. price"];
+  return stockPrice.data['pc'];
+}
+async function getCompany(symbol){
+  let company;
+  try{
+    company = await get(`https://finnhub.io/api/v1/stock/profile2?symbol=${symbol}`)
+  }catch(error){
+    console.log(error);
+  }
+  return company.data.name
+}
+
 function setTimeoutForAlpha(key, symbol) {
    var promise = new Promise(function(resolve, reject) {
      setTimeout(async function() {
@@ -74,6 +96,19 @@ module.exports = {
 		}, null, true, 'America/Los_Angeles');
 		job.start();
 	},
+  async getStockPrice(req, res){
+    let key = config.api_key;
+    let currPrice = await getCurrentPrice(key, req.params.symbol);
+    let previousPrice = await getPreviousClosePrice(key, req.params.symbol);
+    let companyName = await getCompany(req.params.symbol);
+    if(currPrice != null && previousPrice != null){
+      let percentChange = ((currPrice-previousPrice)/previousPrice)*100;
+      res.status(200).send({currPrice: currPrice, prevPrice: previousPrice, percentChange: percentChange, companyName: companyName});
+    }
+    else {
+      res.status(400).send({error: 'could not find data for stock'});
+    }
+  },
 	// get portfolio detail by leagueID
 	async getPortfolio(req, res) {
 		let sessionID = req.sessionID;

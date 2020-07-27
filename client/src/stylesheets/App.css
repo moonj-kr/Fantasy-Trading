@@ -438,3 +438,13 @@
   margin-block-end: 0em;
   color: #000000;
 }
+.stock-details{
+  display: flex;
+  flex-direction: row;
+  color: #7702fa;
+}
+.stock-headers{
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-bottom: 0.5em;
+}

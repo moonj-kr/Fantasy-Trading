@@ -82,7 +82,7 @@ module.exports = (app) => {
     * @swagger
     * /api/portfolio/prevValues/{leagueID}:
     *   get:
-    *     name: 
+    *     name:
     *     summary: gets the array of previous portfolio values
     *     parameters:
     *       - in: path
@@ -96,4 +96,22 @@ module.exports = (app) => {
     *         description: successfully returns the previous portfolio values
     */
 	app.get('/api/portfolio/prevValues/:leagueID', portfolioController.getPreviousValues);
+	/**
+    * @swagger
+    * /api/stock/price/{symbol}:
+    *   get:
+    *     name:
+    *     summary: gets the current price and previous close price of stock
+    *     parameters:
+    *       - in: path
+    *         name: symbol
+    *         schema:
+    *           type: string
+    *         required:
+    *           - symbol
+    *     responses:
+    *       200:
+    *         description: successfully returns the stock stock price
+    */
+		app.get('/api/stock/price/:symbol', portfolioController.getStockPrice);
 }
