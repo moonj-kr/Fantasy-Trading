@@ -19,11 +19,11 @@ const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
 const backend_url = require('../utils/backendUrl.js').backend_url;
 const pathVar = window.location.pathname.split('/')[2];
-//const leagueName = pathVar.replace('%20', " ");
+const leagueName = pathVar.replace('%20', " ");
 
 // test arrays
-let prevValues =[700.11,770.36,620.21,810.55,888.62,970.37,720.12,800.99,930.54,1000.26,1200.16,1251.00,1103.46,1225.73,1536.27,1901.34];
-let datesArray = ['2020-07-01 11:35:26.315+09', '2020-07-02 11:35:50.313+09', '2020-07-03 11:35:50.313+09','2020-07-04 11:35:50.313+09','2020-07-05 11:35:50.313+09','2020-07-06 11:35:50.313+09','2020-07-07 11:35:50.313+09','2020-07-08 11:35:50.313+09','2020-07-09 11:35:50.313+09','2020-07-10 11:35:50.313+09','2020-07-11 11:35:50.313+09','2020-07-12 11:35:50.313+09','2020-07-13 11:35:50.313+09','2020-07-14 11:35:50.313+09','2020-07-15 11:35:50.313+09','2020-07-16 11:35:50.313+09'];
+//let prevValues =[700.11,770.36,620.21,810.55,888.62,970.37,720.12,800.99,930.54,1000.26,1200.16,1251.00,1103.46,1225.73,1536.27,1901.34];
+//let datesArray = ['2020-07-01 11:35:26.315+09', '2020-07-02 11:35:50.313+09', '2020-07-03 11:35:50.313+09','2020-07-04 11:35:50.313+09','2020-07-05 11:35:50.313+09','2020-07-06 11:35:50.313+09','2020-07-07 11:35:50.313+09','2020-07-08 11:35:50.313+09','2020-07-09 11:35:50.313+09','2020-07-10 11:35:50.313+09','2020-07-11 11:35:50.313+09','2020-07-12 11:35:50.313+09','2020-07-13 11:35:50.313+09','2020-07-14 11:35:50.313+09','2020-07-15 11:35:50.313+09','2020-07-16 11:35:50.313+09'];
 
 class LeaguePortfolioGraph extends React.Component{
 	constructor(props){
@@ -31,8 +31,11 @@ class LeaguePortfolioGraph extends React.Component{
     	this.state = {
       		arrowUp: true,
 			graphView: "",
+			leagueID: null,
+			prevValues: [],
+			datesArray: [],
 			dataLine:{
-				labels: ["5/21", "5/22", "5/23", "5/24", "5/25", "5/26", "5/27"],
+				labels: this.datesArray,
 				datasets: [
         			{
 					  label: false,
@@ -53,12 +56,34 @@ class LeaguePortfolioGraph extends React.Component{
 					  pointHoverBorderWidth: 2,
 					  pointRadius: 1,
 					  pointHitRadius: 10,
-					  data: [65, 59, 80, 81, 56, 55, 40],
+					  data: this.prevValues,
 						options: { legend: { display: false } }
         			}
         		],
 			}
 		}
+	}
+	componentDidMount(){
+		// set leagueID
+		get(backend_url+'/leagues/list/'+leagueName).then(response => {
+			this.setState({
+			  	leagueID: response
+		  	});
+		});
+
+		// set prevValues
+		get(backend_url+'/portfolio/prevValues/'+this.state.leagueID).then(response => {
+			this.setState({
+			  prevValues	: response
+		  	});
+		});
+
+		// set datesArray
+		get(backend_url+'/leagues/list/'+leagueName).then(response => {
+			this.setState({
+			  	datesArray: response
+		  	});
+		});
 	}
 
 	onExpand = () => {
@@ -70,12 +95,9 @@ class LeaguePortfolioGraph extends React.Component{
 	};
 
 	updateGraph = (graphView) => {
-//		let leagueID = get(backend_url+'/leagues/list/' + leagueName);
-//		let data = post(backend_url+'/portfolio/prevValues/' + leagueID);
-
-		//post(backend_url+'/portfolio/
-		//this.setState(alert(leagueID));
 		//TODO: add highlight to button to indicate which graphView
+		let datesArray = this.state.datesArray;
+		let prevValues = this.state.prevValues;
 
 		let parsedDates= [];
 
@@ -88,10 +110,6 @@ class LeaguePortfolioGraph extends React.Component{
 		} else if (graphView == "1D"){
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-2));
 			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-2));
-	
-
-			//this.setState(this.state.dataLine.datasets[0].data=[11,12,13,14,45,16,17]);
-
 		} else if (graphView == "1W") {
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-7));
 			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-7));
@@ -112,6 +130,7 @@ class LeaguePortfolioGraph extends React.Component{
 			this.setState(this.state.dataLine.labels=parsedDates);
 			this.setState(this.state.dataLine.datasets[0].data=prevValues);
 		} else { // day 1
+			// decide default graph
 			//this.setState(this.state.dataLine.datasets[0].data=[1,2,3,4,5,6,7]);
 		}
 	}
