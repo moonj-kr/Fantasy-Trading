@@ -30,10 +30,10 @@ class LeaguePortfolioGraph extends React.Component{
 			prevValues: [],
 			datesArray: [],
 			dataLine:{
-				labels: this.datesArray,
+				labels: [], // starter label for graph
 				datasets: [
         			{
-					  label: false,
+					  label:false, 
 					  fill: false,
 					  lineTension: 0.1,
 					  backgroundColor: "rgba(225, 204,230, .3)",
@@ -51,7 +51,7 @@ class LeaguePortfolioGraph extends React.Component{
 					  pointHoverBorderWidth: 2,
 					  pointRadius: 1,
 					  pointHitRadius: 10,
-					  data: this.prevValues,
+					  data: [], // starter data for graph
 						options: { legend: { display: false } }
         			}
         		],
@@ -81,7 +81,11 @@ class LeaguePortfolioGraph extends React.Component{
 		});
 
 		// get datesArray
-	
+		await get(backend_url+'/portfolio/getDates/'+this.state.leagueID).then(response => {
+			this.setState({
+				datesArray: response.data
+		  	});
+		});
 	};
 
 	onExpand = () => {
@@ -93,7 +97,6 @@ class LeaguePortfolioGraph extends React.Component{
 	};
 
 	updateGraph = (graphView) => {
-
 		//TODO: add highlight to button to indicate which graphView
 		let datesArray = this.state.datesArray;
 		let prevValues = this.state.prevValues;
@@ -107,7 +110,6 @@ class LeaguePortfolioGraph extends React.Component{
 
 		if(graphView == "") {
 		} else if (graphView == "1D"){
-			alert(this.state.prevValues);
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-2));
 			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-2));
 		} else if (graphView == "1W") {
