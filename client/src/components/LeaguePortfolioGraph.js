@@ -138,7 +138,7 @@ class LeaguePortfolioGraph extends React.Component{
 			this.setState(this.state.dataLine.labels=parsedDates);
 			this.setState(this.state.dataLine.datasets[0].data=prevValues);
 		} else { 
-			// decide default graph
+			// TODO: Decide default graph
 		}
 	}
 
