@@ -103,9 +103,11 @@ class LeaguePortfolioGraph extends React.Component{
 
 		let parsedDates= [];
 
+
 		for(let i = 0; i < datesArray.length; i++) {
 			// TODO: Decide date display
-			parsedDates.push(datesArray[i].split(" ")[0])
+			//parsedDates.push(datesArray[i].split(" ")[0])
+			parsedDates.push(datesArray[i].substring(0,10)); // change depending on data
 		}
 
 		if(graphView == "") {
