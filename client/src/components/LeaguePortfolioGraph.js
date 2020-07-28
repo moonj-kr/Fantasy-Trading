@@ -2,22 +2,16 @@ import React from 'react';
 import '../stylesheets/App.css';
 import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { Redirect } from 'react-router-dom';
 import {createMuiTheme} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import green from '@material-ui/core/colors/green';
-import waterfall from 'async/waterfall';
-
 import { Line } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 
 const get = require('../utils/requests.js').getRequest;
-const post = require('../utils/requests.js').postRequest;
 const backend_url = require('../utils/backendUrl.js').backend_url;
 
 class LeaguePortfolioGraph extends React.Component{
@@ -58,13 +52,17 @@ class LeaguePortfolioGraph extends React.Component{
 			}
 		}
 	}
+
 	componentDidMount(){
+		// calls API needed for graph data: labels & values by getData()
 		let pathVar = window.location.pathname.split('/')[2];
 		let leagueName = pathVar.replace('%20', " ");
 		this.getData(leagueName);
 	}
 
-// get request functions
+	/*
+	 * Function used to call all API requests for portfolio graph.
+	 */
 	async getData(leagueName) {
 		// get leagueID
 		await get(backend_url+'/leagues/list/'+leagueName).then(response => {
@@ -88,6 +86,9 @@ class LeaguePortfolioGraph extends React.Component{
 		});
 	};
 
+	/*
+	 * Function used to expand portfolio graph.
+	 */
 	onExpand = () => {
 		if(this.state.arrowUp){
 		  this.setState({arrowUp: false});
@@ -96,20 +97,23 @@ class LeaguePortfolioGraph extends React.Component{
 		}
 	};
 
+	/*
+	 * Function that updates the graph view when the button is pressed.
+	 */
 	updateGraph = (graphView) => {
 		//TODO: add highlight to button to indicate which graphView
 		let datesArray = this.state.datesArray;
 		let prevValues = this.state.prevValues;
-
 		let parsedDates= [];
 
-
+		// Parsing for dates, expect to change based on database values.
 		for(let i = 0; i < datesArray.length; i++) {
 			// TODO: Decide date display
 			//parsedDates.push(datesArray[i].split(" ")[0])
 			parsedDates.push(datesArray[i].substring(0,10)); // change depending on data
 		}
 
+		// Updates graphView based on button clicked by user.
 		if(graphView == "") {
 		} else if (graphView == "1D"){
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-2));
@@ -133,9 +137,8 @@ class LeaguePortfolioGraph extends React.Component{
 		} else if (graphView == "ALL") {
 			this.setState(this.state.dataLine.labels=parsedDates);
 			this.setState(this.state.dataLine.datasets[0].data=prevValues);
-		} else { // day 1
+		} else { 
 			// decide default graph
-			//this.setState(this.state.dataLine.datasets[0].data=[1,2,3,4,5,6,7]);
 		}
 	}
 
@@ -143,6 +146,7 @@ class LeaguePortfolioGraph extends React.Component{
     let arrowIconStyle = {verticalAlign: 'middle', margin: 'auto'}
     let dropdownMenuStyle = {color: '#7702fa'}
     let menuListStyle = {backgroundColor: '#E5E8E8', borderRadius: '1em'}
+
     return(
       <div className="portfolioGraph">
         <div style={{paddingLeft: '1em'}}>
@@ -152,7 +156,6 @@ class LeaguePortfolioGraph extends React.Component{
 				: <ArrowDropUpIcon style={arrowIconStyle}/>
             }
           </h3>
-
           {this.state.arrowUp ?
 			  	<div>
 					<MDBContainer>
