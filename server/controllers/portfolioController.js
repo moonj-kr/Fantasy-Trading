@@ -7,7 +7,6 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 var schedule = require('node-schedule');
 var cronJob = require('cron').CronJob;
 const get = require('../utils/request').getRequest;
-const post = require('../utils/request').postRequest;
 
 // get current stock price helper fn
 async function getCurrentPrice(key,symbol) {

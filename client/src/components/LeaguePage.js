@@ -4,7 +4,6 @@ import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import Header from './Header.js';
 import LeaguePortfolioGraph from './LeaguePortfolioGraph.js';
-import LeagueSearchStocks from './LeagueSearchStocks.js';
 import LeagueYourStocks from './LeagueYourStocks.js';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Redirect } from 'react-router-dom';
