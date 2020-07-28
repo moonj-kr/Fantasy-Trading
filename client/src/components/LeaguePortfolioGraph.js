@@ -11,6 +11,7 @@ import {createMuiTheme} from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import green from '@material-ui/core/colors/green';
+import waterfall from 'async/waterfall';
 
 import { Line } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
@@ -18,12 +19,6 @@ import { MDBContainer } from "mdbreact";
 const get = require('../utils/requests.js').getRequest;
 const post = require('../utils/requests.js').postRequest;
 const backend_url = require('../utils/backendUrl.js').backend_url;
-const pathVar = window.location.pathname.split('/')[2];
-const leagueName = pathVar.replace('%20', " ");
-
-// test arrays
-//let prevValues =[700.11,770.36,620.21,810.55,888.62,970.37,720.12,800.99,930.54,1000.26,1200.16,1251.00,1103.46,1225.73,1536.27,1901.34];
-//let datesArray = ['2020-07-01 11:35:26.315+09', '2020-07-02 11:35:50.313+09', '2020-07-03 11:35:50.313+09','2020-07-04 11:35:50.313+09','2020-07-05 11:35:50.313+09','2020-07-06 11:35:50.313+09','2020-07-07 11:35:50.313+09','2020-07-08 11:35:50.313+09','2020-07-09 11:35:50.313+09','2020-07-10 11:35:50.313+09','2020-07-11 11:35:50.313+09','2020-07-12 11:35:50.313+09','2020-07-13 11:35:50.313+09','2020-07-14 11:35:50.313+09','2020-07-15 11:35:50.313+09','2020-07-16 11:35:50.313+09'];
 
 class LeaguePortfolioGraph extends React.Component{
 	constructor(props){
@@ -64,27 +59,30 @@ class LeaguePortfolioGraph extends React.Component{
 		}
 	}
 	componentDidMount(){
-		// set leagueID
-		get(backend_url+'/leagues/list/'+leagueName).then(response => {
-			this.setState({
-			  	leagueID: response
-		  	});
-		});
-
-		// set prevValues
-		get(backend_url+'/portfolio/prevValues/'+this.state.leagueID).then(response => {
-			this.setState({
-			  prevValues	: response
-		  	});
-		});
-
-		// set datesArray
-		get(backend_url+'/leagues/list/'+leagueName).then(response => {
-			this.setState({
-			  	datesArray: response
-		  	});
-		});
+		let pathVar = window.location.pathname.split('/')[2];
+		let leagueName = pathVar.replace('%20', " ");
+		this.getData(leagueName);
 	}
+
+// get request functions
+	async getData(leagueName) {
+		// get leagueID
+		await get(backend_url+'/leagues/list/'+leagueName).then(response => {
+			this.setState({
+			  	leagueID: response.data.id
+		  	});
+		});
+
+		// get prevValues
+		await get(backend_url+'/portfolio/prevValues/'+this.state.leagueID).then(response => {
+			this.setState({
+				prevValues: response.data
+		  	});
+		});
+
+		// get datesArray
+	
+	};
 
 	onExpand = () => {
 		if(this.state.arrowUp){
@@ -95,6 +93,7 @@ class LeaguePortfolioGraph extends React.Component{
 	};
 
 	updateGraph = (graphView) => {
+
 		//TODO: add highlight to button to indicate which graphView
 		let datesArray = this.state.datesArray;
 		let prevValues = this.state.prevValues;
@@ -108,6 +107,7 @@ class LeaguePortfolioGraph extends React.Component{
 
 		if(graphView == "") {
 		} else if (graphView == "1D"){
+			alert(this.state.prevValues);
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-2));
 			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-2));
 		} else if (graphView == "1W") {
