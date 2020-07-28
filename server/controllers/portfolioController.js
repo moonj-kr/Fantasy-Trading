@@ -7,6 +7,7 @@ const config = require(`${__dirname}/../config/config.json`)[env];
 var schedule = require('node-schedule');
 var cronJob = require('cron').CronJob;
 const get = require('../utils/request').getRequest;
+const post = require('../utils/request').postRequest;
 
 // get current stock price helper fn
 async function getCurrentPrice(key,symbol) {
@@ -262,6 +263,34 @@ module.exports = {
 			responseMessage = "League does not exist";
 		} else if(prevValues != null){
 			res.status(200).send(prevValues);
+		}
+		else{
+			res.status(400).send(responseMessage);
+		}
+  },
+  async getDates(req, res){
+    let sessionID = req.sessionID;
+		let leagueID = req.params.leagueID;
+		let user = await User.findOne({where: {sessionID: sessionID}});
+		let league = await League.findOne({where: {id: leagueID}});
+		let portfolio = null;
+		let datesArray = null;
+
+		if(league != null) {
+			portfolio = await Portfolio.findOne({where: {userID: user.id, leagueID: leagueID}});
+		}
+		if(portfolio != null) {
+			datesArray = portfolio.datesArray;
+		}
+
+		// user error handling
+		let responseMessage = "";
+		if(user == null) {
+			responseMessage = "Error with sessionID. User does not exist";
+		} else if(league == null) {
+			responseMessage = "League does not exist";
+		} else if(datesArray!= null){
+			res.status(200).send(datesArray);
 		}
 		else{
 			res.status(400).send(responseMessage);
