@@ -192,8 +192,10 @@ module.exports = {
            //   currPrice = await setTimeoutForAlpha(keys[key_index], sym);
            // }
            currPrice = await getCurrentPrice(key, sym);
+           companyName = await getCompany(sym);
 
 					transactionsResponse[sym] = {
+            company: companyName,
 						numShares: vol,
 						lastPrice: currPrice,
 						percentChange: ((currPrice - price) / price),
