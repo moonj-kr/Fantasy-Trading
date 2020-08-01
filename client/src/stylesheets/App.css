@@ -133,6 +133,7 @@
   padding-top: 1em;
   width: 100%;
   height: 100%;
+  margin-bottom: 3em;
 }
 .top-bar{
   display: flex;
@@ -305,8 +306,9 @@
   margin-block-start: 0.5em;
   margin-block-end: 0.5em;
 }
-<<<<<<< HEAD
 .portfolio-graph{
+  height: 75%;
+  width: 75%;
 }
 .search-stocks{
   display: inline;

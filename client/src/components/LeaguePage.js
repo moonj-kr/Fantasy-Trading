@@ -4,7 +4,7 @@ import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import Header from './Header.js';
 import LeaguePortfolioGraph from './LeaguePortfolioGraph.js';
-import LeagueYourStocks from './LeagueYourStocks.js';
+//import LeagueYourStocks from './LeagueYourStocks.js';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Redirect } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
@@ -112,11 +112,10 @@ class LeaguePage extends React.Component{
               <p>{this.state.leagueDetails.endDate}</p>
             </div>
           </div>
-		<div className="portfolio-graph">
-			<LeaguePortfolioGraph graph={"test"} />
-		</div>
-
-		{this.renderRedirectToUpdate()}
+      		<div className="portfolio-graph">
+      			<LeaguePortfolioGraph graph={"test"} leagueID={this.state.leagueDetails.id} />
+      		</div>
+		      {this.renderRedirectToUpdate()}
           <div className="search">
             <div className="search-icon">
               <SearchIcon />

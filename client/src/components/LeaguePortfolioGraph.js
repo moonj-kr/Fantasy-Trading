@@ -27,7 +27,7 @@ class LeaguePortfolioGraph extends React.Component{
 				labels: [], // starter label for graph
 				datasets: [
         			{
-					  label:false, 
+					  label:false,
 					  fill: false,
 					  lineTension: 0.1,
 					  backgroundColor: "rgba(225, 204,230, .3)",
@@ -65,12 +65,7 @@ class LeaguePortfolioGraph extends React.Component{
 	 */
 	async getData(leagueName) {
 		// get leagueID
-		await get(backend_url+'/leagues/list/'+leagueName).then(response => {
-			this.setState({
-			  	leagueID: response.data.id
-		  	});
-		});
-
+		this.setState({leagueID: this.props.leagueID});
 		// get prevValues
 		await get(backend_url+'/portfolio/prevValues/'+this.state.leagueID).then(response => {
 			this.setState({
@@ -121,11 +116,11 @@ class LeaguePortfolioGraph extends React.Component{
 		} else if (graphView == "1W") {
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-7));
 			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-7));
-	
+
 		} else if (graphView == "1M") {
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-30));
 			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-30));
-		
+
 		} else if (graphView == "3M") {
 			this.setState(this.state.dataLine.labels=parsedDates.slice(-90));
 			this.setState(this.state.dataLine.datasets[0].data=prevValues.slice(-90));
@@ -137,7 +132,7 @@ class LeaguePortfolioGraph extends React.Component{
 		} else if (graphView == "ALL") {
 			this.setState(this.state.dataLine.labels=parsedDates);
 			this.setState(this.state.dataLine.datasets[0].data=prevValues);
-		} else { 
+		} else {
 			// TODO: Decide default graph
 		}
 	}
@@ -152,8 +147,8 @@ class LeaguePortfolioGraph extends React.Component{
         <div style={{paddingLeft: '1em'}}>
           <h3 onClick={this.onExpand} className="header-text">{"portfolio"}
             {this.state.arrowUp ?
-              <ArrowDropDownIcon style={arrowIconStyle}/>
-				: <ArrowDropUpIcon style={arrowIconStyle}/>
+              <ArrowDropUpIcon style={arrowIconStyle}/>
+				: <ArrowDropDownIcon style={arrowIconStyle}/>
             }
           </h3>
           {this.state.arrowUp ?
