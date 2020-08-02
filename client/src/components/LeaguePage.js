@@ -4,7 +4,7 @@ import '../stylesheets/materialui1.css';
 import '../stylesheets/materialui2.css';
 import Header from './Header.js';
 import LeaguePortfolioGraph from './LeaguePortfolioGraph.js';
-//import LeagueYourStocks from './LeagueYourStocks.js';
+import LeagueYourStocks from './LeagueYourStocks.js';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Redirect } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
@@ -113,7 +113,7 @@ class LeaguePage extends React.Component{
             </div>
           </div>
       		<div className="portfolio-graph">
-      			<LeaguePortfolioGraph graph={"test"} leagueID={this.state.leagueDetails.id} />
+            {this.state.leagueDetails.id ? <LeaguePortfolioGraph graph={"test"} leagueID={this.state.leagueDetails.id} /> : null}
       		</div>
 		      {this.renderRedirectToUpdate()}
           <div className="search">
@@ -131,6 +131,7 @@ class LeaguePage extends React.Component{
             />
           </div>
           <StockSuggestions results={this.state.results} leagueId={this.state.leagueDetails.id} />
+          {this.state.leagueDetails.id ? <LeagueYourStocks leagueID={this.state.leagueDetails.id} /> : null}
           <div className="leagueRankings-container">
             {this.state.leagueDetails.id ? <LeagueRankings leagueID={this.state.leagueDetails.id} /> : null}
           </div>

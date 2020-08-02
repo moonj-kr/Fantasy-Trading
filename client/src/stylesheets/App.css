@@ -473,3 +473,18 @@
   margin-block-end: 0em;
   margin-bottom: 0.5em;
 }
+.stock{
+  display: flex;
+  flex-direction: row;
+  background-color: #E5E8E8;
+  border-radius: 1em;
+  height: 2.75em;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+.stock-column{
+  display: flex;
+  flex-direction: column;
+  color: #7702fa;
+  font-size: 1em;
+}
