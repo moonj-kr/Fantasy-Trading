@@ -114,4 +114,28 @@ module.exports = (app) => {
     *         description: successfully returns the stock stock price
     */
 		app.get('/api/stock/price/:symbol', portfolioController.getStockPrice);
+		/**
+			* @swagger
+			* /api/stock/shares/{leagueID}/{symbol}:
+			*   get:
+			*     name:
+			*     summary: gets the number of held shares of stock
+			*     parameters:
+			*       - in: path
+			*         name: leagueID
+			*         schema:
+			*           type: string
+			*         required:
+			*           - leagueID
+			*       - in: path
+			*         name: symbol
+			*         schema:
+			*           type: string
+			*         required:
+			*           - symbol
+			*     responses:
+			*       200:
+			*         description: successfully returns the number of shares of stock
+			*/
+			app.get('/api/stock/shares/:leagueID/:symbol', portfolioController.getNumberOfShares);
 }
