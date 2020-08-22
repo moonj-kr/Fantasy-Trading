@@ -67,12 +67,12 @@ class Stock extends React.Component{
   render(){
     return(
       <div className="stock">
-        <h3 className="stock-column" style={{width: '30%', marginLeft: '1em'}}>{this.props.details.company}</h3>
-        <h3 className="stock-column" style={{width: '15%'}}>{this.props.details.symbol}</h3>
-        <h3 className="stock-column" style={{width: '15%'}}>{this.props.details.numShares}</h3>
-        <h3 className="stock-column" style={{width: '15%'}}>{this.props.details.lastPrice}</h3>
-        <h3 className="stock-column" style={{width: '15%'}}>{this.props.details.percentChange}</h3>
-        <h3 className="stock-column" style={{width: '15%'}}>{this.props.details.equity}</h3>
+        <h3 className="stock-column" style={{width: '25%', marginLeft: '1em'}}>{this.props.details.company}</h3>
+        <h3 className="stock-column" style={{width: '10%'}}>{this.props.details.symbol}</h3>
+        <h3 className="stock-column" style={{width: '10%'}}>{this.props.details.numShares}</h3>
+        <h3 className="stock-column" style={{width: '10%'}}>{this.props.details.lastPrice}</h3>
+        <h3 className="stock-column" style={{width: '10%'}}>{this.props.details.percentChange}</h3>
+        <h3 className="stock-column" style={{width: '10%'}}>{this.props.details.equity}</h3>
       </div>
     )
   }
@@ -84,12 +84,12 @@ class StockLabels extends React.Component{
   render(){
     return(
       <div className="labels">
-        <p className="label" style={{width: '20em', marginRight: '1em'}}>company</p>
-        <p className="label" style={{width: '10em'}}>symbol</p>
-        <p className="label" style={{width: '10em'}}>#shares</p>
-        <p className="label" style={{width: '10em'}}>last price</p>
-        <p className="label" style={{width: '10em'}}>%change</p>
-        <p className="label" style={{width: '10em'}}>equity</p>
+        <p className="label" style={{width: '14em', marginRight: '1em'}}>company</p>
+        <p className="label" style={{width: '7em'}}>symbol</p>
+        <p className="label" style={{width: '7em'}}>#shares</p>
+        <p className="label" style={{width: '7em'}}>last price</p>
+        <p className="label" style={{width: '7em'}}>%change</p>
+        <p className="label" style={{width: '7em'}}>equity</p>
       </div>
     )
   }
