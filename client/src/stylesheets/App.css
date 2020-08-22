@@ -133,6 +133,7 @@
   padding-top: 1em;
   width: 100%;
   height: 100%;
+  margin-bottom: 3em;
 }
 .top-bar{
   display: flex;
@@ -305,6 +306,30 @@
   margin-block-start: 0.5em;
   margin-block-end: 0.5em;
 }
+.portfolio-graph{
+  height: 75%;
+  width: 75%;
+}
+.search-stocks{
+  display: inline;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #E5E8E8;
+  border-radius: 2em;
+  padding: 0.25em;
+}
+.search-stock{
+  padding-left:30px;
+  padding-right:30px;
+  padding-bottom:10px;
+}
+.graph-buttons{
+  padding-bottom:20px;
+}
+
+.your-stocks{
+  padding-top: 10px;
+}
 .currentrank-container{
   display: flex;
   flex-direction: row;
@@ -447,4 +472,19 @@
   margin-block-start: 0em;
   margin-block-end: 0em;
   margin-bottom: 0.5em;
+}
+.stock{
+  display: flex;
+  flex-direction: row;
+  background-color: #E5E8E8;
+  border-radius: 1em;
+  height: 2.75em;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+.stock-column{
+  display: flex;
+  flex-direction: column;
+  color: #7702fa;
+  font-size: 1em;
 }
