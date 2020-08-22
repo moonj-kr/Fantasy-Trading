@@ -48,14 +48,14 @@ class StockPage extends React.Component{
     let leagueID = splitBySlash[splitBySlash.length-1];
     this.setState({symbol: symbol});
     this.setState({leagueID: parseInt(leagueID)});
-    {/*get(backend_url+'/stock/price/'+symbol).then(response => {
+    {get(backend_url+'/stock/price/'+symbol).then(response => {
       this.setState({
         currPrice: response.data.currPrice,
         prevPrice: response.data.prevPrice,
         percentChange: Math.floor(response.data.percentChange * 100) / 100,
         company: response.data.companyName
       });
-    });*/}
+    });}
   }
   render(){
     return(
