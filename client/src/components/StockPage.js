@@ -109,7 +109,7 @@ class Transaction extends React.Component{
       this.setState({portfolioDetails: response.data})
     });
     get(backend_url+'/stock/shares/'+this.props.leagueID+'/'+this.props.symbol).then(response => {
-      this.setState({stockShares: response.data.volume})
+      this.setState({stockShares: response.data.numShares})
     });
   }
   handleShares = (event) => {
@@ -129,12 +129,7 @@ class Transaction extends React.Component{
     }
   }
   onOrder = () => {
-    console.log(this.props.leagueID)
-    console.log(this.props.symbol)
-    console.log(this.state.volume)
-    console.log(this.state.transactionType)
     post(backend_url+'/transaction', {leagueID: this.props.leagueID, stockSymbol: this.props.symbol, volume: this.state.volume, type: this.state.transactionType}).then(response => {
-      console.log(response)
       if(response.status === 201 || response.status === 200){
         if(this.state.transactionType == 'buy'){
           this.setState({
@@ -152,16 +147,13 @@ class Transaction extends React.Component{
   }
   availableBlock = () => {
     if(this.state.transactionType == 'buy'){
-      console.log('available buy')
       return <div> <h4 style={{textAlign:'center', marginTop:'1em', marginBottom:'0.5em'}}>${this.state.portfolioDetails.buyingPower}</h4><h4 style={{textAlign:'center', marginTop:'0.5em', marginBottom:'1em'}}>available</h4> </div>
     }else{
-      console.log('available sell')
-      return <div><h4 style={{textAlign:'center', marginTop:'1em', marginBottom:'0.5em'}}>{this.state.volume}</h4><h4 style={{textAlign:'center', marginTop:'0.5em', marginBottom:'0em'}}>available</h4><h4 style={{textAlign:'center', marginBottom:'1em', marginTop:'0em'}}>shares</h4></div>
+      return <div><h4 style={{textAlign:'center', marginTop:'1em', marginBottom:'0.5em'}}>{this.state.stockShares}</h4><h4 style={{textAlign:'center', marginTop:'0.5em', marginBottom:'0em'}}>available</h4><h4 style={{textAlign:'center', marginBottom:'1em', marginTop:'0em'}}>shares</h4></div>
     }
   }
 
   render(){
-    console.log(this.state.volume)
     let transactionRowStyle;
     this.state.transactionType == 'buy' ? transactionRowStyle = {color: '#7702fa', backgroundColor: '#E5E8E8'} : transactionRowStyle = {color: '#FFFFFF', backgroundColor: '#7702fa'}
     return (
