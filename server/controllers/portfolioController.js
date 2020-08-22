@@ -212,6 +212,49 @@ module.exports = {
 			res.status(404).send(errorResponse);
 		}
 	},
+  async getNumberOfShares(req,res){
+    let sessionID = req.sessionID;
+		let leagueID = req.params.leagueID;
+		let league = await League.findOne({where: {id: leagueID}});
+		let user = await User.findOne({where: {sessionID: sessionID}});
+		let portfolio = await Portfolio.findOne({where: {userID: user.id, leagueID: leagueID}});
+
+		// check to make sure await statement is valid
+		let transactions = null;
+		if(portfolio != null) {
+			transactions = await Transaction.findAll({where: {portfolioID: portfolio.id, stockSymbol: req.params.symbol}});
+		}
+    let errorResponse= "";
+		if(league == null) {
+			errorResponse = "League does not exist";
+		} else if(user == null) {
+			errorResponse = "Error with sessionID. User does not exist";
+		} else if(portfolio == null) {
+			errorResponse = "Portfolio does not exist";
+		} else if(transactions == null) {
+			errorResponse = "Transactions do not exist for this portfolio.";
+		}
+    let totalShares = 0;
+		if(transactions != null) {
+			for(var i = 0; transactions[i]; i++) {
+				let transaction = transactions[i];
+				let sym = transaction.stockSymbol;
+				let vol = transaction.volume;
+				if(transaction.type == 'buy') {
+					totalShares = totalShares + vol;
+				} else if(transaction.type == 'sell') {
+					totalShares = totalShares - vol;
+				}
+			}
+		}
+
+		if(errorResponse == "") {
+			res.status(200).send({numShares: totalShares});
+		}
+		else{
+			res.status(404).send(errorResponse);
+		}
+  },
 
 	// get portfolio value + buying power from userID and leagueID
 	async getCurrentBalance(req, res) {

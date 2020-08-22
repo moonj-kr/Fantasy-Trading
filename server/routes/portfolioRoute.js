@@ -96,6 +96,7 @@ module.exports = (app) => {
     *         description: successfully returns the previous portfolio values
     */
 	app.get('/api/portfolio/prevValues/:leagueID', portfolioController.getPreviousValues);
+  
 	/**
     * @swagger
     * /api/stock/price/{symbol}:
@@ -133,4 +134,29 @@ module.exports = (app) => {
     *         description: successfully returns the previous portfolio date values
     */
 		app.get('/api/portfolio/getDates/:leagueID', portfolioController.getDates);
+
+		/**
+			* @swagger
+			* /api/stock/shares/{leagueID}/{symbol}:
+			*   get:
+			*     name:
+			*     summary: gets the number of held shares of stock
+			*     parameters:
+			*       - in: path
+			*         name: leagueID
+			*         schema:
+			*           type: string
+			*         required:
+			*           - leagueID
+			*       - in: path
+			*         name: symbol
+			*         schema:
+			*           type: string
+			*         required:
+			*           - symbol
+			*     responses:
+			*       200:
+			*         description: successfully returns the number of shares of stock
+			*/
+			app.get('/api/stock/shares/:leagueID/:symbol', portfolioController.getNumberOfShares);
 }
