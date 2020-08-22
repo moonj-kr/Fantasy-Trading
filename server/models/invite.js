@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.ENUM(['No Account', 'Pending', 'Accepted'])
   }, {});
   Invite.associate = function(models) {
-  
+
   };
   return Invite;
 };
