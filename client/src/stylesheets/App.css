@@ -541,6 +541,7 @@
   //background-color: #E5E8E8;
   //color: #7702fa;
   font-family: 'Verdana';
+}
 .stock{
   display: flex;
   flex-direction: row;
