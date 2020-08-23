@@ -79,7 +79,7 @@ class Player extends React.Component{
         <h3 className="player-rank" style={{width: '60%'}}>{this.state.username}</h3>
         <h3 className="player-rank" style={{width: '15%'}}>${this.props.details.value}</h3>
         <h3 className="player-rank" style={{width: '5%'}}>
-          {this.props.details.percentChange>0 ? '+' : '-'}
+          {this.props.details.percentChange<0 ? '-' : '+'}
           {this.props.details.percentChange}
         </h3>
       </div>

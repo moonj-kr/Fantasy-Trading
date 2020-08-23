@@ -64,7 +64,9 @@ module.exports = {
     let transactionValue = 0;
     const symbol = req.body.stockSymbol;
     const timeOfTrans = Date.now();
+    console.log(timeOfTrans);
     const price = await getStockData(API_KEY, symbol);
+    console.log(price);
 
 
     User.findOne({where: {sessionID: sessionID}}).then(user => {
@@ -100,7 +102,7 @@ module.exports = {
             // Provides a check to see if the transaction will result in a day trade.
             // Goes through all transactions in the portfolio found by leagueID.
             // For each transaction, checks if a stock was bought or sold today already.
-
+            console.log(transactionValue)
             // Provides a check to see if there is enough buying power for the transaction.
             if (portfolio.buyingPower - transactionValue < 0) {
               return res.status(400).json({

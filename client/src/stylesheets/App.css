@@ -473,6 +473,75 @@
   margin-block-end: 0em;
   margin-bottom: 0.5em;
 }
+.stock-transaction-type{
+  display: flex;
+  flex-direction: row;
+  margin-top: 2em;
+}
+.stock-transaction-row{
+  display: flex;
+  flex-direction: row;
+  padding: 0.25em;
+}
+.stock-transaction-buy{
+  display: flex;
+  flex-direction: row;
+  //background-color: #E5E8E8;
+  //color: #7702fa;
+  border-radius: 1em;
+  padding: 0.25em;
+  margin-bottom: 1em;
+  margin-right: 2em;
+}
+.stock-transaction-sell{
+  display: flex;
+  flex-direction: row;
+  //background-color: #7702fa;
+  //color: #FFFFFF;
+  display: flex;
+  flex-direction: row;
+}
+.transaction-available{
+  //background-color: #E5E8E8;
+  //color: #7702fa;
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 50%;
+  width: 8em;
+  height: 8em;
+}
+.stock-transaction-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em;
+  font-size: 2em;
+}
+.stock-transaction-shares{
+  display: flex;
+  flex-direction: column;
+  width: 10em;
+}
+.stock-transaction-shares-textfield{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.order-button{
+  background-color: #95DB7E;
+  color: #FFFFFF;
+  border-radius: 1em;
+  font-family: 'Verdana';
+  align-self: flex-end;
+  font-size: 1em;
+  padding: 0.5em;
+}
+.transaction-type-button{
+  //background-color: #E5E8E8;
+  //color: #7702fa;
+  font-family: 'Verdana';
+}
 .stock{
   display: flex;
   flex-direction: row;
