@@ -16,7 +16,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
     "@nivo/line": "^0.62.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "concurrently": "^5.2.0",
     "cookie-parser": "^1.4.5",
